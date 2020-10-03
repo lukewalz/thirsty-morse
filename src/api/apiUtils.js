@@ -1,7 +1,6 @@
-
 export async function handleResponse(response) {
     if (response.ok) {
-        var jsonResponse = await response.json().then(e => e);
+        var jsonResponse = await response.json().then(e => { return e }).catch(err => console.log(err));
         return jsonResponse;
     }
     else {
