@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { connect } from "react-redux";
-import { Button } from 'reactstrap';
-import { Row, Col, Alert, Badge, Input } from 'reactstrap';
+import { Row, Col, Badge, Input } from 'reactstrap';
 
 function Matchup({ ...props }) {
     const [formattedDate] = useState(formatDate(props.game.commence_time));

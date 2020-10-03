@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { loadGames } from "./redux/actions/gameActions";
 import { connect } from "react-redux";
 import Matchup from './Matchup'
-import { Container, Row, Col } from 'reactstrap';
+import { Container } from 'reactstrap';
 
 
 function Games({ loadGames, games }) {
