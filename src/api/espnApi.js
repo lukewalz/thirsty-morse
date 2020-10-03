@@ -15,7 +15,7 @@ export async function getGames() {
 
 export async function getFileFromStorage(file) {
     try {
-        var path = "https://walzstorage.blob.core.windows.net/lspn/file.json?sv=2019-10-10&st=2020-10-02T22%3A27%3A37Z&se=2020-10-03T22%3A27%3A37Z&sr=c&sp=racl&sig=Lo%2F3MhGYi0nJG1a51gmzPaIfraafmTXtYd73cLubFuc%3D"
+        var path = "https://walzstorage.blob.core.windows.net/lspn/file.json?sv=2019-10-10&st=2020-10-03T02%3A33%3A53Z&se=2020-10-04T02%3A33%3A53Z&sr=b&sp=rw&sig=%2FbNcI0TdxmXbQPyfe14qNwHxH%2FZ5Jh2lZIE0uxpNRKo%3D"
         return fetch(
             path,
             {

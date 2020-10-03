@@ -1,6 +1,8 @@
 export async function handleResponse(response) {
     if (response.ok) {
-        var jsonResponse = await response.json().then(e => { return e }).catch(err => console.log(err));
+        console.log('ok');
+        var jsonResponse = await response.json().then(e => e);
+        console.log(jsonResponse);
         return jsonResponse;
     }
     else {
@@ -9,7 +11,10 @@ export async function handleResponse(response) {
         var file = await fetch(path, {
             method: "GET"
         });
-        file = new File([file.data], "data.json", { type: "application/json" });
+        var fileResults = await file.json().then(e => e);
+        console.log(fileResults);
+        file = new File(fileResults.data, "data.json", { type: "application/json" });
+        console.log(file);
         addFileToStorage(file);
     }
 }
