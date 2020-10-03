@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Row, Col, Badge, Input } from 'reactstrap';
 
 function Matchup({ ...props }) {
-    const [formattedDate] = useState(formatDate(props.game.commence_time));
+    // const [formattedDate] = useState(formatDate(props.game.commence_time));
     const [averageLine] = useState(getAverageLine(props.game.sites));
     const [editable, setIsEditable] = useState();
 
