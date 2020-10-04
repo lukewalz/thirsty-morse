@@ -1,20 +1,15 @@
 export async function handleResponse(response) {
     if (response.ok) {
-        console.log('ok');
         var jsonResponse = await response.json().then(e => e);
-        console.log(jsonResponse);
         return jsonResponse;
     }
     else {
-        console.log(404);
         var path = 'https://api.the-odds-api.com/v3/odds/?apiKey=258c9effb7728eaadb640b09e19af71b&sport=americanfootball_ncaaf&region=us&mkt=spreads'
         var file = await fetch(path, {
             method: "GET"
         });
         var fileResults = await file.json().then(e => e);
-        console.log(fileResults);
         file = new File(fileResults.data, "data.json", { type: "application/json" });
-        console.log(file);
         addFileToStorage(file);
     }
 }

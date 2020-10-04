@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { connect } from "react-redux";
-import { Row, Col, Badge, Input } from 'reactstrap';
+import { Row, Col, Alert, Badge, Input } from 'reactstrap';
 
 function Matchup({ ...props }) {
-    // const [formattedDate] = useState(formatDate(props.game.commence_time));
+    const [formattedDate] = useState(formatDate(props.game.commence_time));
     const [averageLine] = useState(getAverageLine(props.game.sites));
-    const [editable, setIsEditable] = useState();
+    const [showDate, changeShowDate] = useState(false);
+
 
     return (
-        <div>
+        <div onDoubleClick={() => changeShowDate(!showDate)}>
+            {showDate ? <div>{formattedDate}</div> : ''}
+
+
             {props.game.teams[0] === props.game.home_team ?
-                <Row><Col>{props.game.teams[1]}<Badge color='danger'>{averageLine[0]}</Badge><Input disabled={editable} onDoubleClick={() => setIsEditable(!editable)} onSubmit={() => alert()} style={{ width: 50, display: 'inline-block' }} /></Col> at <Col>{props.game.teams[0]}<Badge>{averageLine[0]}</Badge><Input disabled={editable} onDoubleClick={() => setIsEditable(!editable)} onKeyDown={() => alert('hi')} style={{ width: 50, display: 'inline-block' }} /></Col></Row> :
-                <Row><Col>{props.game.teams[0]}<Badge color='danger'>{averageLine[0]}</Badge><Input disabled={editable} onDoubleClick={() => setIsEditable(!editable)} onSubmit={() => alert()} style={{ width: 50, display: 'inline-block' }} /></Col> at <Col>{props.game.teams[1]}<Badge>{averageLine[1]}</Badge><Input disabled={editable} onDoubleClick={() => setIsEditable(!editable)} onSubmit={() => alert()} style={{ width: 50, display: 'inline-block' }} /></Col></Row>
+                <Row><Col>{props.game.teams[1]}<Badge color='danger'>{averageLine[0]}</Badge><Badge color='warning'>{props.game.sites[0].odds.spreads.adjusted_line}</Badge></Col> at <Col>{props.game.teams[0]}<Badge>{averageLine[1]}</Badge><Badge color='warning'>{props.game.sites[0].odds.spreads.adjusted_line}</Badge></Col></Row> :
+                <Row><Col>{props.game.teams[0]}<Badge color='danger'>{averageLine[0]}</Badge><Badge color='warning'>{props.game.sites[0].odds.spreads.adjusted_line}</Badge></Col> at <Col>{props.game.teams[1]}<Badge>{averageLine[1]}</Badge><Badge color='warning'>{props.game.sites[0].odds.spreads.adjusted_line}</Badge></Col></Row>
             }
+            <div>{props.game.adjusted_line}</div>
         </div>
     )
 }
-
-
 
 function formatDate(unix_timestamp) {
     var date = new Date(unix_timestamp * 1000);

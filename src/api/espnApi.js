@@ -7,8 +7,6 @@ export async function getGames() {
 
     if (data !== undefined) {
         return data;
-    } else {
-        console.log(data);
     }
 
 }
@@ -33,11 +31,3 @@ export async function getFileFromStorage(file) {
 
 }
 
-    //     console.log('not here');
-    //     let path = 'https://api.the-odds-api.com/v3/odds/?apiKey=258c9effb7728eaadb640b09e19af71b&sport=americanfootball_ncaaf&region=us&mkt=spreads'
-    //     return fetch(path, {
-    //         method: "GET"
-    //     })
-    //         .then(handleResponse)
-    //         .catch(handleError)
-    // }
