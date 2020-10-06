@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
 import { connect } from "react-redux";
-import { Row, Col, Badge } from 'reactstrap';
+import { Row, Col, Badge, Input } from 'reactstrap';
+
 
 function Matchup({ ...props }) {
     const [formattedDate] = useState(formatDate(props.game.commence_time));
@@ -16,25 +17,27 @@ function Matchup({ ...props }) {
 
             {props.game.teams[0] === props.game.home_team ?
                 <Row>
+                    <Input type="checkbox" onChange={e => props.checked = e.target.checked} />
                     <Col>
                         {props.game.teams[1]}
-                        <Badge color='danger'>{averageLine[1]}</Badge>
-                        {props.game.sites[0].odds.spreads.adjusted_points ? <Badge color='warning'>{props.game.sites[0].odds.spreads.adjusted_points[1]}</Badge> : ''}
+                        <Badge color='warning'>{averageLine[1]}</Badge>
+                        {props.game.sites[0].odds.spreads.adjusted_points ? <Badge color='primary'>{props.game.sites[0].odds.spreads.adjusted_points[1]}</Badge> : ''}
                     </Col> at
                     <Col>{props.game.teams[0]}
-                        <Badge color='danger'>{averageLine[0]}</Badge>
-                        {props.game.sites[0].odds.spreads.adjusted_points ? <Badge color='warning'>{props.game.sites[0].odds.spreads.adjusted_points[0]}</Badge> : ''}
+                        <Badge color='warning'>{averageLine[0]}</Badge>
+                        {props.game.sites[0].odds.spreads.adjusted_points ? <Badge color='primary'>{props.game.sites[0].odds.spreads.adjusted_points[0]}</Badge> : ''}
                     </Col>
                 </Row> :
                 <Row>
+                    <Input type="checkbox" />
                     <Col>
                         {props.game.teams[0]}
-                        <Badge color='danger'>{averageLine[0]}</Badge>
-                        {props.game.sites[0].odds.spreads.adjusted_points ? <Badge color='warning'>{props.game.sites[0].odds.spreads.adjusted_points[0]}</Badge> : ''}
+                        <Badge color='warning'>{averageLine[0]}</Badge>
+                        {props.game.sites[0].odds.spreads.adjusted_points ? <Badge color='primary'>{props.game.sites[0].odds.spreads.adjusted_points[0]}</Badge> : ''}
                     </Col> at
                     <Col>{props.game.teams[1]}
-                        <Badge color='danger'>{averageLine[1]}</Badge>
-                        {props.game.sites[0].odds.spreads.adjusted_points ? <Badge color='warning'>{props.game.sites[0].odds.spreads.adjusted_points[1]}</Badge> : ''}
+                        <Badge color='warning'>{averageLine[1]}</Badge>
+                        {props.game.sites[0].odds.spreads.adjusted_points ? <Badge color='primary'>{props.game.sites[0].odds.spreads.adjusted_points[1]}</Badge> : ''}
                     </Col>
                 </Row>
             }

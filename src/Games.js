@@ -17,14 +17,10 @@ function Games({ loadGames, games, changeGame }) {
         gameList = Array.from(games);
     }
 
-    function handleChange(game, value) {
-        changeGame(game, value);
-    }
-
 
     return (
         <Container>
-            {gameList?.sort((a, b) => (Math.abs(a.sites[0].odds.spreads.adjusted_points[0] - a.sites[0].odds.spreads?.points[0])) < (Math.abs(b.sites[0].odds.spreads.adjusted_points[0] - b.sites[0].odds.spreads.points[0])) ? 1 : -1).map((e, i) => <Matchup key={i} game={e} onChange={handleChange} />)}
+            {gameList?.sort((a, b) => (Math.abs(a.sites[0].odds.spreads.adjusted_points[0] - a.sites[0].odds.spreads?.points[0]) < (b.sites[0].odds.spreads.adjusted_points[0] - b.sites[0].odds.spreads.points[0])) ? 1 : -1).map((e, i) => <Matchup key={i} game={e} checked />)}
         </Container>
 
     )
