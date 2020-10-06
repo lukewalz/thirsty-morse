@@ -1,22 +1,25 @@
 export async function handleResponse(response) {
-    if (response.ok) {
-        var jsonResponse = await response.json().then(e => e);
+    if (response.success) {
+        var jsonResponse = await response;
+        console.log(jsonResponse);
         return jsonResponse;
     }
     else {
-        var path = 'https://api.the-odds-api.com/v3/odds/?apiKey=258c9effb7728eaadb640b09e19af71b&sport=americanfootball_ncaaf&region=us&mkt=spreads'
-        var file = await fetch(path, {
-            method: "GET"
-        });
-        var fileResults = await file.json().then(e => e);
-        file = new File(fileResults.data, "data.json", { type: "application/json" });
-        addFileToStorage(file);
+        console.log(response);
     }
 }
 
-export async function addFileToStorage(file) {
-    var path = "https://walzstorage.blob.core.windows.net/lspn/file.json?sv=2019-10-10&st=2020-10-02T22%3A27%3A37Z&se=2020-10-03T22%3A27%3A37Z&sr=c&sp=racl&sig=Lo%2F3MhGYi0nJG1a51gmzPaIfraafmTXtYd73cLubFuc%3D"
-    return fetch(
+export async function addFileToStorage() {
+    var apiPath = 'https://api.the-odds-api.com/v3/odds/?apiKey=258c9effb7728eaadb640b09e19af71b&sport=americanfootball_ncaaf&region=us&mkt=spreads'
+    var file = await fetch(apiPath, {
+        method: "GET"
+    });
+    var fileResults = await file.json().then(e => { return e });
+
+    var jsonse = JSON.stringify(fileResults);
+    var blob = new Blob([jsonse], { type: "application/json" });
+    var path = "https://walzstorage.blob.core.windows.net/lspn/file.json?sv=2019-10-10&st=2020-10-06T20%3A32%3A19Z&se=2021-04-16T20%3A32%3A00Z&sr=b&sp=raw&sig=zVzh%2FqQIpl5XqpPx6Y4mbr%2Bh5sqL6HlN3LuHTN9sXUQ%3D"
+    fetch(
         path,
         {
             headers: {
@@ -24,11 +27,12 @@ export async function addFileToStorage(file) {
                 "Content-Type": "application/json"
             },
             method: "PUT",
-            body: file
+            body: blob
         }
     );
+    return fileResults;
 }
 
-export async function handleError(error) {
-    console.log(error);
+export async function handleError() {
+    return await addFileToStorage();
 }
