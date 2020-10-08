@@ -25,7 +25,7 @@ function Matchup({ loadGameDetails, ...props }) {
                 <Col>
                     at
                 </Col>
-                <Col style={{ color: props.game.logo ? props.game.logo[1][0].color : '', borderRadius: 9, backgroundColor: props.game.logo ? props.game.logo[0][0].alt_color : '' }}>
+                <Col style={{ color: props.game.logo ? props.game.logo[0][0].color : '', borderRadius: 9, backgroundColor: props.game.logo ? props.game.logo[0][0].alt_color : '' }}>
                     <CardTitle>{props.game.home_team}</CardTitle>
 
                     {showLogo ? <img src={props.game.logo[0][0]?.logos[0]} /> : ''}
