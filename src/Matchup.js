@@ -18,10 +18,10 @@ function Matchup({ loadGameDetails, ...props }) {
     return (
         <div>
             <Row onClick={() => handleClick(props.game)}>
-                <Col style={{ color: props.game.logo ? props.game.logo[1][0].color : '', borderRadius: 9, backgroundColor: props.game.logo ? props.game.logo[1][0].alt_color : '' }}>
+                <Col>
                     <CardTitle>{props.game.away_team}</CardTitle>
-                    {showLogo ? <img src={props.game.logo ? props.game.logo[1][0].logos[0] : ''} /> : ''}
-                </Col>
+                    <div style={{ color: props.game.logo ? props.game.logo[1][0].color : '', borderRadius: 9, backgroundColor: props.game.logo ? props.game.logo[1][0].alt_color : '' }}>{showLogo ? <img src={props.game.logo ? props.game.logo[1][0].logos[0] : ''} /> : ''}
+</div></Col>
                 <Col>
                     at
                 </Col>
