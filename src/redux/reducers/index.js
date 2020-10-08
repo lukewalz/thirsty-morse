@@ -1,12 +1,11 @@
 import { combineReducers } from "redux";
-import gamesReducer from "./gameReducer";
+import games from "./games";
 
 const appReducer = combineReducers({
-    gamesReducer
+    games
 });
 
 const rootReducer = (state, action) => {
-
     return appReducer(state, action);
 };
 

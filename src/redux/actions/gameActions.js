@@ -3,11 +3,11 @@ import * as espnApi from "../../api/espnApi";
 
 
 export function loadGamesSuccess(games) {
-    return { type: types.LOAD_GAMES_SUCCESS, games };
-}
-
-export function gameChangedSuccess(game, change) {
-    return { type: types.GAME_CHANGED_SUCCESS, game, change }
+    if (games != null) {
+        return { type: types.LOAD_GAMES_SUCCESS, games };
+    } else {
+        return;
+    }
 }
 
 export function loadGames() {
@@ -15,8 +15,7 @@ export function loadGames() {
         return espnApi
             .getGames()
             .then(games => {
-                console.log(games);
-                dispatch(loadGamesSuccess(games.data));
+                dispatch(loadGamesSuccess(games));
             })
             .catch(error => {
                 console.log(error);
@@ -24,8 +23,20 @@ export function loadGames() {
     };
 }
 
-export function changeGame(game, change) {
+export function loadGameDetailsSuccess(gameLine) {
+    return { type: types.LOAD_GAME_DETAILS_SUCCESS, gameLine }
+}
+
+
+export function loadGameDetails(gameLine) {
     return async function (dispatch) {
-        dispatch(gameChangedSuccess(game, change));
+        return espnApi
+            .loadGameDetails(gameLine)
+            .then(details => {
+                dispatch(loadGameDetailsSuccess(details));
+            })
+            .catch(error => {
+                console.log(error)
+            });
     }
 }

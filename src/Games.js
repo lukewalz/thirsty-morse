@@ -1,26 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
-import { changeGame, loadGames } from "./redux/actions/gameActions";
+import { loadGames, loadGameDetails } from "./redux/actions/gameActions";
 import { connect } from "react-redux";
 import Matchup from './Matchup'
-import { Container } from 'reactstrap';
+import { Container, Card } from 'reactstrap';
 
 
-function Games({ loadGames, games, changeGame }) {
+
+function Games({ loadGames, games }) {
     useEffect(() => {
         loadGames();
     }, [loadGames]);
 
-
-    var gameList = null;
-    if (games) {
-        gameList = Array.from(games);
-    }
-
-
     return (
         <Container>
-            {gameList?.sort((a, b) => (Math.abs(a.sites[0].odds.spreads.adjusted_points[0] - a.sites[0].odds.spreads?.points[0]) < (b.sites[0].odds.spreads.adjusted_points[0] - b.sites[0].odds.spreads.points[0])) ? 1 : -1).map((e, i) => <Matchup key={i} game={e} checked />)}
+            {games?.map((e, i) => {
+                return <Matchup game={e} />
+            })}
         </Container>
 
     )
@@ -29,12 +25,12 @@ function Games({ loadGames, games, changeGame }) {
 
 const mapDispatchToProps = {
     loadGames,
-    changeGame
+    loadGameDetails
 };
 
 function mapStateToProps(state) {
     return {
-        games: state.gamesReducer
+        games: state.games,
     };
 }
 

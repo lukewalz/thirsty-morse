@@ -1,64 +1,55 @@
 import React, { useState } from 'react';
 import './App.css';
 import { connect } from "react-redux";
-import { Row, Col, Badge, Input } from 'reactstrap';
+import { Row, Col, Badge, Input, CardTitle, CardBody } from 'reactstrap';
+import { loadGameDetails } from "./redux/actions/gameActions";
 
 
-function Matchup({ ...props }) {
-    const [formattedDate] = useState(formatDate(props.game.commence_time));
-    const [averageLine] = useState(getAverageLine(props.game.sites));
-    const [showDate, changeShowDate] = useState(false);
 
+function Matchup({ loadGameDetails, ...props }) {
+
+    const [showSpread, changeShowSpread] = useState(false);
+    const [showLogo, changeShowLogo] = useState(false)
+    function handleClick(e) {
+        loadGameDetails(e).then(() => { changeShowSpread(!showSpread); changeShowLogo(true) });
+        console.log(props.game.logo)
+    }
 
     return (
-        <div onDoubleClick={() => changeShowDate(!showDate)}>
-            {showDate ? <div>{formattedDate}</div> : ''}
+        <div>
+            <Row onDoubleClick={() => handleClick(props.game)}>
+                <Col style={{ color: props.game.logo ? props.game.logo[1][0].color : '', borderRadius: 9, backgroundColor: props.game.logo ? props.game.logo[1][0].alt_color : '' }}>
+                    <CardTitle>{props.game.away_team}</CardTitle>
+                    {showLogo ? <img src={props.game.logo ? props.game.logo[1][0].logos[0] : ''} /> : ''}
+                </Col>
+                <Col>
+                    at
+                </Col>
+                <Col style={{ color: props.game.logo ? props.game.logo[1][0].color : '', borderRadius: 9, backgroundColor: props.game.logo ? props.game.logo[0][0].alt_color : '' }}>
+                    <CardTitle>{props.game.home_team}</CardTitle>
 
-
-            {props.game.teams[0] === props.game.home_team ?
-                <Row>
-                    <Input type="checkbox" onChange={e => props.checked = e.target.checked} />
-                    <Col>
-                        {props.game.teams[1]}
-                        <Badge color='warning'>{averageLine[1]}</Badge>
-                        {props.game.sites[0].odds.spreads.adjusted_points ? <Badge color='primary'>{props.game.sites[0].odds.spreads.adjusted_points[1]}</Badge> : ''}
-                    </Col> at
-                    <Col>{props.game.teams[0]}
-                        <Badge color='warning'>{averageLine[0]}</Badge>
-                        {props.game.sites[0].odds.spreads.adjusted_points ? <Badge color='primary'>{props.game.sites[0].odds.spreads.adjusted_points[0]}</Badge> : ''}
-                    </Col>
-                </Row> :
-                <Row>
-                    <Input type="checkbox" />
-                    <Col>
-                        {props.game.teams[0]}
-                        <Badge color='warning'>{averageLine[0]}</Badge>
-                        {props.game.sites[0].odds.spreads.adjusted_points ? <Badge color='primary'>{props.game.sites[0].odds.spreads.adjusted_points[0]}</Badge> : ''}
-                    </Col> at
-                    <Col>{props.game.teams[1]}
-                        <Badge color='warning'>{averageLine[1]}</Badge>
-                        {props.game.sites[0].odds.spreads.adjusted_points ? <Badge color='primary'>{props.game.sites[0].odds.spreads.adjusted_points[1]}</Badge> : ''}
-                    </Col>
-                </Row>
-            }
-            <div>{props.game.adjusted_line}</div>
+                    {showLogo ? <img src={props.game.logo[0][0]?.logos[0]} /> : ''}
+                </Col>
+            </Row>
+            <Badge>{showSpread ? props.game.lines : ''}</Badge>
+            <Badge>{formatDate(props.game.start_date)}</Badge>
         </div>
     )
 }
 
 function formatDate(unix_timestamp) {
-    var date = new Date(unix_timestamp * 1000);
-
+    var date = new Date(unix_timestamp);
     var formattedDate = date.toLocaleDateString();
     var formattedTime = date.toLocaleTimeString();
 
     return formattedDate + ' ' + formattedTime;
 }
 
-function getAverageLine(sites) {
-    sites = Array.from(sites);
-    var spreads = sites[0].odds.spreads;
-    return spreads.points;
-}
+const mapDispatchToProps = {
+    loadGameDetails
+};
 
-export default connect(null, null)(Matchup);
+
+export default connect(null, mapDispatchToProps)(Matchup);
+
+

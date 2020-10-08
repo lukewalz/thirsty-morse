@@ -1,37 +1,41 @@
+import Games from "../Games";
 import { handleResponse, handleError } from "./apiUtils";
 
 export async function getGames() {
-    var data = await getFileFromStorage();
-    if (data !== undefined) {
-        console.log('getting from storage');
-        return await handleResponse(data)
-    }
-    else {
-        console.log('getting from api');
-        var e = await handleError();
-        return e;
-    }
+    var apiPath = 'https://api.collegefootballdata.com/games?year=2020&seasonType=regular&week=6'
+    var file = await fetch(apiPath, {
+        method: "GET"
+    });
+
+    var gameList = await handleResponse(file);
+
+    return gameList;
 }
 
-export async function getFileFromStorage() {
-    try {
-        var path = "https://walzstorage.blob.core.windows.net/lspn/file.json?sv=2019-10-10&st=2020-10-06T20%3A32%3A19Z&se=2021-04-16T20%3A32%3A00Z&sr=b&sp=raw&sig=zVzh%2FqQIpl5XqpPx6Y4mbr%2Bh5sqL6HlN3LuHTN9sXUQ%3D"
-        var response = await fetch(
-            path,
-            {
-                headers: {
-                    "x-ms-blob-type": "BlockBlob",
-                    "Content-Type": "application/json"
-                },
-                method: "GET"
-            }
-        ).then(e => e.json());
+export async function loadGameDetails(game) {
+    var apiPath = 'https://api.collegefootballdata.com/lines?year=2020&gameId=' + game.id
+    var file = await fetch(apiPath, {
+        method: "GET"
+    });
 
-        return response;
-    }
-    catch {
-        return undefined;
-    }
+    var gameDetails = await handleResponse(file);
 
+    gameDetails = Object.assign({}, gameDetails)
+    var logo = await loadLogos(game);
+    var o = Object.assign({}, gameDetails);
+    o.logo = logo;
+    var updateValue = Object.assign({}, gameDetails, o);
+    return updateValue;
 }
+
+async function loadLogos(team) {
+    var path = 'https://api.collegefootballdata.com/teams/fbs?year=2020';
+    var response = await fetch(path).then(e => e.json()).then(r => r);
+    var home_logo = await response.filter(item => item.id === team.home_id);
+    var away_logo = await response.filter(item => item.id === team.away_id);
+    return [home_logo, away_logo];
+}
+
+
+
 
