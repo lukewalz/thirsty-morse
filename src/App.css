@@ -4,7 +4,7 @@
 .App {
   text-align: center;
   font-family: 'Roboto', sans-serif;
-  text-shadow: 2px 2px #f6f6f6;
+  text-shadow: .5px .5px #f6f6f6;
 }
 
 img{
