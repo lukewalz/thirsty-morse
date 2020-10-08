@@ -25,10 +25,10 @@ function Matchup({ loadGameDetails, ...props }) {
                 <Col>
                     at
                 </Col>
-                <Col style={{ color: props.game.logo ? props.game.logo[0][0].color : '', borderRadius: 9, backgroundColor: props.game.logo ? props.game.logo[0][0].alt_color : '' }}>
-                    <CardTitle>{props.game.home_team}</CardTitle>
+                <Col>                 <CardTitle>{props.game.home_team}</CardTitle>
 
-                    {showLogo ? <img src={props.game.logo[0][0]?.logos[0]} /> : ''}
+                    <div style={{ color: props.game.logo ? props.game.logo[0][0].color : '', borderRadius: 9, backgroundColor: props.game.logo ? props.game.logo[0][0].alt_color : '' }}>
+    {showLogo ? <img src={props.game.logo[0][0]?.logos[0]} /> : ''}</div>
                 </Col>
             </Row>
             <Badge>{showSpread ? props.game.lines : ''}</Badge>
