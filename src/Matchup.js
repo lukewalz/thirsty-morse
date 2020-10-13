@@ -1,39 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { connect } from "react-redux";
-import { Row, Col, Badge, Input, CardTitle, CardBody } from 'reactstrap';
+import { Row, Col, Badge, CardTitle } from 'reactstrap';
 import { loadGameDetails } from "./redux/actions/gameActions";
+import LazyLoad from 'react-lazyload';
+
 
 
 
 function Matchup({ loadGameDetails, ...props }) {
 
-    const [showSpread, changeShowSpread] = useState(false);
-    const [showLogo, changeShowLogo] = useState(false)
-    function handleClick(e) {
-        loadGameDetails(e).then(() => { changeShowSpread(!showSpread); changeShowLogo(true) });
-        console.log(props.game.logo)
-    }
+    useEffect(() => {
+        loadGameDetails(props.game)
+    }, [props.game]);
 
     return (
         <div>
-            <Row onClick={() => handleClick(props.game)}>
+            <Row>
                 <Col>
                     <CardTitle>{props.game.away_team}</CardTitle>
-                    <div style={{ color: props.game.logo ? props.game.logo[1][0].color : '', borderRadius: 9, backgroundColor: props.game.logo ? props.game.logo[1][0].alt_color : '' }}>{showLogo ? <img src={props.game.logo ? props.game.logo[1][0].logos[0] : ''} /> : ''}
-</div></Col>
-                <Col>
-                    at
+                    <div>
+                        {props.game.team_data ? <LazyLoad once={true} height={200}><img alt={props.game.away_team} src={props.game.team_data[1][0]?.logos[0]} /></LazyLoad> : []}
+                    </div>
                 </Col>
-                <Col>                 <CardTitle>{props.game.home_team}</CardTitle>
 
-                    <div style={{ color: props.game.logo ? props.game.logo[0][0].color : '', borderRadius: 9, backgroundColor: props.game.logo ? props.game.logo[0][0].alt_color : '' }}>
-    {showLogo ? <img src={props.game.logo[0][0]?.logos[0]} /> : ''}</div>
+                <Col>
+                    <CardTitle>{props.game.home_team}</CardTitle>
+
+                    <div>
+                        {props.game.team_data ? <LazyLoad once={true} height={200}><img alt={props.game.home_team} src={props.game.team_data[0][0]?.logos[0]} /></LazyLoad> : []}
+                    </div>
                 </Col>
             </Row>
-            <Badge>{showSpread ? props.game.lines : ''}</Badge>
+            <Badge color='danger'>{props.game.lines ? props.game.lines : 'unavailable'}</Badge>
             <Badge>{formatDate(props.game.start_date)}</Badge>
-        </div>
+        </div >
     )
 }
 

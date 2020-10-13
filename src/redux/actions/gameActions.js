@@ -33,10 +33,11 @@ export function loadGameDetails(gameLine) {
         return espnApi
             .loadGameDetails(gameLine)
             .then(details => {
-                dispatch(loadGameDetailsSuccess(details));
+                console.log(details);
+                return dispatch(loadGameDetailsSuccess(details));
             })
             .catch(error => {
-                console.log(error)
+                console.log(error, gameLine)
             });
     }
 }

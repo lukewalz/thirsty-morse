@@ -18,6 +18,8 @@
     "react-easy-edit": "^1.11.0",
     "react-inline-edit": "^3.0.0",
     "react-inline-editing": "^1.0.10",
+    "react-json-to-table": "^0.1.7",
+    "react-lazyload": "^3.0.0",
     "react-lottie": "^1.2.3",
     "react-redux": "^7.2.1",
     "react-scripts": "3.4.3",

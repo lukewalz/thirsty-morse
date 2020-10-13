@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { loadGames, loadGameDetails } from "./redux/actions/gameActions";
 import { connect } from "react-redux";

@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Games from './Games'
 import Lottie from 'react-lottie'
