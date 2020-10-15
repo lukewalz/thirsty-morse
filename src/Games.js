@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import './App.css';
-import { loadGames, loadGameDetails } from "./redux/actions/gameActions";
+import { loadGames } from "./redux/actions/gameActions";
 import { connect } from "react-redux";
 import Matchup from './Matchup'
 import { Container, Card } from 'reactstrap';
-
 
 
 function Games({ loadGames, games }) {
@@ -12,11 +11,16 @@ function Games({ loadGames, games }) {
         loadGames();
     }, [loadGames]);
 
+
     return (
         <Container>
-            {games?.map((e, i) => {
-                return <Card key={i} style={{ margin: 20 }}><Matchup game={e} /></Card>
-            })}
+            {games?.map(
+                (item, index) => {
+                    console.log(item);
+                    return <Card key={index} style={{ margin: 20 }}><Matchup game={item} /></Card>
+
+                }
+            )}
         </Container>
 
     )
@@ -24,8 +28,7 @@ function Games({ loadGames, games }) {
 
 
 const mapDispatchToProps = {
-    loadGames,
-    loadGameDetails
+    loadGames
 };
 
 function mapStateToProps(state) {

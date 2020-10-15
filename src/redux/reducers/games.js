@@ -16,8 +16,6 @@ export default function games(state = [], action) {
                             o.lines = action.gameLine[0].lines[0].formattedSpread;
                         }
                         o.team_data = action.gameLine.logo;
-                        o.home_team_stats = action.gameLine.homeTeamStats;
-                        o.away_team_stats = action.gameLine.awayTeamStats;
 
                         var updateValue = Object.assign({}, item, o);
                         // Otherwise, this is the one we want - return an updated value

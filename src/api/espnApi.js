@@ -2,14 +2,24 @@ import { handleResponse } from "./apiUtils";
 
 export async function getGames() {
     var week = getNumberOfWeek();
+
     var apiPath = 'https://api.collegefootballdata.com/games?year=2020&seasonType=regular&week=' + week;
-    var file = await fetch(apiPath, {
-        method: "GET"
-    });
+    var e = await fetch(apiPath, { method: "GET" });
+    var json_e = await e.json();
 
-    var gameList = await handleResponse(file);
+    var c = Promise.all(json_e.map((item) => {
+        return loadGameDetails(item).then((details) => {
+            var o = Object.assign({}, item);
+            o.lines = details[0].lines[0].formattedSpread;
+            o.logos = details.logo;
+            return o;
+        }).catch(err => console.log('no formatted spread on this'))
+    }));
 
-    return gameList;
+
+    var finalResult = c.then(w => w);
+
+    return finalResult;
 }
 
 function getNumberOfWeek() {
@@ -19,7 +29,7 @@ function getNumberOfWeek() {
     return (Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7) - 35);
 }
 
-export async function loadGameDetails(game) {
+async function loadGameDetails(game) {
     var apiPath = 'https://api.collegefootballdata.com/lines?year=2020&gameId=' + game.id
     var file = await fetch(apiPath, {
         method: "GET"
@@ -29,11 +39,8 @@ export async function loadGameDetails(game) {
 
     gameDetails = Object.assign({}, gameDetails)
     var logo = await loadLogos(game);
-    var team_history = await loadTeamStats(game.home_team, game.away_team);
     var o = Object.assign({}, gameDetails);
     o.logo = logo;
-    o.awayTeamStats = team_history[0];
-    o.homeTeamStats = team_history[1];
     var updateValue = Object.assign({}, gameDetails, o);
     return updateValue;
 }
@@ -44,13 +51,6 @@ async function loadLogos(team) {
     var home_logo = await response.filter(item => item.id === team.home_id);
     var away_logo = await response.filter(item => item.id === team.away_id);
     return [home_logo, away_logo];
-}
-
-async function loadTeamStats(homeTeam, awayTeam) {
-    var path = 'https://api.collegefootballdata.com/stats/season/advanced?year=2020&team=';
-    var awayResponse = await fetch(path + awayTeam).then(e => e.json()).then(r => r);
-    var homeResponse = await fetch(path + homeTeam).then(e => e.json()).then(r => r);
-    return [awayResponse, homeResponse]
 }
 
 

@@ -23,21 +23,3 @@ export function loadGames() {
     };
 }
 
-export function loadGameDetailsSuccess(gameLine) {
-    return { type: types.LOAD_GAME_DETAILS_SUCCESS, gameLine }
-}
-
-
-export function loadGameDetails(gameLine) {
-    return async function (dispatch) {
-        return espnApi
-            .loadGameDetails(gameLine)
-            .then(details => {
-                console.log(details);
-                return dispatch(loadGameDetailsSuccess(details));
-            })
-            .catch(error => {
-                console.log(error, gameLine)
-            });
-    }
-}
