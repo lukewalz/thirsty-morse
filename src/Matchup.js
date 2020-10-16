@@ -130,9 +130,9 @@ function determineOutcome(game, teamBet) {
         return winner;
     } else if (alteredGame.home_points > alteredGame.away_points) {
         winner = alteredGame.home_team;
-    } else {
+    } else if(altered game.home_points < alteredGame.away_points{
         winner = alteredGame.away_team;
-    }
+    } else{ winner = null}
 
     console.log(alteredGame.home_points, alteredGame.away_points);
 
