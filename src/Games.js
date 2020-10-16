@@ -16,7 +16,6 @@ function Games({ loadGames, games }) {
         <Container>
             {games?.map(
                 (item, index) => {
-                    console.log(item);
                     return <Card key={index} style={{ margin: 20 }}><Matchup game={item} /></Card>
 
                 }

@@ -7,8 +7,8 @@ import { Row, Col, Badge, CardTitle } from 'reactstrap';
 
 
 function Matchup({ ...props }) {
-    console.log(props.game)
     return (
+        console.log(props),
         props.game ?
             <div>
                 <Row>
@@ -29,6 +29,8 @@ function Matchup({ ...props }) {
                 </Row>
                 <Badge>{props.game.lines ? props.game.lines : 'unavailable'}</Badge>
                 <Badge>{formatDate(props.game.start_date)}</Badge>
+                <Badge>{props.game.lines}</Badge>
+                <Badge color='info'>{props.game.over_under}</Badge>
             </div > : []
     )
 }
