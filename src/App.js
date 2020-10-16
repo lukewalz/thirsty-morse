@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import './App.css';
-import Games from './Games'
 import Lottie from 'react-lottie'
 import animationData from './lotties/34702-spray-medicine'
+import { Spinner } from 'reactstrap';
 
 function App() {
 
@@ -15,6 +15,8 @@ function App() {
     }
   };
 
+  const Games = lazy(() => import('./Games'));
+
   return (
     <div className="App">
       <header className="App-header">
@@ -22,7 +24,10 @@ function App() {
           options={defaultOptions}
           height={400}
           width={400}
-        />        <Games />
+        />
+        <Suspense fallback={<Spinner color="primary" />}>
+          <Games />
+        </Suspense>
       </header>
     </div>
   );

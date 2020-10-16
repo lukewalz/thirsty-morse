@@ -14,7 +14,7 @@ export async function getGames() {
             o.over_under = details[0].lines[0].overUnder;
             o.logos = details.logo;
             return o;
-        }).catch(err => console.log('no formatted spread on this'))
+        }).catch(err => console.log(''))
     }));
 
 
