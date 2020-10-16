@@ -1,36 +1,118 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { connect } from "react-redux";
-import { Row, Col, Badge, CardTitle } from 'reactstrap';
-
+import { Row, Col, Badge, CardTitle, Progress, Modal, ModalFooter, ModalHeader, Button } from 'reactstrap';
 
 
 
 function Matchup({ ...props }) {
+    useEffect(() => {
+        if (props.game) {
+            var w = localStorage.getItem(props.game.id);
+            var v = determineOutcome(props.game, w);;
+
+            if (w) {
+                setWager({ placed: w ? true : false, isWin: v, teamBet: w })
+            }
+        }
+        if (!props.myPicks) {
+            setShowMatchup(true)
+        } else if (w) {
+            setShowMatchup(true)
+        }
+        else {
+            setShowMatchup(false)
+        }
+        console.log(showMatchup);
+    }, [props.game, props.myPicks])
+
+    const [showMatchup, setShowMatchup] = useState(true);
+    const [wager, setWager] = useState({ placed: false, isWin: null, teamBet: null });
+    const [modal, setModal] = useState(false);
+    const toggle = (item) => {
+        setModal(!modal);
+        setWager({ placed: item ? true : false, isWin: determineOutcome(props.game, item), teamBet: item });
+        item !== undefined ? localStorage.setItem(props.game.id, item) : localStorage.removeItem(props.game.id)
+    };
+
     return (
-        props.game ?
-            <div>
+        props.game && showMatchup ?
+            <div className={wager ? wager.placed ? 'glow' : '' : ''} onClick={() => setModal(!modal)}>
+                <Modal isOpen={modal} toggle={toggle} >
+                    <ModalHeader toggle={toggle}>Which team did you take?</ModalHeader>
+                    <ModalFooter>
+                        <Button style={props.game.logos[1][0] ? { backgroundColor: props.game.logos[1][0].color } : { backgroundColor: 'azure' }} onClick={() => toggle(props.game.away_team)}>{props.game.away_team}</Button>
+                        <Button style={props.game.logos[0][0] ? { backgroundColor: props.game.logos[0][0].color } : { backgroundColor: 'azure' }} onClick={() => toggle(props.game.home_team)}>{props.game.home_team}</Button>{' '}
+                        <Button onClick={() => toggle(undefined)}>Did not bet this</Button>
+                    </ModalFooter>
+                </Modal>
+
                 <Row>
-                    <Col>
-                        <CardTitle>{props.game.away_team}</CardTitle>
+                    <Col xs="2">
+                        <Badge color={props.game.home_points < props.game.away_points ? 'success' : 'danger'}>{props.game.away_points}</Badge>
+                    </Col>
+
+                    <Col xs="4">
+                        <CardTitle className={props.game.away_team === wager.placed ? 'textGlow' : ''}>{props.game.away_team}</CardTitle>
                         <div>
-                            {props.game.logos ? <><img alt={props.game.away_team} src={props.game?.logos[1][0]?.logos[0].replace('http', 'https')} /><Badge color={props.game.home_points < props.game.away_points ? 'success' : 'danger'}>{props.game.away_points}</Badge></> : []}
+                            {props.game.logos ? <><img alt={props.game.away_team} src={props.game?.logos[1][0]?.logos[0].replace('http', 'https')} /></> : []}
                         </div>
                     </Col>
 
-                    <Col>
+                    <Col xs="4">
+
                         <CardTitle>{props.game.home_team}</CardTitle>
 
                         <div>
-                            {props.game.logos ? <><img alt={props.game.home_team} src={props.game?.logos[0][0]?.logos[0].replace('http', 'https')} /><Badge color={props.game.home_points > props.game.away_points ? 'success' : 'danger'}>{props.game.home_points}</Badge></> : []}
+                            {props.game.logos ? <><img alt={props.game.home_team} src={props.game?.logos[0][0]?.logos[0].replace('http', 'https')} /></> : []}
                         </div>
                     </Col>
+                    <Col xs="2">
+                        {wager.placed && wager.isWin === true ? <div className='check' /> : ''}
+                        {wager.placed && !wager.isWin ? <div style={{ color: 'red' }}>X</div> : ''}
+                        {wager.placed && wager.isWin === 'PUSH' ? <div>PUSH</div> : ''}
+                        <Badge color={props.game.home_points > props.game.away_points ? 'success' : 'danger'}>{props.game.home_points}</Badge>
+                    </Col>
                 </Row>
-                <Badge>{props.game.lines ? props.game.lines : 'unavailable'}</Badge>
+
                 <Badge>{formatDate(props.game.start_date)}</Badge>
-                <Badge color='info'>{props.game.over_under}</Badge>
-            </div > : []
+                {props.game.lines ?
+                    <>
+                        <div style={{ marginTop: '30px', border: 'solid', borderWidth: 'thin' }}>
+                            <div className="text-center">Over/ Under</div>
+                            <Progress bar value={((props.game.home_points + props.game.away_points) <= props.game.over_under ? props.game.home_points + props.game.away_points : props.game.over_under)} max={props.game.over_under} >{props.game.over_under}</Progress>
+                        </div>
+                        <div style={{ marginTop: '30px', border: 'solid', borderWidth: 'thin' }}>
+                            <div className="text-center">Spread</div>
+                            <Progress bar value={5} max={props.game.over_under} >{props.game.lines}</Progress>
+                        </div>
+                    </> : 'unavailable'}
+
+            </div > : ''
     )
+}
+
+function determineOutcome(game, teamBet) {
+    var favorite = game.lines.split(' ');
+    var alteredGame = Object.assign({}, game);
+    if (favorite[0] === alteredGame.home_team) {
+        alteredGame.home_points += favorite[1]
+    } else {
+        alteredGame.away_points += favorite[1]
+    }
+
+    var winner;
+    if (alteredGame.home_points === alteredGame.away_points) {
+        winner = 'PUSH';
+        return winner;
+    } else if (alteredGame.home_points > alteredGame.away_points) {
+        winner = alteredGame.home_team;
+    } else {
+        winner = alteredGame.away_team;
+    }
+
+    return teamBet === winner;
+
 }
 
 function formatDate(unix_timestamp) {

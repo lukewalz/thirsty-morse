@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { loadGames } from "./redux/actions/gameActions";
 import { connect } from "react-redux";
 import Matchup from './Matchup'
-import { Container, Card } from 'reactstrap';
+import { Container, Card, Button } from 'reactstrap';
 
 
 function Games({ loadGames, games }) {
@@ -11,12 +11,15 @@ function Games({ loadGames, games }) {
         loadGames();
     }, [loadGames]);
 
+    const [myPicks, setMyPicks] = useState(false);
+
 
     return (
         <Container>
+            <Button onClick={() => setMyPicks(!myPicks)}>{myPicks ? 'Show All Matchups' : 'Show Only My Picks'}</Button>
             {games?.map(
                 (item, index) => {
-                    return <Card key={index} style={{ margin: 20 }}><Matchup game={item} /></Card>
+                    return <Card key={index} style={{ margin: 20 }}><Matchup game={item} myPicks={myPicks} /></Card>
 
                 }
             )}
