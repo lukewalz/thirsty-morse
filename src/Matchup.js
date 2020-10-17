@@ -11,6 +11,8 @@ function Matchup({ ...props }) {
             var w = localStorage.getItem(props.game.id);
             var v = determineOutcome(props.game, w);;
 
+            console.log(v);
+
             if (w) {
                 setWager({ placed: w ? true : false, isWin: v, teamBet: w })
             }
@@ -39,7 +41,6 @@ function Matchup({ ...props }) {
         }
         else {
             var winner = props.game.home_points !== null ? determineOutcome(props.game, item) : false;
-            console.log(winner)
             setWager({ placed: item ? true : false, isWin: winner, teamBet: item });
             item !== null ? localStorage.setItem(props.game.id, item) : localStorage.removeItem(props.game.id)
         }
@@ -117,7 +118,9 @@ function getBarValue(game) {
     }
 }
 function determineOutcome(game, teamBet) {
-    console.log(game, teamBet)
+    if (game.home_points === null && game.away_points === null) {
+        return false;
+    }
     var favorite = game.lines.split(' -');
     var alteredGame = Object.assign({}, game);
     if (favorite[0] === alteredGame.home_team) {
@@ -127,7 +130,6 @@ function determineOutcome(game, teamBet) {
     }
 
     var winner;
-    console.log(alteredGame.start_date > Date.now());
     if (alteredGame.start_date > Date.now()) {
         return false;
     }
@@ -135,11 +137,13 @@ function determineOutcome(game, teamBet) {
         winner = 'PUSH';
         return winner;
     } else if (alteredGame.home_points > alteredGame.away_points) {
+        console.log(alteredGame)
         winner = alteredGame.home_team;
     } else {
         winner = alteredGame.away_team;
     }
 
+    console.log(teamBet, winner)
     return teamBet === winner;
 
 }
