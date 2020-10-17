@@ -9,6 +9,7 @@ import { Container, Card, Button, Spinner } from 'reactstrap';
 function Games({ loadGames, games }) {
     useEffect(() => {
         loadGames().then(w => setDoneLoading(true));
+        console.log(games);
     }, [loadGames]);
 
     const [doneLoading, setDoneLoading] = useState(false);
