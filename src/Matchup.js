@@ -23,19 +23,24 @@ function Matchup({ ...props }) {
         else {
             setShowMatchup(false)
         }
-        console.log(showMatchup);
     }, [props.game, props.myPicks])
 
     const [showMatchup, setShowMatchup] = useState(true);
-    const [wager, setWager] = useState({ placed: false, isWin: null, teamBet: null });
+    const [wager, setWager] = useState({ placed: false, isWin: false, teamBet: null });
     const [modal, setModal] = useState(false);
     const toggle = (item) => {
         setModal(!modal);
-        if (typeof (item) !== "string") {
-            setWager({ placed: wager.placed, isWin: wager.isWin, teamBet: wager.teamBet });
+        if (item === null) {
+            setWager({ placed: item ? false : false, isWin: false, teamBet: null });
+            item !== null ? localStorage.setItem(props.game.id, item) : localStorage.removeItem(props.game.id)
+        }
+        else if (typeof (item) !== "string") {
+            setWager({ placed: wager.placed, isWin: false, teamBet: wager.teamBet });
         }
         else {
-            setWager({ placed: item ? true : false, isWin: determineOutcome(props.game, item), teamBet: item });
+            var winner = props.game.home_points !== null ? determineOutcome(props.game, item) : false;
+            console.log(winner)
+            setWager({ placed: item ? true : false, isWin: winner, teamBet: item });
             item !== null ? localStorage.setItem(props.game.id, item) : localStorage.removeItem(props.game.id)
         }
     };
@@ -105,7 +110,6 @@ function getBarValue(game) {
     var trueSpread;
 
     if (favorite === gameClone.home_team) {
-        console.log(gameClone.home_points - gameClone.away_points)
         return gameClone.home_points - gameClone.away_points;
     }
     else {
@@ -113,28 +117,28 @@ function getBarValue(game) {
     }
 }
 function determineOutcome(game, teamBet) {
+    console.log(game, teamBet)
     var favorite = game.lines.split(' -');
     var alteredGame = Object.assign({}, game);
-    console.log(favorite)
     if (favorite[0] === alteredGame.home_team) {
         alteredGame.home_points -= favorite[1]
     } else {
         alteredGame.away_points -= favorite[1]
     }
 
-    console.log(alteredGame);
-
     var winner;
-    if (alteredGame.home_points === alteredGame.away_points) {
+    console.log(alteredGame.start_date > Date.now());
+    if (alteredGame.start_date > Date.now()) {
+        return false;
+    }
+    else if (alteredGame.home_points === alteredGame.away_points) {
         winner = 'PUSH';
         return winner;
     } else if (alteredGame.home_points > alteredGame.away_points) {
         winner = alteredGame.home_team;
-    } else if(altered game.home_points < alteredGame.away_points{
+    } else {
         winner = alteredGame.away_team;
-    } else{ winner = null}
-
-    console.log(alteredGame.home_points, alteredGame.away_points);
+    }
 
     return teamBet === winner;
 
