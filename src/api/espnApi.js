@@ -28,7 +28,7 @@ function getNumberOfWeek() {
     const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
     const pastDaysOfYear = (today - firstDayOfYear) / 86400000;
     console.log(Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7) - 35)
-    return 7;
+    return 8;
 }
 
 async function loadGameDetails(game) {
