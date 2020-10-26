@@ -10,12 +10,12 @@ export function loadGamesSuccess(games) {
     }
 }
 
-export function loadGames() {
+export function loadGames(league, week) {
     return async function (dispatch) {
         return espnApi
-            .getGames()
+            .getGames(league, week)
             .then(games => {
-                dispatch(loadGamesSuccess(games));
+                return dispatch(loadGamesSuccess(games));
             })
             .catch(error => {
                 console.log(error);

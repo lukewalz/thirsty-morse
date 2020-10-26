@@ -4,11 +4,19 @@ import { loadGames } from "./redux/actions/gameActions";
 import { connect } from "react-redux";
 import Matchup from './Matchup'
 import { Container, Card, Button, Spinner } from 'reactstrap';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    useParams
+} from "react-router-dom";
 
 
 function Games({ loadGames, games }) {
+    var { sport, week } = useParams();
+
     useEffect(() => {
-        loadGames().then(w => setDoneLoading(true));
+        loadGames(sport, week).then(() => setDoneLoading(true));
     }, [loadGames]);
 
     const [doneLoading, setDoneLoading] = useState(false);

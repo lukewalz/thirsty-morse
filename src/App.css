@@ -32,6 +32,33 @@
   border-right: var(--borderWidth) solid var(--borderColor);
 }
 
+.dashCard{
+  align-items: center;
+  height:200px;
+  justify-content: center;
+}
+
+.teamSection{
+  margin: 20px;
+}
+
+.progressBar{
+  background-color: #78b13f;
+}
+.teamTitle{
+  font-size: small;
+}
+
+.dashCard:hover{
+  background-color: #78b13f;
+}
+.row{
+  margin-top: 30px;
+  margin-bottom: 30px;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
 img{
   width: 80px
 }
