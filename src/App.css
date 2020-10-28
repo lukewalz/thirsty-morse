@@ -19,9 +19,6 @@
   --borderColor: #78b13f;
 }
 
-.progress-bar{
-  background-color: black !important;
-}
 
 .check {
   display: inline-block;
@@ -42,9 +39,7 @@
   margin: 20px;
 }
 
-.progressBar{
-  background-color: #78b13f;
-}
+
 .teamTitle{
   font-size: medium;
 }

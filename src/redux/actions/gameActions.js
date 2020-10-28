@@ -15,6 +15,7 @@ export function loadGames(league, week) {
         return espnApi
             .getGames(league, week)
             .then(games => {
+                console.log(games);
                 return dispatch(loadGamesSuccess(games));
             })
             .catch(error => {

@@ -1,12 +1,8 @@
 import React from 'react'
 import Widget from './components/Widget';
 import { Container, Row, Col } from 'reactstrap'
-import { LoginButton } from './Auth'
-import { useHistory } from "react-router-dom";
+
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
     Link
 } from "react-router-dom";
 

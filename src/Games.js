@@ -5,9 +5,6 @@ import { connect } from "react-redux";
 import Matchup from './Matchup'
 import { Container, Card, Button, Spinner } from 'reactstrap';
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
     useParams
 } from "react-router-dom";
 

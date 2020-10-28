@@ -1,13 +1,9 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Provider } from 'react-redux'
-import App from './App'
 import configureStore from './redux/configureStore'
 import 'bootstrap/dist/css/bootstrap.css';
-import Account from './Account';
 import Root from './components/Root'
 import { Auth0Provider } from "@auth0/auth0-react";
-
 
 const store = configureStore()
 
