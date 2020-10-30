@@ -7,8 +7,12 @@ import { Row, Col, Badge, Progress } from 'reactstrap';
 
 function Matchup({ ...props }) {
 
-    const [firstTeamLineIsFav] = useState(props.game.pickcenter[0].awayTeamOdds.favorite ? { line: parseFloat(props.game.pickcenter[0].details?.split(' -')[1]), isFav: false } : { line: -parseFloat(props.game.pickcenter[0].details?.split(' -')[1]), isFav: true });
-    const [secondTeamLineIsFav] = useState(props.game.pickcenter[0].homeTeamOdds.favorite ? { line: parseFloat(props.game.pickcenter[0].details?.split(' -')[1]), isFav: false } : { line: -parseFloat(props.game.pickcenter[0].details?.split(' -')[1]), isFav: true });
+    const [firstTeamLineIsFav] = useState(props.game.pickcenter[0] && props.game.pickcenter[0].awayTeamOdds.favorite
+        ? { line: parseFloat(props.game.pickcenter[0].details.split(' -')[1]), isFav: false }
+        : props.game.pickcenter[0].details ? { line: -parseFloat(props.game.pickcenter[0].details.split(' -')[1]), isFav: true } : { undefined });
+    const [secondTeamLineIsFav] = useState(props.game.pickcenter[0] && props.game.pickcenter[0].homeTeamOdds.favorite
+        ? { line: parseFloat(props.game.pickcenter[0].details.split(' -')[1]), isFav: false }
+        : props.game.pickcenter[0] ? { line: -parseFloat(props.game.pickcenter[0].details.split(' -')[1]), isFav: true } : { undefined });
     const [firstTeamScore] = useState(parseInt(props.game.header.competitions[0].competitors[0].score));
     const [secondTeamScore] = useState(parseInt(props.game.header.competitions[0].competitors[1].score));
     const [actualOvers] = useState(parseInt(props.game.header.competitions[0].competitors[0].score) + parseInt(props.game.header.competitions[0].competitors[1].score));
@@ -29,7 +33,7 @@ function Matchup({ ...props }) {
                                 <div className='teamTitle'>{props.game.header.competitions[0].competitors[0].team.displayName}</div>
                             </div>
                             {firstTeamLineIsFav.line}
-                            <div xs='7'><Progress bar value={firstTeamLineIsFav.isFav ? ((firstTeamScore - secondTeamScore) < 0 ? 0 : (firstTeamScore - secondTeamScore)) : ((firstTeamScore - secondTeamScore) < 0 ? 0 : (firstTeamScore - secondTeamScore))} max={Math.abs(firstTeamLineIsFav.line)}>{firstTeamScore}</Progress></div>
+                            <div xs='7'><Progress bar value={((firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line) < 0 ? 0 : (firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line}>COVERING</Progress></div>
                         </div>
                         <div className='teamSection'>
                             <div>
@@ -38,7 +42,7 @@ function Matchup({ ...props }) {
                                 <div className='teamTitle'>{props.game.header.competitions[0].competitors[1].team.displayName}</div>
                             </div>
                             {secondTeamLineIsFav.line}
-                            <div xs='7'><Progress bar value={secondTeamLineIsFav.isFav ? ((secondTeamScore - firstTeamScore) < 0 ? 0 : (secondTeamScore - firstTeamScore)) : ((secondTeamScore - firstTeamScore) < 0 ? 0 : (secondTeamScore - firstTeamScore))} max={Math.abs(secondTeamLineIsFav.line)}>{secondTeamScore}</Progress></div>
+                            <div xs='7'><Progress bar value={((secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line) < 0 ? 0 : (secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line}>COVERING</Progress></div>
                         </div>
                     </Col>
                 </Row>

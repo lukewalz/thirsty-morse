@@ -1,5 +1,5 @@
 
-export async function getGames(league, wk = 6) {
+export async function getGames(league, wk = 9) {
     var apiPath = 'https://secure.espn.com/core/' + league + '/schedule?week=' + wk + '&year=2020&xhr=1';
     var response = await fetch(apiPath).then(e => e.json()).then(r => r.content.schedule);
     var size = Object.keys(response).length
