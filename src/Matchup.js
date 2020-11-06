@@ -53,7 +53,7 @@ function Matchup({ ...props }) {
                             value={actualOvers}
                             max={props.game.pickcenter[0].overUnder}
                             color={determineOverUnderStatus(props.game, actualOvers)}>
-                            {actualOvers}/{props.game.pickcenter[0].overUnder}
+                            {isNaN(actualOvers) ? 0 : actualOvers}/{props.game.pickcenter[0].overUnder}
                         </Progress>
                     </>
                 </Row>
@@ -76,23 +76,6 @@ function determineOverUnderStatus(competition, actualOvers) {
             return 'success';
         }
     }
-}
-
-function getAdjustedScore(competition) {
-
-    var firstScore = competition.header.competitions[0].competitors[0].score;
-    var secondScore = competition.header.competitions[0].competitors[1].score;
-
-    if (competition.pickcenter[0]) {
-        var firstAdjScore = competition.pickcenter[0].awayTeamOdds.favorite ? competition.pickcenter[0].details.split(' -')[1] + firstScore : competition.pickcenter[0].details.split(' -')[1] - firstScore;
-        var secondAdjScore = competition.pickcenter[0].homeTeamOdds.favorite ? competition.pickcenter[0].details.split(' -')[1] + secondScore : competition.pickcenter[0].details.split(' -')[1] - secondScore;
-        return { firstAdjScore, secondAdjScore };
-    }
-    else {
-        return { firstScore, secondScore }
-    }
-
-
 }
 
 
