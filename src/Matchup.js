@@ -7,12 +7,16 @@ import { Row, Col, Badge, Progress } from 'reactstrap';
 
 function Matchup({ ...props }) {
 
-    const [firstTeamLineIsFav] = useState(props.game.pickcenter[0] && props.game.pickcenter[0].awayTeamOdds.favorite
-        ? { line: parseFloat(props.game.pickcenter[0].details.split(' -')[1]), isFav: false }
-        : props.game.pickcenter[0].details ? { line: -parseFloat(props.game.pickcenter[0].details.split(' -')[1]), isFav: true } : { undefined });
-    const [secondTeamLineIsFav] = useState(props.game.pickcenter[0] && props.game.pickcenter[0].homeTeamOdds.favorite
-        ? { line: parseFloat(props.game.pickcenter[0].details.split(' -')[1]), isFav: false }
-        : props.game.pickcenter[0] ? { line: -parseFloat(props.game.pickcenter[0].details.split(' -')[1]), isFav: true } : { undefined });
+    const [firstTeamLineIsFav] = useState(props.game.pickcenter[0] ?
+        props.game.pickcenter[0].awayTeamOdds.favorite
+            ? { line: parseFloat(props.game.pickcenter[0].details?.split(' -')[1]), isFav: false }
+            : props.game.pickcenter[0].details ? { line: -parseFloat(props.game.pickcenter[0].details.split(' -')[1]), isFav: true } : { undefined }
+        : { undefined });
+    const [secondTeamLineIsFav] = useState(props.game.pickcenter[0] ?
+        props.game.pickcenter[0].homeTeamOdds.favorite
+            ? { line: parseFloat(props.game.pickcenter[0].details?.split(' -')[1]), isFav: false }
+            : props.game.pickcenter[0] ? { line: -parseFloat(props.game.pickcenter[0].details.split(' -')[1]), isFav: true } : { undefined }
+        : { undefined });
     const [firstTeamScore] = useState(parseInt(props.game.header.competitions[0].competitors[0].score));
     const [secondTeamScore] = useState(parseInt(props.game.header.competitions[0].competitors[1].score));
     const [actualOvers] = useState(parseInt(props.game.header.competitions[0].competitors[0].score) + parseInt(props.game.header.competitions[0].competitors[1].score));
@@ -21,7 +25,7 @@ function Matchup({ ...props }) {
             <>
                 <Row>
                     <Col xs="5">{props.game.header.competitions[0].status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.header.competitions[0].date).toLocaleString() : props.game.header.competitions[0].status.type.description}</Col>
-                    <Col xs="5">{}</Col>
+                    <Col xs="5">{ }</Col>
                 </Row>
                 <Row>
                     <Col>
@@ -51,9 +55,9 @@ function Matchup({ ...props }) {
                     <>
                         <Progress bar
                             value={actualOvers}
-                            max={props.game.pickcenter[0].overUnder}
+                            max={props.game.pickcenter[0] ? props.game.pickcenter[0]?.overUnder : undefined}
                             color={determineOverUnderStatus(props.game, actualOvers)}>
-                            {isNaN(actualOvers) ? 0 : actualOvers}/{props.game.pickcenter[0].overUnder}
+                            {isNaN(actualOvers) ? 0 : actualOvers}/{props.game.pickcenter[0]?.overUnder}
                         </Progress>
                     </>
                 </Row>
@@ -70,7 +74,7 @@ function determineOverUnderStatus(competition, actualOvers) {
             return 'success';
         }
     } else {
-        if (actualOvers <= competition.pickcenter[0].overUnder) {
+        if (actualOvers <= competition.pickcenter[0]?.overUnder) {
             return 'warning';
         } else {
             return 'success';

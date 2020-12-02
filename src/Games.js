@@ -26,7 +26,6 @@ function Games({ loadGames, games }) {
                 <Button onClick={() => setMyPicks(!myPicks)}>{myPicks ? 'Show All Matchups' : 'Show Only My Picks'}</Button>
                 {games?.map(
                     (item, index) => {
-                        console.log(item.pickcenter[0].details);
                         return <Card key={index} style={{ margin: 20 }}><Matchup game={item} myPicks={myPicks} /></Card>
 
                     }

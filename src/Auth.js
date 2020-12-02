@@ -1,22 +1,22 @@
 import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import MongoClient from 'mongodb';
 
-export const LoginButton = () => {
-    const { loginWithRedirect } = useAuth0();
-    return <button onClick={() => loginWithRedirect()}>Log In</button>;
-};
+function Auth() {
 
-export const IsAuthenticated = () => {
-    const { isAuthenticated } = useAuth0();
-    return isAuthenticated;
+
+    var uri = "mongodb+srv://luke_walz:EzOOtwCRzgmjpXxe@cluster0.3x57e.mongodb.net/sample_airbnb?retryWrites=true&w=majority";
+    var client = new MongoClient(uri, { useNewUrlParser: true });
+    console.log(client);
+    client.connect(err => {
+        const collection = client.db("test").collection("devices");
+        // perform actions on the collection object
+        client.close();
+    });
+
+
+    return 'Hello';
 }
 
-export const LogoutButton = () => {
-    const { logout } = useAuth0();
+export default Auth;
 
-    return (
-        <button onClick={() => logout({ returnTo: window.location.origin })}>
-            Log Out
-        </button>
-    );
-};
+
