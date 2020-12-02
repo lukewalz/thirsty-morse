@@ -47,7 +47,8 @@
   "scripts": {
     "start": "npm-run-all --parallel start:app start:server",
     "start:app": "react-scripts start",
-    "start:server": "nodemon server-local.js"
+    "start:server": "nodemon server-local.js",
+    "build": "react-scripts build"
   },
   "eslintConfig": {
     "extends": "react-app"
