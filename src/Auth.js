@@ -1,22 +1,30 @@
 import React from "react";
-import MongoClient from 'mongodb';
+import { Button, Form, FormGroup, Label, Input, FormText, Container } from 'reactstrap';
 
 function Auth() {
+    return (
+    <Container style={{display:"flex", justifyContent:'center', alignContent:'center', flexDirection:'column', height:'100vh'}}>
+        <div className='form'>
+            <Form action='http://localhost:9000/.netlify/functions/server/auth' method='post'>
+        <FormGroup>
+        <Label for="exampleEmail">Email</Label>
+        <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" />
+      </FormGroup>
+      <FormGroup>
+        <Label for="examplePassword">Password</Label>
+        <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" />
+        </FormGroup>
+      <Button>Submit</Button>
+    </Form>
+        </div>
 
-
-    var uri = "mongodb+srv://luke_walz:EzOOtwCRzgmjpXxe@cluster0.3x57e.mongodb.net/sample_airbnb?retryWrites=true&w=majority";
-    var client = new MongoClient(uri, { useNewUrlParser: true });
-    console.log(client);
-    client.connect(err => {
-        const collection = client.db("test").collection("devices");
-        // perform actions on the collection object
-        client.close();
-    });
-
-
-    return 'Hello';
+    </Container>)
 }
 
+function Login(username,password) {
+    fetch('http://localhost:9000/.netlify/functions/server/auth').then(e => e.json()).then(r => console.log(r))
+    return 'Hello';
+}
 export default Auth;
 
 

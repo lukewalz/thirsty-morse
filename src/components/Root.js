@@ -4,11 +4,12 @@ import { Provider } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import App from '../App'
 import Dashboard from '../Dashboard'
+import Auth from '../Auth'
 
 const Root = ({ store }) => (
     <Provider store={store}>
         <Router>
-            <Route path='/' component={App} />
+            <Route path='/' component={Auth} />
             <Route path='/sports' component={Dashboard} />
             <Route path='/games/:sport/:week?' component={App} />
         </Router>

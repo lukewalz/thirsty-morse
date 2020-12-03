@@ -8,6 +8,7 @@ require('dotenv').config();
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
 const path = require('path');
+const cors = require('cors')
 
 
 
@@ -29,6 +30,7 @@ mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 app.use('/.netlify/functions/server/auth', auth);
 app.use('/.netlify/functions/server/users', users);
 // app.use('/api/users', users);
