@@ -1,30 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input, FormText, Container } from 'reactstrap';
+import Login from './api/lspnApi';
 
 function Auth() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
     return (
-    <Container style={{display:"flex", justifyContent:'center', alignContent:'center', flexDirection:'column', height:'100vh'}}>
-        <div className='form'>
-            <Form action='http://localhost:9000/.netlify/functions/server/auth' method='post'>
-        <FormGroup>
-        <Label for="exampleEmail">Email</Label>
-        <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" />
-      </FormGroup>
-      <FormGroup>
-        <Label for="examplePassword">Password</Label>
-        <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" />
-        </FormGroup>
-      <Button>Submit</Button>
-    </Form>
-        </div>
+        <Container style={{ display: "flex", justifyContent: 'center', alignContent: 'center', flexDirection: 'column', height: '100vh' }}>
+            <div className='form'>
+                <Form>
+                    <FormGroup>
+                        <Label for="exampleEmail">Email</Label>
+                        <Input type="test" name="email" id="exampleEmail" value={username} placeholder="username" onChange={(text) => setUsername(text.target.value)} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="examplePassword">Password</Label>
+                        <Input type="password" name="password" id="examplePassword" value={password} placeholder="password" onChange={(text) => setPassword(text.target.value)} />
+                    </FormGroup>
+                    <Button onClick={() => Login(username, password)}>Submit</Button>
+                </Form>
+            </div>
 
-    </Container>)
+        </Container>)
 }
 
-function Login(username,password) {
-    fetch('http://localhost:9000/.netlify/functions/server/auth').then(e => e.json()).then(r => console.log(r))
-    return 'Hello';
-}
 export default Auth;
 
 

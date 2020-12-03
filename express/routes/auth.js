@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 router.post('/', async (req, res) => {
-
     //  Now find the user by their email address
     let user = await User.findOne({ username: req.body.username });
 
@@ -25,7 +24,7 @@ router.post('/', async (req, res) => {
     console.log('Log in successful');
     const token = jwt.sign({ _id: user._id }, process.env.API_KEY);
 
-    res.send(token);
+    res.status(200).contentType('application/json').send(JSON.stringify(token));
 });
 
 router.get("/", (req, res) => {

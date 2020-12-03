@@ -44,6 +44,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "serverless-http": "^2.6.0",
+    "universal-cookie": "^4.0.4",
     "write-json-file": "^4.3.0"
   },
   "scripts": {
