@@ -3,3 +3,8 @@
   command = "#"
   # functions build directory
   functions = "express"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
