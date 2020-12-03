@@ -8,6 +8,7 @@ import Dashboard from '../Dashboard'
 const Root = ({ store }) => (
     <Provider store={store}>
         <Router>
+            <Route path='/' component={App} />
             <Route path='/sports' component={Dashboard} />
             <Route path='/games/:sport/:week?' component={App} />
         </Router>
