@@ -2,7 +2,7 @@ import Cookies from 'universal-cookie';
 
 
 export default async function Login(username, password) {
-    fetch('http://localhost:9000/.netlify/functions/server/auth', {
+    fetch('/.netlify/functions/server/auth', {
         method: 'POST', headers: {
             'Content-Type': 'application/json'
             // 'Content-Type': 'application/x-www-form-urlencoded',
