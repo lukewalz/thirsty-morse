@@ -2,17 +2,19 @@ import Cookies from 'universal-cookie';
 
 
 export default async function Login(username, password) {
-    fetch('/.netlify/functions/server/auth', {
+    const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/auth' : '/.netlify/functions/server/auth'
+
+    fetch(path, {
         method: 'POST', headers: {
             'Content-Type': 'application/json'
-            // 'Content-Type': 'application/x-www-form-urlencoded',
         }, body: JSON.stringify({ username, password })
     })
-        .then(e => {
-            console.log('sdfsd')
+        .then(e =>
+            e.json()
+        )
+        .then(r => {
             const cookies = new Cookies();
-            cookies.set('userSession', e);
-            console.log(cookies.get('userSession'));
+            cookies.set('userSession', r);
             window.location.href = "/sports";
         })
         .catch(er => alert(er))

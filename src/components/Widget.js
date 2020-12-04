@@ -6,7 +6,7 @@ import {
 function Widget(...props) {
     return (
         <Card className='dashCard'>
-            <img top width="100%" src={props[0].image} alt="Card cap" />
+            <img width="100%" src={props[0].image} alt="Card cap" />
             <h5>{props[0].title}</h5>
         </Card>
     )
