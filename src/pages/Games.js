@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
-import { loadGames } from "./redux/actions/gameActions";
+import '../App.css';
+import { loadGames } from "../redux/actions/gameActions";
 import { connect } from "react-redux";
 import Matchup from './Matchup'
 import { Container, Card, Button, Spinner } from 'reactstrap';
@@ -43,6 +43,7 @@ const mapDispatchToProps = {
 };
 
 function mapStateToProps(state) {
+    console.log(state);
     return {
         games: state.games,
     };

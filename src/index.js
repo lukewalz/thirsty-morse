@@ -1,14 +1,7 @@
 import React from 'react'
-import { render } from 'react-dom'
-import configureStore from './redux/configureStore'
 import 'bootstrap/dist/css/bootstrap.css';
-import Root from './components/Root'
+import ReactDOM from "react-dom";
+import App from "./App";
 
-const store = configureStore()
-
-render(
-
-  <Root store={store} />
-  ,
-  document.getElementById('root')
-)
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);

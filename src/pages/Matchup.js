@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css';
+import '../App.css';
 import { connect } from "react-redux";
 import { Row, Col, Badge, Progress } from 'reactstrap';
 

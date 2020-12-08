@@ -21,7 +21,6 @@ router.post('/', async (req, res) => {
         user.password = await bcrypt.hash(user.password, salt);
         await user.save();
         const token = jwt.sign({ _id: user._id }, process.env.API_KEY);
-        console.log(token);
         res.header('x-auth-token', token).send(_.pick(user, ['_id', 'username', 'birth_year']));
     }
 });
@@ -30,12 +29,19 @@ router.get('/', async (req, res) => {
     const token = process.env.API_KEY;
     try {
         jwt.verify(req.headers['x-auth-token'], token);
-        let user = await User.findOne({ username: req.query.username });
+        const tokenId = jwt.decode(req.headers['x-auth-token'], token)._id;
 
+        const user = await User.findOne({ username: req.query.username });
+        console.log(user);
         if (user) {
-            res.send(_.pick(user, '_id', 'username'))
+            console.log(user._id, tokenId)
+            if (user._id == tokenId) {
+                res.status(200).send(_.pick(user, '_id', 'username'))
+            } else {
+                res.status(401).send('Incorrect credentials')
+            }
         } else {
-            res.send('Could not find user')
+            res.status(404).send('Could not find user')
         }
 
     } catch {

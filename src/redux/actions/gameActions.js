@@ -17,9 +17,6 @@ export function loadGames(league, week) {
             .then(games => {
                 return dispatch(loadGamesSuccess(games));
             })
-            .catch(error => {
-                console.log(error);
-            });
     };
 }
 
