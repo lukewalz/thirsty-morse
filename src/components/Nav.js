@@ -7,26 +7,31 @@ import { logout } from "../redux/actions/userActions";
 
 function NavBar({ user, logout, ...props }) {
     return (
-        <AppBar position="static" style={{ display: "flex" }}>
+        <AppBar position="static" style={{ display: "flex", backgroundColor: '#78b13f' }}>
             <Toolbar>
                 <Typography variant="h6">LSPN</Typography>
                 <div style={{ marginLeft: "auto" }}>
                     {user.isAuthUser ? (
                         <>
                             <Link to="/home">
-                                <Button color="inherit">Home</Button>
+                                <Button>Dashboard</Button>
                             </Link>
                             <Link to="/my-account">
-                                <Button color="inherit">My Account</Button>
+                                <Button>My Account</Button>
                             </Link>
-                            <Button color="inherit" onClick={logout}>
+                            <Button onClick={logout}>
                                 Logout
                 </Button>
                         </>
                     ) : (
-                            <Link to="/login">
-                                <Button color="inherit">Login</Button>
-                            </Link>
+                            <>
+                                <Link to="/login">
+                                    <Button>Login</Button>
+                                </Link>
+                                <Link to="/register">
+                                    <Button>Register</Button>
+                                </Link>
+                            </>
                         )}
                 </div>
             </Toolbar>

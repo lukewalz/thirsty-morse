@@ -22,17 +22,18 @@ function Games({ loadGames, games }) {
 
     return (
         doneLoading ?
-            <Container>
-                <Button onClick={() => setMyPicks(!myPicks)}>{myPicks ? 'Show All Matchups' : 'Show Only My Picks'}</Button>
+            <div className="App">
+                {/* <Button onClick={() => setMyPicks(!myPicks)}>{myPicks ? 'Show All Matchups' : 'Show Only My Picks'}</Button> */}
                 {games?.map(
                     (item, index) => {
                         return <Card key={index} style={{ margin: 20 }}><Matchup game={item} myPicks={myPicks} /></Card>
 
                     }
                 )}
-            </Container>
-            : <Container>      <Spinner type="grow" color="dark" />
-            </Container>
+            </div>
+            : <div className="App">
+                <Spinner type="grow" color="dark" />
+            </div>
 
     )
 }

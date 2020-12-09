@@ -4,7 +4,6 @@ const Joigoose = require("joigoose")(Mongoose);
 
 const Schema = Joi.object({
     username: Joi.string()
-        .alphanum()
         .min(3)
         .max(30)
         .required(),
@@ -13,15 +12,18 @@ const Schema = Joi.object({
         .pattern(new RegExp('^[a-zA-Z0-9$./]{3,1024}$')),
 
 
-    access_token: [
-        Joi.string(),
-        Joi.number()
-    ],
+    firstName: Joi.string()
+        .max(30)
+        .required()
+    ,
 
-    birth_year: Joi.number()
+    lastName: Joi.string()
+        .max(30)
+        .required(),
+
+
+    dateAdded: Joi.number()
         .integer()
-        .min(1900)
-        .max(2013)
 })
     .with('username', 'birth_year')
     .xor('password', 'access_token')

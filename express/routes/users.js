@@ -15,13 +15,14 @@ router.post('/', async (req, res) => {
         return res.status(400).send('That user already exisits!');
     } else {
         // Insert the new user if they do not exist yet
-        user = new User(_.pick(req.body, ['username', 'birth_year', 'password']));
-
+        user = new User(_.pick(req.body, ['username', 'password', 'firstName', 'lastName']));
+        user.dateAdded = Date.now();
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(user.password, salt);
         await user.save();
         const token = jwt.sign({ _id: user._id }, process.env.API_KEY);
-        res.header('x-auth-token', token).send(_.pick(user, ['_id', 'username', 'birth_year']));
+        user.token = token;
+        res.send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token']));
     }
 });
 

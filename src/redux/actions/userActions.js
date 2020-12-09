@@ -26,6 +26,30 @@ export function loginUserSuccess(user, error) {
     }
 }
 
+export function registerUserSuccess(user, error) {
+    if (user != null) {
+        return {
+            type: types.API_SUCCESS, payload:
+            {
+                isAuthUser: true,
+                user: user,
+                isLoading: false,
+                error: error
+            }
+        };
+    } else {
+        return {
+            type: types.API_ERROR, payload:
+            {
+                isAuthUser: false,
+                user: user,
+                isLoading: false,
+                error: error
+            }
+        }
+    }
+}
+
 export function logoutUserSuccess() {
     return {
         type: types.LOGOUT
@@ -41,6 +65,20 @@ export function login(username, password) {
             })
             .catch(error => {
                 return dispatch(loginUserSuccess(null, error))
+            });
+    };
+}
+
+export function register(username, password, firstName, lastName) {
+    return async function (dispatch) {
+        return lspnApi
+            .register(username, password, firstName, lastName)
+            .then(user => {
+                console.log(user)
+                return dispatch(registerUserSuccess(user, null))
+            })
+            .catch(error => {
+                return dispatch(registerUserSuccess(null, error))
             });
     };
 }

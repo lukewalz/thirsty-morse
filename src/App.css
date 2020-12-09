@@ -4,8 +4,20 @@
 .App {
   text-align: center;
   font-family: 'Roboto', sans-serif;
-  background-color: #f3f3f3;
 }
+
+.container{
+  margin-top: 40px;
+}
+
+.MuiButton-label{
+  color:white
+}
+
+a:hover{
+  text-decoration: none;
+}
+
 
 .glow{
   border-color: rgba(126, 239, 104, 0.8);
@@ -17,6 +29,7 @@
   --height: 24px;
   --width: 12px;
   --borderColor: #78b13f;
+
 }
 
 

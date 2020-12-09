@@ -1,4 +1,6 @@
 import Cookies from 'universal-cookie';
+const _ = require('lodash');
+
 
 export async function login(username, password) {
     const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/auth' : '/.netlify/functions/server/auth'
@@ -35,4 +37,35 @@ async function getUser(username, token) {
                 'x-auth-token': token
             }
         }).then(response => response.json()).then(t => t)
+}
+
+export async function register(username, password, firstName, lastName) {
+    const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/users' : '/.netlify/functions/server/users'
+    var userData = await fetch(path, {
+        method: 'POST', headers: {
+            'Content-Type': 'application/json'
+        }, body: JSON.stringify({ username, password, firstName, lastName })
+    })
+
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else if (response.status == 400) {
+                console.log(response)
+                throw new Error('Username already exists');
+            } else {
+                throw new Error('User failed to add');
+            }
+        })
+        .catch(er => { throw Error(er) })
+        .then(user => {
+            const cookies = new Cookies();
+            cookies.set('userSession', user.token);
+
+            var u = _.pick(user, ['username', 'firstName', 'lastName'])
+            console.log(u);
+            return u;
+        })
+    console.log(userData)
+    return userData;
 }
