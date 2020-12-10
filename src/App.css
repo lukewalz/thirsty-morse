@@ -8,16 +8,20 @@
 
 .container{
   margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  height: 50vh;
+  justify-content: space-evenly;
 }
 
-.MuiButton-label{
-  color:white
-}
 
 a:hover{
   text-decoration: none;
 }
 
+.MuiFormControl-root .MuiTextField-root .form-input .MuiFormControl-fullWidth{
+  width: 50% !important;
+}
 
 .glow{
   border-color: rgba(126, 239, 104, 0.8);

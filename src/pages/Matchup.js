@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../App.css';
 import { connect } from "react-redux";
 import { Row, Col, Badge, Progress } from 'reactstrap';
-
+import { WagerModal } from '../components/WagerModal'
 
 
 function Matchup({ ...props }) {
@@ -20,14 +20,19 @@ function Matchup({ ...props }) {
     const [firstTeamScore] = useState(parseInt(props.game.header.competitions[0].competitors[0].score));
     const [secondTeamScore] = useState(parseInt(props.game.header.competitions[0].competitors[1].score));
     const [actualOvers] = useState(parseInt(props.game.header.competitions[0].competitors[0].score) + parseInt(props.game.header.competitions[0].competitors[1].score));
+    const [openModal, setOpenModal] = useState(false);
+
+
+
     return (
         props.game ?
             <>
+                <WagerModal open={openModal} body={props.game.header.competitions[0].competitors[0].team.displayName} handleClose={() => setOpenModal(false)} />
                 <Row>
                     <Col xs="5">{props.game.header.competitions[0].status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.header.competitions[0].date).toLocaleString() : props.game.header.competitions[0].status.type.description}</Col>
                     <Col xs="5">{ }</Col>
                 </Row>
-                <Row>
+                <Row onClick={() => setOpenModal(true)}>
                     <Col>
                         <div className='teamSection'>
                             <div>

@@ -3,6 +3,8 @@ import { TextField, Typography, Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import { login } from "../redux/actions/userActions";
 import MuiAlert from "@material-ui/lab/Alert";
+import { makeStyles } from '@material-ui/core/styles';
+
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -26,6 +28,7 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { login }
         props.login(email, password);
     };
 
+
     return (
         <form className='container'>
             <Typography variant="h5" style={{ marginBottom: 8 }}>
@@ -34,24 +37,25 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { login }
             <TextField
                 label="Email"
                 variant="outlined"
-                fullWidth
                 className="form-input"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
+                required={true}
+
             />
             <TextField
                 label="Password"
                 variant="outlined"
-                fullWidth
                 className="form-input"
                 type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
+                required={true}
+
             />
             <Button
                 variant="contained"
                 color="primary"
-                fullWidth
                 className="form-input"
                 size="large"
                 onClick={submitForm}
