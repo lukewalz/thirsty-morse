@@ -1,6 +1,8 @@
 const Joi = require('joi');
 const Mongoose = require('mongoose');
 const Joigoose = require("joigoose")(Mongoose);
+const { Wager } = require('../models/wager');
+
 
 const Schema = Joi.object({
     username: Joi.string()
@@ -14,8 +16,7 @@ const Schema = Joi.object({
 
     firstName: Joi.string()
         .max(30)
-        .required()
-    ,
+        .required(),
 
     lastName: Joi.string()
         .max(30)
@@ -23,7 +24,9 @@ const Schema = Joi.object({
 
 
     dateAdded: Joi.number()
-        .integer()
+        .integer(),
+
+    wagers: [Wager]
 })
     .with('username', 'birth_year')
     .xor('password', 'access_token')

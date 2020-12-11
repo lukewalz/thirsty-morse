@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const users = require('./routes/users');
 const express = require('express');
 const auth = require('./routes/auth');
+const wagers = require('./routes/wagers');
+
 require('dotenv').config();
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
@@ -23,7 +25,7 @@ if (!process.env.API_KEY) {
 
 console.log('Trying to connect to mongo...');
 
-mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
     .then(() => console.log('Now connected to MongoDB!'))
     .catch(err => console.error('Something went wrong', err));
 
@@ -33,6 +35,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use('/.netlify/functions/server/auth', auth);
 app.use('/.netlify/functions/server/users', users);
+app.use('/.netlify/functions/server/wagers', wagers);
 // app.use('/api/users', users);
 
 

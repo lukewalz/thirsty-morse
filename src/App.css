@@ -14,7 +14,9 @@
   justify-content: space-evenly;
 }
 
-
+.MuiSvgIcon-root{
+  width: inherit !important
+}
 a:hover{
   text-decoration: none;
 }
@@ -69,6 +71,7 @@ a:hover{
   margin-bottom: 30px;
   margin-left: 0px !important;
   margin-right: 0px !important;
+  justify-content: center;
 }
 
 img{

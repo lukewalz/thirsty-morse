@@ -50,6 +50,29 @@ export function registerUserSuccess(user, error) {
     }
 }
 
+export function placeWagerSuccess(wager, error) {
+    if (wager != null) {
+        return {
+            type: types.API_SUCCESS, payload:
+            {
+                user: wager,
+                isLoading: false,
+                error: error
+            }
+        };
+    } else {
+        return {
+            type: types.API_ERROR, payload:
+            {
+                wager: wager,
+                isLoading: false,
+                error: error
+            }
+        }
+    }
+}
+
+
 export function logoutUserSuccess() {
     return {
         type: types.LOGOUT
@@ -74,7 +97,6 @@ export function register(username, password, firstName, lastName) {
         return lspnApi
             .register(username, password, firstName, lastName)
             .then(user => {
-                console.log(user)
                 return dispatch(registerUserSuccess(user, null))
             })
             .catch(error => {
@@ -89,6 +111,19 @@ export function logout() {
     cookies.remove('userSession');
     return async function (dispatch) {
         return dispatch(logoutUserSuccess())
+    };
+}
+
+export function placeWager(wager) {
+    return async function (dispatch) {
+        return lspnApi
+            .placeWager(wager)
+            .then(w => {
+                return dispatch(placeWagerSuccess(w, null))
+            })
+            .catch(error => {
+                return dispatch(placeWagerSuccess(null, error))
+            });
     };
 }
 

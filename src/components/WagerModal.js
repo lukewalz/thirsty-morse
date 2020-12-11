@@ -16,9 +16,8 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
 export const WagerModal = (props) => {
-    console.log(props);
-    return (
 
+    return (
         <Dialog open={props.open} onClose={props.handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Place Wager</DialogTitle>
             <DialogContent style={{ display: "flex", flexDirection: "column", justifyContent: 'space-evenly' }}>
@@ -26,9 +25,9 @@ export const WagerModal = (props) => {
                 <div>
                     <InputLabel id="label">Type</InputLabel>
 
-                    <Select labelId="label" defaultValue='Make a selection' id="select" value={props.wagerType} onChange={val => props.changeWagerType(val.target.value)}>
-                        <MenuItem value="Make a selection">
-                            <em>Make a selection</em>
+                    <Select displayEmpty labelId="label" defaultValue='Make a selection' id="select" value={props.wagerType} onChange={val => props.changeWagerType(val.target.value)}>
+                        <MenuItem value="">
+                            Make a selection
                         </MenuItem>
                         <MenuItem value="sp">Spread</MenuItem>
                         <MenuItem value="ou">Over Under</MenuItem>
@@ -40,9 +39,9 @@ export const WagerModal = (props) => {
                 <div>
                     <FormControl component="fieldset">
                         <FormLabel component="legend">Selection</FormLabel>
-                        <RadioGroup aria-label="gender" row name="gender1" value={props.selection} onChange={val => props.changeSelection(val.target.value)}>
-                            <FormControlLabel value={props.wagerType === 'ou' ? 'o' : (props.teams[0].team.abbreviation + props.line[0].line)} control={<Radio />} label={props.wagerType === 'ou' ? ('Over ' + props.overUnder) : (props.teams[0].team.abbreviation + ' ' + props.line[0].line)} />
-                            <FormControlLabel value={props.wagerType === 'ou' ? 'u' : (props.teams[1].team.abbreviation + props.line[1].line)} control={<Radio />} label={props.wagerType === 'ou' ? ('Under ' + props.overUnder) : (props.teams[1].team.abbreviation + ' ' + props.line[1].line)} />
+                        <RadioGroup aria-label="selection" row name="selection" value={props.selection} onChange={val => props.changeSelection(val.target.value)}>
+                            <FormControlLabel value={props.wagerType === 'ou' ? 'o' : (props.teams[0].team.abbreviation + '@' + props.line[0].line)} control={<Radio />} label={props.wagerType === 'ou' ? ('Over ' + props.overUnder) : (props.teams[0].team.abbreviation + ' ' + props.line[0].line)} />
+                            <FormControlLabel value={props.wagerType === 'ou' ? 'u' : (props.teams[1].team.abbreviation + '@' + props.line[1].line)} control={<Radio />} label={props.wagerType === 'ou' ? ('Under ' + props.overUnder) : (props.teams[1].team.abbreviation + ' ' + props.line[1].line)} />
                         </RadioGroup>
                     </FormControl>
 
@@ -61,15 +60,16 @@ export const WagerModal = (props) => {
                     size="large"
                     onClick={props.handleClose} >
                     Cancel
-          </Button>
+                </Button>
                 <Button variant="contained"
                     color="primary"
                     className="form-input"
                     size="large"
                     disabled={props.wagerType !== '' && props.selection !== '' && props.amount >= 10 ? false : true}
-                    onClick={props.handleClose} color="primary">
+                    onClick={props.setIsWagered}
+                    color="primary">
                     Submit
-          </Button>
+                </Button>
             </DialogActions>
         </Dialog>
     )

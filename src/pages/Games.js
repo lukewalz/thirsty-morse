@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
 import { loadGames } from "../redux/actions/gameActions";
+import { placeWager } from "../redux/actions/userActions"
 import { connect } from "react-redux";
 import Matchup from './Matchup'
 import { Container, Card, Button, Spinner } from 'reactstrap';
@@ -9,24 +10,23 @@ import {
 } from "react-router-dom";
 
 
-function Games({ loadGames, games }) {
+
+function Games({ loadGames, placeWager, user, games }) {
     var { sport, week } = useParams();
 
     useEffect(() => {
         loadGames(sport, week).then(() => setDoneLoading(true));
-    }, [loadGames]);
+    }, [games, placeWager]);
 
     const [doneLoading, setDoneLoading] = useState(false);
-    const [myPicks, setMyPicks] = useState(false);
 
 
     return (
         doneLoading ?
             <div className="App">
-                {/* <Button onClick={() => setMyPicks(!myPicks)}>{myPicks ? 'Show All Matchups' : 'Show Only My Picks'}</Button> */}
                 {games?.map(
                     (item, index) => {
-                        return <Card key={index} style={{ margin: 20 }}><Matchup game={item} myPicks={myPicks} /></Card>
+                        return <Card key={index} style={{ margin: 20 }}><Matchup game={mapGamesToWagers(item, user.user.wagers)} wagers={user.wagers} placeWager={(e) => placeWager(e)} /></Card>
 
                     }
                 )}
@@ -40,13 +40,27 @@ function Games({ loadGames, games }) {
 
 
 const mapDispatchToProps = {
-    loadGames
+    loadGames,
+    placeWager
 };
 
+function mapGamesToWagers(game, wagers) {
+
+    var newGame = Object.assign({}, game);
+    if (wagers) {
+        newGame.placedWagers = wagers.filter(e => e.game_id === game.header.id);
+        return newGame;
+    }
+    else {
+        return game;
+    }
+}
+
 function mapStateToProps(state) {
-    console.log(state);
     return {
+
         games: state.games,
+        user: state.user
     };
 }
 
