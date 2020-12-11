@@ -21,13 +21,15 @@ function Matchup({ ...props }) {
     const [secondTeamScore] = useState(parseInt(props.game.header.competitions[0].competitors[1].score));
     const [actualOvers] = useState(parseInt(props.game.header.competitions[0].competitors[0].score) + parseInt(props.game.header.competitions[0].competitors[1].score));
     const [openModal, setOpenModal] = useState(false);
-
+    const [wagerType, setWagerType] = useState('');
+    const [selection, setSelection] = useState('');
+    const [amount, setAmount] = useState('10');
 
 
     return (
         props.game ?
             <>
-                <WagerModal open={openModal} body={props.game.header.competitions[0].competitors[0].team.displayName} handleClose={() => setOpenModal(false)} />
+                <WagerModal teams={props.game.header.competitions[0].competitors} amount={amount} setAmount={setAmount} selection={selection} wagerType={wagerType} changeWagerType={e => setWagerType(e)} changeSelection={(e => setSelection(e))} open={openModal} line={[firstTeamLineIsFav, secondTeamLineIsFav]} overUnder={props.game.pickcenter ? props.game.pickcenter[0].overUnder : null} handleClose={() => setOpenModal(false)} />
                 <Row>
                     <Col xs="5">{props.game.header.competitions[0].status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.header.competitions[0].date).toLocaleString() : props.game.header.competitions[0].status.type.description}</Col>
                     <Col xs="5">{ }</Col>
