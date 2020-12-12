@@ -26,7 +26,7 @@ function Games({ loadGames, placeWager, user, games }) {
             <div className="App">
                 {games?.map(
                     (item, index) => {
-                        return <Card key={index} style={{ margin: 20 }}><Matchup game={mapGamesToWagers(item, user.user.wagers)} wagers={user.wagers} placeWager={(e) => placeWager(e)} /></Card>
+                        return <Card key={index} style={{ margin: 20 }}><Matchup done={false} game={mapGamesToWagers(item, user.user.wagers)} wagers={user.wagers} placeWager={(e) => { placeWager(e); doneLoading(true) }} /></Card>
 
                     }
                 )}
