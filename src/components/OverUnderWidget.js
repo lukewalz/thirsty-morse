@@ -11,7 +11,7 @@ export const OverUnderWidget = (props) => {
                 props.selection === 'o' ?
                     <div style={{ border: 'solid' }}><ArrowUpwardIcon /></div> :
                     <div style={{ border: 'solid' }}><ArrowDownwardIcon /></div> : <ImportExportIcon />}
-            <b style={{ fontSize: '30px' }}>{props.children}</b>
+            <b style={{ fontSize: '20px' }}>{props.children}</b>
         </Card>
     )
 }

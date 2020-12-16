@@ -36,11 +36,6 @@ app.use(cors());
 app.use('/.netlify/functions/server/auth', auth);
 app.use('/.netlify/functions/server/users', users);
 app.use('/.netlify/functions/server/wagers', wagers);
-// app.use('/api/users', users);
-
-
-// app.use('/api/users', users);
-// app.use('/api/auth', auth);
 
 module.exports = app;
 module.exports.handler = serverless(app);

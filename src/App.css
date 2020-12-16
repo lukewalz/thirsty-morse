@@ -58,6 +58,10 @@ a:hover{
   margin: 20px;
 }
 
+.progress{
+  height: 3rem;
+}
+
 
 .teamTitle{
   font-size: medium;

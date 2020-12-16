@@ -94,17 +94,18 @@ function Matchup({ ...props }) {
 
                 {!isNaN(actualOvers) ?
                     <Row>
+                        <Col xs='2'>
+                            <OverUnderWidget type={wagerType} selection={selection} isWagered={isWagered}>{props.game.pickcenter[lineAvailable].overUnder}</OverUnderWidget>
 
-                        <OverUnderWidget type={wagerType} selection={selection} isWagered={isWagered}>{props.game.pickcenter[lineAvailable].overUnder}</OverUnderWidget>
-
-                        <Progress
-                            bar
-                            value={actualOvers}
-                            max={props.game.pickcenter[0] ? props.game.pickcenter[0]?.overUnder : undefined}
-                            color={determineOverUnderStatus(props.game, actualOvers)}>
-                            {actualOvers + '/' + props.game.pickcenter[lineAvailable].overUnder}
-                        </Progress>
-
+                        </Col>
+                        <Col xs='7'>
+                            <Progress
+                                value={actualOvers}
+                                max={props.game.pickcenter[0] ? props.game.pickcenter[0]?.overUnder : undefined}
+                                color={determineOverUnderStatus(props.game, actualOvers)}>
+                                {actualOvers + '/' + props.game.pickcenter[lineAvailable].overUnder}
+                            </Progress>
+                        </Col>
 
                     </Row>
                     :
