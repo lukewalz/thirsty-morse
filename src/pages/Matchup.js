@@ -74,7 +74,7 @@ function Matchup({ ...props }) {
                                 </div>
                                 {firstTeamLineIsFav.line}
                                 {props.game.header.competitions[0].status.type.name !== 'STATUS_SCHEDULED' ?
-                                    <div xs='7'><Progress bar value={((firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line) < 0 ? 0 : (firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line}>COVERING</Progress></div> : []}
+                                    <div xs='7'><Progress value={((firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line) < 0 ? 0 : (firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line}>COVERING</Progress></div> : []}
                             </div>
                             <div className='teamSection' style={isWagered && selection === props.game.header.competitions[0].competitors[1].team.abbreviation + '@' + secondTeamLineIsFav.line ? { border: 'solid' } : {}}>
                                 {isWagered && selection === props.game.header.competitions[0].competitors[1].team.abbreviation + '@' + secondTeamLineIsFav.line ? <Badge>{amount}</Badge> : ''}
@@ -86,7 +86,7 @@ function Matchup({ ...props }) {
                                 </div>
                                 {secondTeamLineIsFav.line}
                                 {props.game.header.competitions[0].status.type.name !== 'STATUS_SCHEDULED' ?
-                                    <div xs='7'><Progress bar value={((secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line) < 0 ? 0 : (secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line}>COVERING</Progress></div> : []}
+                                    <div xs='7'><Progress value={((secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line) < 0 ? 0 : (secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line}>COVERING</Progress></div> : []}
                             </div>
                         </Col>
                     </Row>
