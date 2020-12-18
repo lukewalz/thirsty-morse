@@ -137,7 +137,10 @@ function WagerModal({ placeWager, ...props }) {
     }
 
     function handleClick() {
-        console.log(props)
+        if (!wagerType || !selection || !amount) {
+            console.log('All fields are required');
+            return;
+        }
         const wager = {
             game_id: props.game_id,
             wager_type: wagerType,

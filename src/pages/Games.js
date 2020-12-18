@@ -24,7 +24,7 @@ function Games({ loadGames, placeWager, user, games }) {
     return (
         doneLoading ?
             <div className="App">
-                {games.map(
+                {games?.map(
                     (item, index) => {
                         if (item.header.competitions[0].status.type.name !== 'STATUS_CANCELED'
                             && item.header.competitions[0].status.type.name !== 'STATUS_POSTPONED'

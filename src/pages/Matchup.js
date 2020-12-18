@@ -9,6 +9,7 @@ import { OverUnderWidget } from '../components/OverUnderWidget'
 
 function Matchup({ ...props }) {
 
+    console.log(props.wagers)
     var lineAvailable = props.game.pickcenter.findIndex(e => e.details);
 
     const [firstTeamLineIsFav] = useState(props.game.pickcenter[lineAvailable] ?
@@ -92,7 +93,7 @@ function Matchup({ ...props }) {
                         </div>
                         <div className='teamSection'>
                             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                                {props.wagers.map((e, i) => e.selection.split('@')[0] === team2Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>${e.amount}</Button> : '')}
+                                {props.wagers ? props.wagers.map((e, i) => e.selection.split('@')[0] === team2Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>${e.amount}</Button> : '') : ''}
                             </div>
                             <div>
                                 <div style={{
