@@ -6,6 +6,17 @@
   font-family: 'Roboto', sans-serif;
 }
 
+.score{
+  font-size: x-large;
+  border: solid;
+  border-radius: .5em;
+  height: 2em;
+  width: 2em;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
 .container{
   margin-top: 40px;
   display: flex;

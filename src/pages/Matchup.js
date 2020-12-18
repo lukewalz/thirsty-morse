@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import '../App.css';
 import { connect } from "react-redux";
-import { Row, Col, Badge, Progress, Button } from 'reactstrap';
-import { WagerModal } from '../components/WagerModal'
+import { Row, Col, Badge, Progress, Button, Card, CardTitle, CardText, Alert } from 'reactstrap';
+import WagerModal from '../components/WagerModal'
 import { OverUnderWidget } from '../components/OverUnderWidget'
+
 
 
 function Matchup({ ...props }) {
@@ -27,56 +28,101 @@ function Matchup({ ...props }) {
     const [team1Abbreviation] = useState(props.game.header.competitions[0].competitors[0].team.abbreviation);
     const [team2Abbreviation] = useState(props.game.header.competitions[0].competitors[1].team.abbreviation)
     const [disabled, setDisabled] = useState(false);
+    const [selectedWager, setSelectedWager] = useState();
+    const [alertVisible, setAlertVisible] = useState(false);
+
+    const onDismiss = () => setAlertVisible(false);
+
+    function handleWagerClick(w) {
+        setDisabled(false);
+        setSelectedWager(w);
+        setOpenModal(true);
+    }
+
+    function handleRowClick() {
+        setDisabled(true);
+        setOpenModal(true);
+    }
 
     return (
-        props.game && props.game.header.competitions[0].status.type.name !== 'STATUS_CANCELED' && props.game.header.competitions[0].status.type.name !== 'STATUS_POSTPONED' ?
-            <>
-                <WagerModal
-                    teams={props.game.header.competitions[0].competitors}
-                    open={openModal}
-                    line={[firstTeamLineIsFav, secondTeamLineIsFav]}
-                    overUnder={props.game.pickcenter ? props.game.pickcenter[0].overUnder : null}
-                    disabled={disabled}
-                    handleClose={() => setOpenModal(false)} />
-                <div onClick={e => { props.game.header.competitions[0].status.type.name === 'STATUS_FINAL' ? alert('Game has finished') : console.log('row click') }}>
-                    <Row>
-                        <Col xs="5">{props.game.header.competitions[0].status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.header.competitions[0].date).toLocaleString() : props.game.header.competitions[0].status.type.description}</Col>
-                        <Col xs="5">{ }</Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <div className='teamSection'>
-                                <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                                    {props.wagers.map((e, i) => e.selection.split('@')[0] === team1Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); console.log('button') }}>${e.amount}</Button> : '')}
-                                </div>
-                                <div>
+        <>
+            <WagerModal
+                teams={props.game.header.competitions[0].competitors}
+                open={openModal}
+                line={[firstTeamLineIsFav, secondTeamLineIsFav]}
+                overUnder={props.game.pickcenter ? props.game.pickcenter[0].overUnder : null}
+                disabled={disabled}
+                selectedWager={selectedWager}
+                handleClose={() => setOpenModal(false)}
+                game_id={props.game.header.id}
+            />
+            <Alert color="danger" isOpen={alertVisible} toggle={onDismiss}>
+                Game has finished
+             </Alert>
+            <div onClick={() => { props.game.header.competitions[0].status.type.name === 'STATUS_FINAL' ? setAlertVisible(true) : handleRowClick() }}>
+                <Row>
+                    <Col xs="5">{props.game.header.competitions[0].status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.header.competitions[0].date).toLocaleString() : props.game.header.competitions[0].status.type.description}</Col>
+                    <Col xs="5">{ }</Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <div className='teamSection'>
+                            <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+                                {props.wagers.map((e, i) => e.selection.split('@')[0] === team1Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>${e.amount}</Button> : '')}
+                            </div>
+                            <div>
+                                <div style={{
+                                    display: 'flex', justifyContent: 'space-evenly', width: '35%',
+                                    marginLeft: 'auto',
+                                    marginRight: 'auto',
+                                    alignItems: 'center'
+                                }}>
                                     <img alt={props.game.header.competitions[0].competitors[0].team.displayName} src={props.game.header.competitions[0].competitors[0].team.logos[0].href} />
-                                    <Badge>{props.game.header.competitions[0].status.type.name === "STATUS_SCHEDULED" ? '' : props.game.header.competitions[0].competitors[0].score}</Badge>
-                                    <div className='teamTitle'>{props.game.header.competitions[0].competitors[0].team.displayName}</div>
-                                </div>
-                                {firstTeamLineIsFav.line}
-                                {props.game.header.competitions[0].status.type.name !== 'STATUS_SCHEDULED' ?
-                                    <div xs='7'><Progress value={((firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line) < 0 ? 0 : (firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line}>COVERING</Progress></div> : []}
-                            </div>
-                            <div className='teamSection'>
-                                {props.wagers.map((e, i) => e.selection.split('@')[0] === team2Abbreviation ? <Button key={i} onClick={() => console.log('button')}>${e.amount}</Button> : '')}
+                                    {props.game.header.competitions[0].status.type.name !== "STATUS_SCHEDULED" ?
+                                        <div className='score'>
+                                            {props.game.header.competitions[0].status.type.name === "STATUS_SCHEDULED" ? '' : props.game.header.competitions[0].competitors[0].score}
+                                        </div> : []}
 
-                                <div>
+                                </div>
+                                <div className='teamTitle'>{props.game.header.competitions[0].competitors[0].team.displayName}</div>
+                            </div>
+                            {firstTeamLineIsFav.line}
+                            {props.game.header.competitions[0].status.type.name !== 'STATUS_SCHEDULED' ?
+                                <div xs='7'><Progress value={((firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line) < 0 ? 0 : (firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line}>COVERING</Progress></div> : []}
+                        </div>
+                        <div className='teamSection'>
+                            <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+                                {props.wagers.map((e, i) => e.selection.split('@')[0] === team2Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>${e.amount}</Button> : '')}
+                            </div>
+                            <div>
+                                <div style={{
+                                    display: 'flex', justifyContent: 'space-evenly', width: '35%',
+                                    marginLeft: 'auto',
+                                    marginRight: 'auto',
+                                    alignItems: 'center'
+                                }}>
                                     <img alt={props.game.header.competitions[0].competitors[1].team.displayName} src={props.game.header.competitions[0].competitors[1].team.logos[0].href} />
-                                    <Badge>{props.game.header.competitions[0].status.type.name === "STATUS_SCHEDULED" ? '' : props.game.header.competitions[0].competitors[1].score}</Badge>
-                                    <div className='teamTitle'>{props.game.header.competitions[0].competitors[1].team.displayName}</div>
-                                </div>
-                                {secondTeamLineIsFav.line}
-                                {props.game.header.competitions[0].status.type.name !== 'STATUS_SCHEDULED' ?
-                                    <div xs='7'><Progress value={((secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line) < 0 ? 0 : (secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line}>COVERING</Progress></div> : []}
-                            </div>
-                        </Col>
-                    </Row>
-                </div>
+                                    {props.game.header.competitions[0].status.type.name !== "STATUS_SCHEDULED" ?
 
-                {!isNaN(actualOvers) ?
+                                        <div className='score'>
+                                            {props.game.header.competitions[0].status.type.name === "STATUS_SCHEDULED" ? '' : props.game.header.competitions[0].competitors[1].score}
+                                        </div> : []}
+                                </div>
+                                <div className='teamTitle'>{props.game.header.competitions[0].competitors[1].team.displayName}</div>
+                            </div>
+                            {secondTeamLineIsFav.line}
+                            {props.game.header.competitions[0].status.type.name !== 'STATUS_SCHEDULED' ?
+                                <div xs='7'><Progress value={((secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line) < 0 ? 0 : (secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line}>COVERING</Progress></div> : []}
+                        </div>
+                    </Col>
+                </Row>
+            </div>
+
+            {
+                !isNaN(actualOvers) ?
                     <Row>
                         <Col xs='3'>
+
                             <OverUnderWidget wager={props.wagers}>{props.game.pickcenter[lineAvailable].overUnder}</OverUnderWidget>
 
                         </Col>
@@ -91,9 +137,10 @@ function Matchup({ ...props }) {
 
                     </Row>
                     :
-                    <OverUnderWidget wager={props.wagers}>{props.game.pickcenter[lineAvailable].overUnder}</OverUnderWidget>}
-            </>
-            : [])
+                    <OverUnderWidget handleWagerClick={r => handleWagerClick(r)} wager={props.wagers}>{props.game.pickcenter[lineAvailable].overUnder}</OverUnderWidget>
+            }
+        </>
+    )
 }
 
 function determineOverUnderStatus(competition, actualOvers) {

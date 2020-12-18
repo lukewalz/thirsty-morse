@@ -1,17 +1,20 @@
 import React from 'react';
-import { Card } from 'reactstrap'
+import { Card, Badge, Button } from 'reactstrap'
 import ImportExportIcon from '@material-ui/icons/ImportExport';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
 export const OverUnderWidget = (props) => {
     return (
-        <Card style={{ display: 'flex', justifyContent: 'center' }}>
-            {props.isWagered && props.type === 'ou' ?
-                props.selection === 'o' ?
-                    <div style={{ border: 'solid' }}><ArrowUpwardIcon /></div> :
-                    <div style={{ border: 'solid' }}><ArrowDownwardIcon /></div> : <ImportExportIcon />}
+        <Card style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+
+            {props.wager.map((e, i) => e.wager_type === 'ou' ?
+                e.selection === 'o' ?
+                    <div><Button style={{ backgroundColor: '#8bc34a' }} onClick={g => { g.stopPropagation(); props.handleWagerClick(e) }} key={i} >{e.amount}</Button><ArrowUpwardIcon /></div> :
+                    <div><Button style={{ backgroundColor: '#8bc34a' }} onClick={g => { g.stopPropagation(); props.handleWagerClick(e) }} key={i} >{e.amount}</Button><ArrowDownwardIcon /></div>
+                : [])}
             <b style={{ fontSize: '20px' }}>{props.children}</b>
         </Card>
+
     )
 }

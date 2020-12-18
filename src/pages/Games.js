@@ -24,9 +24,16 @@ function Games({ loadGames, placeWager, user, games }) {
     return (
         doneLoading ?
             <div className="App">
-                {games?.map(
+                {games.map(
                     (item, index) => {
-                        return <Card key={index} style={{ margin: 20 }}><Matchup done={false} game={item} wagers={mapGamesToWagers(item, user.user.wagers)} placeWager={(e) => placeWager(e)} /></Card>
+                        if (item.header.competitions[0].status.type.name !== 'STATUS_CANCELED'
+                            && item.header.competitions[0].status.type.name !== 'STATUS_POSTPONED'
+                        ) {
+                            return <Card key={index} style={{ margin: 20 }}><Matchup done={false} game={item} wagers={mapGamesToWagers(item, user.user.wagers)} placeWager={(e) => placeWager(e)} /></Card>
+                        }
+                        else {
+                            return <></>
+                        }
 
                     }
                 )}
@@ -49,7 +56,6 @@ function mapGamesToWagers(game, wagers) {
     var newWagers = Object.assign({}, game);
     if (wagers) {
         newWagers = wagers.filter(e => e.game_id === game.header.id);
-        console.log(newWagers);
         return newWagers;
     }
     else {
