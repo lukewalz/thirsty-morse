@@ -21,7 +21,7 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { registe
     }, [props.user.error])
 
     const submitForm = () => {
-        if (email === "" || password === "" || firstName == "" || lastName == "") {
+        if (email === "" || password === "" || firstName === "" || lastName === "") {
             setErrors("Fields are required");
             return;
         }

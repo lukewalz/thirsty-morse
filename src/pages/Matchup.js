@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../App.css';
 import { connect } from "react-redux";
-import { Row, Col, Badge, Progress } from 'reactstrap';
+import { Row, Col, Badge, Progress, Button } from 'reactstrap';
 import { WagerModal } from '../components/WagerModal'
 import { OverUnderWidget } from '../components/OverUnderWidget'
 
@@ -24,49 +24,31 @@ function Matchup({ ...props }) {
     const [secondTeamScore] = useState(parseInt(props.game.header.competitions[0].competitors[1].score));
     const [actualOvers] = useState(parseInt(props.game.header.competitions[0].competitors[0].score) + parseInt(props.game.header.competitions[0].competitors[1].score));
     const [openModal, setOpenModal] = useState(false);
-    const [wagerType, setWagerType] = useState(props.game.placedWagers && props.game.placedWagers[0] ? props.game.placedWagers[0].wager_type : '');
-    const [selection, setSelection] = useState(props.game.placedWagers && props.game.placedWagers[0] ? props.game.placedWagers[0].selection : '');
-    const [amount, setAmount] = useState(props.game.placedWagers && props.game.placedWagers[0] ? props.game.placedWagers[0].amount : '');
-    const [isWagered, setIsWagered] = useState(props.game ? props.game.placedWagers ? true : false : '')
-
+    const [team1Abbreviation] = useState(props.game.header.competitions[0].competitors[0].team.abbreviation);
+    const [team2Abbreviation] = useState(props.game.header.competitions[0].competitors[1].team.abbreviation)
+    const [disabled, setDisabled] = useState(false);
 
     return (
         props.game && props.game.header.competitions[0].status.type.name !== 'STATUS_CANCELED' && props.game.header.competitions[0].status.type.name !== 'STATUS_POSTPONED' ?
             <>
                 <WagerModal
-                    setIsWagered={() => {
-                        var wager = {
-                            game_id: props.game.header.id,
-                            wager_type: wagerType,
-                            selection,
-                            status: 'pending',
-                            outcome: 'tbd',
-                            amount
-                        };
-                        props.placeWager(wager);
-                        setIsWagered(true);
-                        setOpenModal(false)
-                    }}
                     teams={props.game.header.competitions[0].competitors}
-                    amount={amount}
-                    setAmount={setAmount}
-                    selection={selection}
-                    wagerType={wagerType}
-                    changeWagerType={e => setWagerType(e)}
-                    changeSelection={(e => setSelection(e))}
                     open={openModal}
                     line={[firstTeamLineIsFav, secondTeamLineIsFav]}
                     overUnder={props.game.pickcenter ? props.game.pickcenter[0].overUnder : null}
+                    disabled={disabled}
                     handleClose={() => setOpenModal(false)} />
-                <div onClick={() => { props.game.header.competitions[0].status.type.name === 'STATUS_FINAL' ? alert('Game has finished') : setOpenModal(true) }}>
+                <div onClick={e => { props.game.header.competitions[0].status.type.name === 'STATUS_FINAL' ? alert('Game has finished') : console.log('row click') }}>
                     <Row>
                         <Col xs="5">{props.game.header.competitions[0].status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.header.competitions[0].date).toLocaleString() : props.game.header.competitions[0].status.type.description}</Col>
                         <Col xs="5">{ }</Col>
                     </Row>
                     <Row>
                         <Col>
-                            <div className='teamSection' style={isWagered && selection === props.game.header.competitions[0].competitors[0].team.abbreviation + '@' + firstTeamLineIsFav.line ? { border: 'solid' } : {}}>
-                                {isWagered && selection === props.game.header.competitions[0].competitors[0].team.abbreviation + '@' + firstTeamLineIsFav.line ? <Badge>{amount}</Badge> : ''}
+                            <div className='teamSection'>
+                                <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+                                    {props.wagers.map((e, i) => e.selection.split('@')[0] === team1Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); console.log('button') }}>${e.amount}</Button> : '')}
+                                </div>
                                 <div>
                                     <img alt={props.game.header.competitions[0].competitors[0].team.displayName} src={props.game.header.competitions[0].competitors[0].team.logos[0].href} />
                                     <Badge>{props.game.header.competitions[0].status.type.name === "STATUS_SCHEDULED" ? '' : props.game.header.competitions[0].competitors[0].score}</Badge>
@@ -76,8 +58,8 @@ function Matchup({ ...props }) {
                                 {props.game.header.competitions[0].status.type.name !== 'STATUS_SCHEDULED' ?
                                     <div xs='7'><Progress value={((firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line) < 0 ? 0 : (firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line}>COVERING</Progress></div> : []}
                             </div>
-                            <div className='teamSection' style={isWagered && selection === props.game.header.competitions[0].competitors[1].team.abbreviation + '@' + secondTeamLineIsFav.line ? { border: 'solid' } : {}}>
-                                {isWagered && selection === props.game.header.competitions[0].competitors[1].team.abbreviation + '@' + secondTeamLineIsFav.line ? <Badge>{amount}</Badge> : ''}
+                            <div className='teamSection'>
+                                {props.wagers.map((e, i) => e.selection.split('@')[0] === team2Abbreviation ? <Button key={i} onClick={() => console.log('button')}>${e.amount}</Button> : '')}
 
                                 <div>
                                     <img alt={props.game.header.competitions[0].competitors[1].team.displayName} src={props.game.header.competitions[0].competitors[1].team.logos[0].href} />
@@ -94,8 +76,8 @@ function Matchup({ ...props }) {
 
                 {!isNaN(actualOvers) ?
                     <Row>
-                        <Col xs='2'>
-                            <OverUnderWidget type={wagerType} selection={selection} isWagered={isWagered}>{props.game.pickcenter[lineAvailable].overUnder}</OverUnderWidget>
+                        <Col xs='3'>
+                            <OverUnderWidget wager={props.wagers}>{props.game.pickcenter[lineAvailable].overUnder}</OverUnderWidget>
 
                         </Col>
                         <Col xs='7'>
@@ -109,7 +91,7 @@ function Matchup({ ...props }) {
 
                     </Row>
                     :
-                    <OverUnderWidget type={wagerType} selection={selection} isWagered={isWagered}>{props.game.pickcenter[lineAvailable].overUnder}</OverUnderWidget>}
+                    <OverUnderWidget wager={props.wagers}>{props.game.pickcenter[lineAvailable].overUnder}</OverUnderWidget>}
             </>
             : [])
 }

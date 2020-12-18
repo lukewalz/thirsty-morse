@@ -15,12 +15,12 @@ router.post('/', async (req, res) => {
 
         const user = await User.findOne({ _id: req.body._id });
         req.body.wagers.wager_date = Date.now();
-        console.log(req.body.wagers);
         if (user) {
             if (user._id == tokenId) {
                 const updatedUser = await User.findByIdAndUpdate(
                     { _id: user._id },
-                    { $push: { wagers: req.body.wagers } }
+                    { $push: { wagers: req.body.wagers } },
+                    { new: true }
                 );
                 res.status(200).send(updatedUser)
             } else {

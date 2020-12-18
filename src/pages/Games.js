@@ -4,7 +4,7 @@ import { loadGames } from "../redux/actions/gameActions";
 import { placeWager } from "../redux/actions/userActions"
 import { connect } from "react-redux";
 import Matchup from './Matchup'
-import { Container, Card, Button, Spinner } from 'reactstrap';
+import { Card, Spinner } from 'reactstrap';
 import {
     useParams
 } from "react-router-dom";
@@ -16,7 +16,7 @@ function Games({ loadGames, placeWager, user, games }) {
 
     useEffect(() => {
         loadGames(sport, week).then(() => setDoneLoading(true));
-    }, [games, placeWager]);
+    }, [loadGames, user]);
 
     const [doneLoading, setDoneLoading] = useState(false);
 
@@ -26,13 +26,14 @@ function Games({ loadGames, placeWager, user, games }) {
             <div className="App">
                 {games?.map(
                     (item, index) => {
-                        return <Card key={index} style={{ margin: 20 }}><Matchup done={false} game={mapGamesToWagers(item, user.user.wagers)} wagers={user.wagers} placeWager={(e) => { placeWager(e); doneLoading(true) }} /></Card>
+                        return <Card key={index} style={{ margin: 20 }}><Matchup done={false} game={item} wagers={mapGamesToWagers(item, user.user.wagers)} placeWager={(e) => placeWager(e)} /></Card>
 
                     }
                 )}
+
             </div>
             : <div className="App">
-                <Spinner type="grow" color="dark" />
+                <Spinner style={{ marginTop: '30px' }} type="grow" color="dark" />
             </div>
 
     )
@@ -45,14 +46,14 @@ const mapDispatchToProps = {
 };
 
 function mapGamesToWagers(game, wagers) {
-
-    var newGame = Object.assign({}, game);
+    var newWagers = Object.assign({}, game);
     if (wagers) {
-        newGame.placedWagers = wagers.filter(e => e.game_id === game.header.id);
-        return newGame;
+        newWagers = wagers.filter(e => e.game_id === game.header.id);
+        console.log(newWagers);
+        return newWagers;
     }
     else {
-        return game;
+        return wagers;
     }
 }
 

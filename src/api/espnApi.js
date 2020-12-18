@@ -2,7 +2,7 @@
 export async function getGames(league, wk) {
     if (!wk) {
         if (league === 'college-football') {
-            wk = 15
+            wk = 16
         } else {
             wk = 14
         }

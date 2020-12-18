@@ -3,7 +3,6 @@ import { TextField, Typography, Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import { login } from "../redux/actions/userActions";
 import MuiAlert from "@material-ui/lab/Alert";
-import { makeStyles } from '@material-ui/core/styles';
 
 
 function Alert(props) {

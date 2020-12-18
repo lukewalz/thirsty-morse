@@ -50,7 +50,7 @@ export async function register(username, password, firstName, lastName) {
         .then(response => {
             if (response.ok) {
                 return response.json();
-            } else if (response.status == 400) {
+            } else if (response.status === 400) {
                 throw new Error('Username already exists');
             } else {
                 throw new Error('User failed to add');
@@ -72,9 +72,8 @@ export async function placeWager(wager) {
     const token = cookies.get('userSession');
     const _id = JSON.parse(localStorage.getItem('user'))._id;
     const { game_id, wager_type, selection, status, outcome, amount } = wager;
-    console.log(wager_type)
     const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/wagers' : '/.netlify/functions/server/wagers'
-    var wager = await fetch(path, {
+    wager = await fetch(path, {
         method: 'POST', headers: {
             'Content-Type': 'application/json',
             'x-auth-token': token
@@ -84,7 +83,7 @@ export async function placeWager(wager) {
         .then(response => {
             if (response.ok) {
                 return response.json();
-            } else if (response.status == 400) {
+            } else if (response.status === 400) {
                 throw new Error('Username already exists');
             } else {
                 throw new Error('User failed to add');
