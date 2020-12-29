@@ -4,11 +4,13 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
+const determineResults = require('../common');
 require('dotenv').config();
 
 
 router.post('/', async (req, res) => {
     const token = process.env.API_KEY;
+    console.log(req.body.wagers);
     try {
         jwt.verify(req.headers['x-auth-token'], token);
         const tokenId = jwt.decode(req.headers['x-auth-token'], token)._id;
@@ -22,6 +24,8 @@ router.post('/', async (req, res) => {
                     { $push: { wagers: req.body.wagers } },
                     { new: true }
                 );
+                determineResults(req.body.wagers);
+
                 res.status(200).send(updatedUser)
             } else {
                 res.status(401).send('Incorrect credentials')

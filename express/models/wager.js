@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { ObjectID } = require('mongodb');
 const Mongoose = require('mongoose');
 const Joigoose = require("joigoose")(Mongoose);
 
@@ -23,11 +24,10 @@ const Schema = Joi.object({
     outcome: Joi.string(),
     amount: Joi.number()
         .required()
-
 })
 
 const Wager = new Mongoose.model('Wagers',
-    Joigoose.convert(Schema)
+    Joigoose.convert(Schema),
 );
 
 exports.Wager = Wager

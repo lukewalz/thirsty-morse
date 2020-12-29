@@ -72,6 +72,7 @@ export async function placeWager(wager) {
     const token = cookies.get('userSession');
     const _id = JSON.parse(localStorage.getItem('user'))._id;
     const { game_id, wager_type, selection, status, outcome, amount } = wager;
+    console.log(JSON.stringify(wager));
     const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/wagers' : '/.netlify/functions/server/wagers'
     wager = await fetch(path, {
         method: 'POST', headers: {
