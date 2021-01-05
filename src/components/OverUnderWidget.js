@@ -1,6 +1,5 @@
 import React from 'react';
-import { Card, Badge, Button } from 'reactstrap'
-import ImportExportIcon from '@material-ui/icons/ImportExport';
+import { Card, Button } from 'reactstrap'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 

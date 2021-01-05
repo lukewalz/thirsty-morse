@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import '../App.css';
 import { connect } from "react-redux";
-import { Row, Col, Badge, Progress, Button, Card, CardTitle, CardText, Alert } from 'reactstrap';
+import { Row, Col, Progress, Button, Alert } from 'reactstrap';
 import WagerModal from '../components/WagerModal'
 import { OverUnderWidget } from '../components/OverUnderWidget'
 
 
 
 function Matchup({ ...props }) {
-
-    console.log(props.wagers)
     var lineAvailable = props.game.pickcenter.findIndex(e => e.details);
 
     const [firstTeamLineIsFav] = useState(props.game.pickcenter[lineAvailable] ?
@@ -62,7 +60,7 @@ function Matchup({ ...props }) {
              </Alert>
             <div onClick={() => { props.game.header.competitions[0].status.type.name === 'STATUS_FINAL' ? setAlertVisible(true) : handleRowClick() }}>
                 <Row>
-                    <Col xs="5">{props.game.header.competitions[0].status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.header.competitions[0].date).toLocaleString() : props.game.header.competitions[0].status.type.description}</Col>
+                    <Col xs="5">{props.game.header.competitions[0].status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.header.competitions[0].date).toLocaleString() : props.game.header.competitions[0].status.type.name === 'STATUS_FINAL' ? props.game.header.competitions[0].status.type.description : props.game.header.competitions[0].status.type.description + ' ' + props.game.header.competitions[0].status.type.detail}</Col>
                     <Col xs="5">{ }</Col>
                 </Row>
                 <Row>

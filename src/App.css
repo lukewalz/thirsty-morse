@@ -26,7 +26,7 @@
 }
 
 .MuiSvgIcon-root{
-  width: inherit !important
+  width: inherit !important;
 }
 a:hover{
   text-decoration: none;

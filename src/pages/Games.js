@@ -16,7 +16,7 @@ function Games({ loadGames, placeWager, user, games }) {
 
     useEffect(() => {
         loadGames(sport, week).then(() => setDoneLoading(true));
-    }, [loadGames, user]);
+    }, [loadGames, user, sport, week]);
 
     const [doneLoading, setDoneLoading] = useState(false);
 
@@ -24,19 +24,20 @@ function Games({ loadGames, placeWager, user, games }) {
     return (
         doneLoading ?
             <div className="App">
-                {games?.map(
-                    (item, index) => {
-                        if (item.header.competitions[0].status.type.name !== 'STATUS_CANCELED'
-                            && item.header.competitions[0].status.type.name !== 'STATUS_POSTPONED'
-                        ) {
-                            return <Card key={index} style={{ margin: 20 }}><Matchup done={false} game={item} wagers={mapGamesToWagers(item, user.user.wagers)} placeWager={(e) => placeWager(e)} /></Card>
-                        }
-                        else {
-                            return []
-                        }
+                {games?.sort((a, b) => a.header.competitions[0].status.completed < b.header.competitions[0].status.completed ? 1 : -1)
+                    .map(
+                        (item, index) => {
+                            if (item.header.competitions[0].status.type.name !== 'STATUS_CANCELED'
+                                && item.header.competitions[0].status.type.name !== 'STATUS_POSTPONED'
+                            ) {
+                                return <Card key={index} style={{ margin: 20 }}><Matchup done={false} game={item} wagers={mapGamesToWagers(item, user.user.wagers)} placeWager={(e) => placeWager(e)} /></Card>
+                            }
+                            else {
+                                return []
+                            }
 
-                    }
-                )}
+                        }
+                    )}
             </div>
             : <div className="App">
                 <Spinner style={{ marginTop: '30px' }} type="grow" color="dark" />

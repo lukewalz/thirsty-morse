@@ -10,8 +10,9 @@ export async function getGames(league) {
     }
 
     return Promise.all(games.map(g => {
+        var gameOrMatch = league === 'soccer' ? 'match' : 'game';
         var id = g.id
-        return fetch('https://secure.espn.com/core/' + league + '/game?gameid=' + id + '&xhr=1').then(e => e.json()).then(f => f.gamepackageJSON);
+        return fetch('https://secure.espn.com/core/' + league + '/' + gameOrMatch + '?gameid=' + id + '&xhr=1').then(e => e.json()).then(f => f.gamepackageJSON);
     })).then(r => r)
 }
 

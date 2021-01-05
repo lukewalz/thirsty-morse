@@ -24,6 +24,8 @@ router.post('/', async (req, res) => {
                     { $push: { wagers: req.body.wagers } },
                     { new: true }
                 );
+
+                console.log(updatedUser)
                 determineResults(req.body.wagers);
 
                 res.status(200).send(updatedUser)

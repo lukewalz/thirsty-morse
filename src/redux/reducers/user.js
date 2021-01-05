@@ -1,6 +1,6 @@
 import { API_SUCCESS, API_ERROR, SET_LOADER, LOGOUT } from '../actions/actionTypes';
 
-export default (
+export default function user(
     state = {
         isAuthUser: !!localStorage.getItem("user"),
         user: JSON.parse(localStorage.getItem("user")) || {},
@@ -8,7 +8,7 @@ export default (
         error: null
     },
     action
-) => {
+) {
     switch (action.type) {
         case API_SUCCESS:
             localStorage.setItem("user", JSON.stringify(action.payload.user));
