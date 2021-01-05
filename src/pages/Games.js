@@ -32,12 +32,11 @@ function Games({ loadGames, placeWager, user, games }) {
                             return <Card key={index} style={{ margin: 20 }}><Matchup done={false} game={item} wagers={mapGamesToWagers(item, user.user.wagers)} placeWager={(e) => placeWager(e)} /></Card>
                         }
                         else {
-                            return <></>
+                            return []
                         }
 
                     }
                 )}
-
             </div>
             : <div className="App">
                 <Spinner style={{ marginTop: '30px' }} type="grow" color="dark" />

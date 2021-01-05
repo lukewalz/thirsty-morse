@@ -1,13 +1,6 @@
 
-export async function getGames(league, wk) {
-    if (!wk) {
-        if (league === 'college-football') {
-            wk = 16
-        } else {
-            wk = 14
-        }
-    }
-    var apiPath = 'https://secure.espn.com/core/' + league + '/schedule?week=' + wk + '&year=2020&xhr=1';
+export async function getGames(league) {
+    var apiPath = 'https://secure.espn.com/core/' + league + '/schedule?year=2020&xhr=1';
     var response = await fetch(apiPath).then(e => e.json()).then(r => r.content.schedule);
     var size = Object.keys(response).length
 

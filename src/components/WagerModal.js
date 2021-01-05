@@ -22,10 +22,10 @@ function WagerModal({ placeWager, ...props }) {
     const [amount, setAmount] = useState();
 
     useEffect(() => {
-        setWagerType(props.selectedWager?.wager_type);
-        setSelection(props.selectedWager?.selection);
-        setAmount(props.selectedWager?.amount);
-    }, [props.selectedWager])
+        setWagerType(props.selectedWager ? props.selectedWager.wager_type : '');
+        setSelection(props.selectedWager ? props.selectedWager.selection : '');
+        setAmount(props.selectedWager ? props.selectedWager.amount : '');
+    }, [props.selectedWager, placeWager])
 
 
     if (props.disabled) {
@@ -37,7 +37,7 @@ function WagerModal({ placeWager, ...props }) {
                     <div>
                         <InputLabel id="label">Type</InputLabel>
 
-                        <Select displayEmpty labelId="label" defaultValue='Make a selection' id="select" value={wagerType} onChange={val => setWagerType(val.target.value)}>
+                        <Select displayEmpty labelId="label" defaultValue={wagerType} id="select" value={wagerType} onChange={val => setWagerType(val.target.value)}>
                             <MenuItem value="">
                                 Make a selection
                             </MenuItem>
