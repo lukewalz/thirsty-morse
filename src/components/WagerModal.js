@@ -52,8 +52,8 @@ function WagerModal({ placeWager, ...props }) {
                         <FormControl component="fieldset">
                             <FormLabel component="legend">Selection</FormLabel>
                             <RadioGroup aria-label="selection" row name="selection" value={selection} onChange={val => setSelection(val.target.value)}>
-                                <FormControlLabel value={wagerType === 'ou' ? 'o' : (props.teams[0].team.abbreviation + '@' + props.line[0].line)} control={<Radio color='primary' />} label={wagerType === 'ou' ? ('Over ' + props.overUnder) : (props.teams[0].team.abbreviation + '@' + props.line[0].line)} />
-                                <FormControlLabel value={wagerType === 'ou' ? 'u' : (props.teams[1].team.abbreviation + '@' + props.line[1].line)} control={<Radio color='primary' />} label={wagerType === 'ou' ? ('Under ' + props.overUnder) : (props.teams[1].team.abbreviation + '@' + props.line[1].line)} />
+                                <FormControlLabel value={wagerType === 'ou' ? 'o@' + props.overUnder : (props.teams[0].team.abbreviation + '@' + props.line[0].line)} control={<Radio color='primary' />} label={wagerType === 'ou' ? ('Over ' + props.overUnder) : (props.teams[0].team.abbreviation + '@' + props.line[0].line)} />
+                                <FormControlLabel value={wagerType === 'ou' ? 'u@' + props.overUnder : (props.teams[1].team.abbreviation + '@' + props.line[1].line)} control={<Radio color='primary' />} label={wagerType === 'ou' ? ('Under ' + props.overUnder) : (props.teams[1].team.abbreviation + '@' + props.line[1].line)} />
                             </RadioGroup>
                         </FormControl>
 
@@ -142,6 +142,7 @@ function WagerModal({ placeWager, ...props }) {
         }
 
         var game_date_ms = new Date(props.game_date).getTime();
+        console.log(game_date_ms);
         const wager = {
             game_id: props.game_id,
             wager_type: wagerType,

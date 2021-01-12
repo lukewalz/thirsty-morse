@@ -22,6 +22,10 @@ async function determineResults(wager, user) {
                 newWager.outcome = 'win'
                 addResultObject(newWager, user);
             }
+            else if (diff === away.score) {
+                newWager.outcome = 'push'
+                addResultObject(newWager, user)
+            }
             else {
                 newWager.outcome = 'loss'
                 addResultObject(newWager, user);
@@ -33,6 +37,10 @@ async function determineResults(wager, user) {
                 newWager.outcome = 'win'
                 addResultObject(newWager, user)
             }
+            else if (diff === home.score) {
+                newWager.outcome = 'push'
+                addResultObject(newWager, user)
+            }
             else {
                 newWager.outcome = 'loss'
                 addResultObject(newWager, user)
@@ -41,21 +49,30 @@ async function determineResults(wager, user) {
 
 
     }
-    else if (wager.wager_type === 'ml') {
-
-    }
-    else {
+    else if (wager.wager_type === 'ou') {
+        const selection = wager.selection.split('@');
+        if (wager.selection[0] === 'o') {
+            if (wager.selection[1] > (home.score + away.score))
+                newWager.outcome = 'win'
+            addResultObject(newWager, user)
+        }
+        else if (wager.selection[1] === (home.score + away.score)) {
+            newWager.outcome = 'push'
+            addResultObject(newWager, user)
+        }
+        else {
+            newWager.outcome = 'loss'
+            addResultObject(newWager, user)
+        }
+    } else {
 
     }
 }
 
 async function addResultObject(newWager, user) {
     console.log(newWager.wager_date)
-    var u = User.findOneAndUpdate({ "_id": user._id, "wagers.wager_date": newWager.wager_date },
-        { "wagers.$": 'Chapter 1' });
-    const a = await User.findOne({ _id: user._id, "wagers.wager_date": newWager.wager_date });
-
-
+    await User.findOneAndUpdate({ "_id": user._id, "wagers.wager_date": newWager.wager_date },
+        { "wagers.$": newWager });
 }
 
 module.exports = determineResults;

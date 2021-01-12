@@ -61,14 +61,14 @@ function Matchup({ ...props }) {
              </Alert>
             <div onClick={() => { props.game.header.competitions[0].status.type.name === 'STATUS_FINAL' ? setAlertVisible(true) : handleRowClick() }}>
                 <Row>
-                    <Col xs="5">{props.game.header.competitions[0].status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.header.competitions[0].date).toLocaleString() : props.game.header.competitions[0].status.type.name === 'STATUS_FINAL' ? props.game.header.competitions[0].status.type.description : props.game.header.competitions[0].status.type.description + ' ' + props.game.header.competitions[0].status.type.detail}</Col>
+                    <Col xs="5">{props.game.header.competitions[0].status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.header.competitions[0].date).toLocaleString() : props.game.header.competitions[0].status.type.name === 'STATUS_FINAL' && props.game.header.competitions[0].status.type.name === 'STATUS_HALF' ? props.game.header.competitions[0].status.type.description : props.game.header.competitions[0].status.type.description + ' ' + props.game.header.competitions[0].status.type.detail}</Col>
                     <Col xs="5">{ }</Col>
                 </Row>
                 <Row>
                     <Col>
                         <div className='teamSection'>
                             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                                {props.wagers ? props.wagers.map((e, i) => e.selection.split('@')[0] === team1Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>${e.amount}</Button> : '') : ''}
+                                {props.wagers ? props.wagers.map((e, i) => e.selection.split('@')[0] === team1Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>{e.status !== 'final' ? '$' + e.amount : e.outcome}</Button> : '') : ''}
                             </div>
                             <div>
                                 <div style={{
@@ -92,7 +92,7 @@ function Matchup({ ...props }) {
                         </div>
                         <div className='teamSection'>
                             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                                {props.wagers ? props.wagers.map((e, i) => e.selection.split('@')[0] === team2Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>${e.amount}</Button> : '') : ''}
+                                {props.wagers ? props.wagers.map((e, i) => e.selection.split('@')[0] === team2Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>{e.status !== 'final' ? '$' + e.amount : e.outcome}</Button> : '') : ''}
                             </div>
                             <div>
                                 <div style={{

@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const determineResults = require('../common');
 
 
 router.post('/', async (req, res) => {
@@ -35,6 +36,7 @@ router.get('/', async (req, res) => {
         const user = await User.findOne({ username: req.query.username });
         if (user) {
             if (user._id == tokenId) {
+                user.wagers.map(w => determineResults(w, user))
                 res.status(200).send(user)
             } else {
                 res.status(401).send('Incorrect credentials')

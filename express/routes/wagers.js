@@ -20,19 +20,19 @@ router.post('/', async (req, res) => {
             if (user._id == tokenId) {
                 const updatedUser = await User.findByIdAndUpdate(
                     { _id: user._id },
-                    { $push: { wagers: req.body.wagers } },
-                    { new: true }
+                    { $push: { wagers: req.body.wagers } }
                 );
 
                 updatedUser.wagers.map(w => {
                     if (w.game_date <= Date.now()) {
-                        console.log(w.game_date + ',' + Date.now())
-
                         determineResults(w, updatedUser)
                     }
                 })
 
-                res.status(200).send(updatedUser)
+                const returnableUser = await User.findOne({ _id: req.body._id });
+
+
+                res.status(200).send(returnableUser)
             } else {
                 res.status(401).send('Incorrect credentials')
             }

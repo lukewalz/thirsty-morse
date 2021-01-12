@@ -119,6 +119,7 @@ export function placeWager(wager) {
         return lspnApi
             .placeWager(wager)
             .then(w => {
+                console.log(w)
                 return dispatch(placeWagerSuccess(w, null))
             })
             .catch(error => {
