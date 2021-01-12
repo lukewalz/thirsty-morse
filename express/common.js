@@ -1,7 +1,8 @@
 const fetch = require('node-fetch');
+const { User } = require('./models/user');
 
-async function determineResults(wagers) {
-    var apiPath = 'https://secure.espn.com/college-football/boxscore?gameId=' + wagers[0].game_id + '&xhr=1';
+async function determineResults(wager, user) {
+    var apiPath = 'https://secure.espn.com/college-football/boxscore?gameId=' + wager.game_id + '&xhr=1';
     var home;
     var away;
     await fetch(apiPath).then(e => e.json()).then(r => {
@@ -9,42 +10,52 @@ async function determineResults(wagers) {
         away = { score: r.__gamepackage__.awayTeam.score, team: r.__gamepackage__.awayTeam.team.abbreviation };
     });
 
-    if (wagers[0].wager_type === 'sp') {
-        const selection = wagers[0].selection.split('@');
+    const newWager = Object.assign({}, wager);
+    newWager.status = 'final';
+
+    if (wager.wager_type === 'sp') {
+        const selection = wager.selection.split('@');
         if (selection[0] === home.team) {
-            var diff = parseInt(home.score) + parseInt(selection[1]);
+            var diff = parseFloat(home.score) + parseFloat(selection[1]);
+
             if (diff > away.score) {
-                const newWager = Object.assign({}.wagers[0]);
-                newWager.status = 'final';
-                newWager.outcome = 'win';
-                await User.findByIdAndUpdate(
-                    { _id: user._id, wagers: wager[0] },
-                    { $push: { wagers: newWager } },
-                    { new: true }
-                );
+                newWager.outcome = 'win'
+                addResultObject(newWager, user);
             }
             else {
-                return 'LOSS'
+                newWager.outcome = 'loss'
+                addResultObject(newWager, user);
             }
         }
         else {
-            var diff = parseInt(away.score) + parseInt(selection[1]);
+            var diff = parseFloat(away.score) + parseFloat(selection[1]);
             if (diff > home.score) {
-                return 'WIN'
+                newWager.outcome = 'win'
+                addResultObject(newWager, user)
             }
             else {
-                return 'LOSS'
+                newWager.outcome = 'loss'
+                addResultObject(newWager, user)
             }
         }
 
 
     }
-    else if (wagers[0].wager_type === 'ml') {
+    else if (wager.wager_type === 'ml') {
 
     }
     else {
 
     }
+}
+
+async function addResultObject(newWager, user) {
+    console.log(newWager.wager_date)
+    var u = User.findOneAndUpdate({ "_id": user._id, "wagers.wager_date": newWager.wager_date },
+        { "wagers.$": 'Chapter 1' });
+    const a = await User.findOne({ _id: user._id, "wagers.wager_date": newWager.wager_date });
+
+
 }
 
 module.exports = determineResults;

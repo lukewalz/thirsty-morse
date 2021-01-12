@@ -23,6 +23,9 @@ const Schema = Joi.object({
         .required(),
     outcome: Joi.string(),
     amount: Joi.number()
+        .required(),
+    game_date: Joi.number()
+        .integer()
         .required()
 })
 

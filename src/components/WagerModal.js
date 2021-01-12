@@ -140,14 +140,19 @@ function WagerModal({ placeWager, ...props }) {
             console.log('All fields are required');
             return;
         }
+
+        var game_date_ms = new Date(props.game_date).getTime();
         const wager = {
             game_id: props.game_id,
             wager_type: wagerType,
             selection,
             status: 'pending',
             outcome: 'tbd',
-            amount
+            amount,
+            game_date: game_date_ms
         }
+
+        console.log(wager);
         placeWager(wager);
     }
 }

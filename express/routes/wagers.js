@@ -10,7 +10,6 @@ require('dotenv').config();
 
 router.post('/', async (req, res) => {
     const token = process.env.API_KEY;
-    console.log(req.body.wagers);
     try {
         jwt.verify(req.headers['x-auth-token'], token);
         const tokenId = jwt.decode(req.headers['x-auth-token'], token)._id;
@@ -25,8 +24,13 @@ router.post('/', async (req, res) => {
                     { new: true }
                 );
 
-                console.log(updatedUser)
-                determineResults(req.body.wagers);
+                updatedUser.wagers.map(w => {
+                    if (w.game_date <= Date.now()) {
+                        console.log(w.game_date + ',' + Date.now())
+
+                        determineResults(w, updatedUser)
+                    }
+                })
 
                 res.status(200).send(updatedUser)
             } else {

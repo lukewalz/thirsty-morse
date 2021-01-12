@@ -54,6 +54,7 @@ function Matchup({ ...props }) {
                 selectedWager={selectedWager}
                 handleClose={() => setOpenModal(false)}
                 game_id={props.game.header.id}
+                game_date={props.game.header.competitions[0].date}
             />
             <Alert color="danger" isOpen={alertVisible} toggle={onDismiss}>
                 Game has finished
