@@ -24,7 +24,7 @@ function Games({ loadGames, placeWager, user, games }) {
     return (
         doneLoading ?
             <div className="App">
-                {games?.sort((a, b) => a.header.competitions[0].status.completed < b.header.competitions[0].status.completed ? 1 : -1)
+                {games?.sort((a, b) => a.header.competitions[0].date > b.header.competitions[0].date ? 1 : -1)
                     .map(
                         (item, index) => {
                             if (item.header.competitions[0].status.type.name !== 'STATUS_CANCELED'
