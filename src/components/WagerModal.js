@@ -144,7 +144,7 @@ function WagerModal({ placeWager, ...props }) {
         var game_date_ms = new Date(props.game_date).getTime();
         console.log(game_date_ms);
         const wager = {
-            game_id: props.game_id,
+            game_id: props.id,
             wager_type: wagerType,
             selection,
             status: 'pending',

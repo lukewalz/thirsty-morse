@@ -13,7 +13,22 @@ export async function getGames(league) {
         var gameOrMatch = league === 'soccer' ? 'match' : 'game';
         var id = g.id
         return fetch('https://secure.espn.com/core/' + league + '/' + gameOrMatch + '?gameid=' + id + '&xhr=1').then(e => e.json()).then(f => f.gamepackageJSON);
-    })).then(r => r)
+    })).then(r => {
+        var dto = [];
+        r.map(g => {
+            var game = {
+                competitors: g.header.competitions[0].competitors,
+                odds: g.pickcenter,
+                date: g.header.competitions[0].date,
+                status: g.header.competitions[0].status,
+                id: g.header.id
+            };
+            dto.push(game);
+        })
+
+
+        return dto
+    })
 }
 
 

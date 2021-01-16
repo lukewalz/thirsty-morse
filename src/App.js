@@ -22,7 +22,7 @@ const IndexPage = () => (
   <div className='container'>
     <Typography variant="h3">LSPN</Typography>
     <Divider style={{ marginTop: 10, marginBottom: 10 }} />
-    <Typography variant="h6">The only online sports book where you can track wdagers realtime</Typography>
+    <Typography variant="h6">The only online sports book where you can track wagers realtime</Typography>
   </div>
 )
 

@@ -24,11 +24,11 @@ function Games({ loadGames, placeWager, user, games }) {
     return (
         doneLoading ?
             <div className="App">
-                {games?.sort((a, b) => a.header.competitions[0].date > b.header.competitions[0].date ? 1 : -1)
+                {games.sort((a, b) => a.date > b.date ? 1 : -1)
                     .map(
                         (item, index) => {
-                            if (item.header.competitions[0].status.type.name !== 'STATUS_CANCELED'
-                                && item.header.competitions[0].status.type.name !== 'STATUS_POSTPONED'
+                            if (item.status.type.name !== 'STATUS_CANCELED'
+                                && item.status.type.name !== 'STATUS_POSTPONED'
                             ) {
                                 return <Card key={index} style={{ margin: 20 }}><Matchup done={false} game={item} wagers={mapGamesToWagers(item, user.user.wagers)} placeWager={(e) => placeWager(e)} /></Card>
                             }
@@ -55,7 +55,7 @@ const mapDispatchToProps = {
 function mapGamesToWagers(game, wagers) {
     var newWagers = Object.assign({}, game);
     if (wagers) {
-        newWagers = wagers.filter(e => e.game_id === game.header.id);
+        newWagers = wagers.filter(e => e.game_id === game.id);
         return newWagers;
     }
     else {

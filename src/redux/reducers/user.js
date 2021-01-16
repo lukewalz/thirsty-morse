@@ -1,8 +1,18 @@
 import { API_SUCCESS, API_ERROR, SET_LOADER, LOGOUT } from '../actions/actionTypes';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
+
+
+function isAuth() {
+    var auth = cookies.get('userSession') && !!localStorage.getItem("user");
+    return auth;
+}
 
 export default function user(
+
     state = {
-        isAuthUser: !!localStorage.getItem("user"),
+        isAuthUser: isAuth(),
         user: JSON.parse(localStorage.getItem("user")) || {},
         isLoading: false,
         error: null
