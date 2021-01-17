@@ -2,13 +2,17 @@ const fetch = require('node-fetch');
 const { User } = require('./models/user');
 
 async function determineResults(wager, user) {
+    if (wager.game_id === 401220398) console.log(wager);
+
     var apiPath = 'https://secure.espn.com/college-football/boxscore?gameId=' + wager.game_id + '&xhr=1';
     var home;
     var away;
-    await fetch(apiPath).then(e => e.json()).then(r => {
+    await fetch(apiPath).then(e => e.json()).catch(er => er).then(r => {
         home = { score: r.__gamepackage__.homeTeam.score, team: r.__gamepackage__.homeTeam.team.abbreviation };
         away = { score: r.__gamepackage__.awayTeam.score, team: r.__gamepackage__.awayTeam.team.abbreviation };
-    });
+    }).catch(er => er);
+
+    if (wager.game_id === 401220398) console.log(home, away);
 
     const newWager = Object.assign({}, wager);
     newWager.status = 'final';
@@ -50,13 +54,14 @@ async function determineResults(wager, user) {
 
     }
     else if (wager.wager_type === 'ou') {
+        console.log(home, away)
         const selection = wager.selection.split('@');
-        if (wager.selection[0] === 'o') {
-            if (wager.selection[1] > (home.score + away.score))
+        if (selection[0] === 'o') {
+            if (selection[1] > (home.score + away.score))
                 newWager.outcome = 'win'
             addResultObject(newWager, user)
         }
-        else if (wager.selection[1] === (home.score + away.score)) {
+        else if (selection[1] === (home.score + away.score)) {
             newWager.outcome = 'push'
             addResultObject(newWager, user)
         }
@@ -70,7 +75,6 @@ async function determineResults(wager, user) {
 }
 
 async function addResultObject(newWager, user) {
-    console.log(newWager.wager_date)
     await User.findOneAndUpdate({ "_id": user._id, "wagers.wager_date": newWager.wager_date },
         { "wagers.$": newWager });
 }

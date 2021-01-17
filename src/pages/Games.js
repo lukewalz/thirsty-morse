@@ -24,7 +24,7 @@ function Games({ loadGames, placeWager, user, games }) {
     return (
         doneLoading ?
             <div className="App">
-                {games.sort((a, b) => a.date > b.date ? 1 : -1)
+                {games ? games.sort((a, b) => a.date > b.date ? 1 : -1)
                     .map(
                         (item, index) => {
                             if (item.status.type.name !== 'STATUS_CANCELED'
@@ -37,7 +37,7 @@ function Games({ loadGames, placeWager, user, games }) {
                             }
 
                         }
-                    )}
+                    ) : []}
             </div>
             : <div className="App">
                 <Spinner style={{ marginTop: '30px' }} type="grow" color="dark" />
