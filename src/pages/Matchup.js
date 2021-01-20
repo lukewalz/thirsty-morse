@@ -139,7 +139,7 @@ function Matchup({ ...props }) {
                             value={actualOvers}
                             max={props.game.odds.overUnder}
                             color={determineOverUnderStatus(props.game, actualOvers)}>
-                            {Number(actualOvers) + '/' + props.game.odds.overUnder}
+                            {!isNaN(actualOvers) ? Number(actualOvers) + '/' + props.game.odds.overUnder : '0/' + props.game.odds.overUnder}
                         </Progress>
                     </Col>
                     {props.game.status.type.state !== 'pre' && props.game.boxScore ?
