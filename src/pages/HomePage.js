@@ -32,6 +32,11 @@ function HomePage({ user }) {
                         <Widget image="https://pngimg.com/uploads/fifa/fifa_PNG1.png" />
                     </Link>
                 </Col>
+                <Col>
+                    <Link to="/games/mens-college-basketball">
+                        <Widget image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/NCAA_logo.svg/220px-NCAA_logo.svg.png" />
+                    </Link>
+                </Col>
             </Row>
         </Container>
     )
