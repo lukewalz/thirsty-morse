@@ -134,7 +134,7 @@ function Matchup({ ...props }) {
                         <OverUnderWidget handleWagerClick={r => handleWagerClick(r)} wager={props.wagers}>{props.game.odds.overUnder}</OverUnderWidget>
 
                     </Col>
-                    <Col xs='7'>
+                    <Col xs='5'>
                         <Progress
                             value={actualOvers}
                             max={props.game.odds.overUnder}
