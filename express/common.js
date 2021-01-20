@@ -23,12 +23,11 @@ async function determineResults(wager, user) {
         const selection = wager.selection.split('@');
         if (selection[0] === home.team) {
             var diff = parseFloat(home.score) + parseFloat(selection[1]);
-
-            if (diff > away.score) {
+            if (diff > parseInt(away.score)) {
                 newWager.outcome = 'win'
                 addResultObject(newWager, user);
             }
-            else if (diff === away.score) {
+            else if (diff === parseInt(away.score)) {
                 newWager.outcome = 'push'
                 addResultObject(newWager, user)
             }
@@ -39,11 +38,11 @@ async function determineResults(wager, user) {
         }
         else {
             var diff = parseFloat(away.score) + parseFloat(selection[1]);
-            if (diff > home.score) {
+            if (diff > parseInt(home.score)) {
                 newWager.outcome = 'win'
                 addResultObject(newWager, user)
             }
-            else if (diff === home.score) {
+            else if (diff === parseInt(home.score)) {
                 newWager.outcome = 'push'
                 addResultObject(newWager, user)
             }

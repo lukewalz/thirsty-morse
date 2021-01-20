@@ -36,7 +36,16 @@ router.get('/', async (req, res) => {
         const user = await User.findOne({ username: req.query.username });
         if (user) {
             if (user._id == tokenId) {
-                user.wagers.map(w => determineResults(w, user))
+                if (user.wagers) {
+                    user.wagers.map(w => {
+                        console.log('here');
+                        if (w.game_date <= Date.now()) {
+                            console.log(w.game_date, Date.now())
+                            determineResults(w, user)
+                        }
+                    })
+                }
+
                 res.status(200).send(user)
             } else {
                 res.status(401).send('Incorrect credentials')

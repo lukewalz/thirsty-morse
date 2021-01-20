@@ -21,12 +21,14 @@ router.post('/', async (req, res) => {
                     { _id: user._id },
                     { $push: { wagers: req.body.wagers } }
                 );
+                if (updatedUser.wagers) {
+                    updatedUser.wagers.map(w => {
+                        if (w.game_date <= Date.now()) {
+                            determineResults(w, updatedUser)
+                        }
+                    })
+                }
 
-                updatedUser.wagers.map(w => {
-                    if (w.game_date <= Date.now()) {
-                        determineResults(w, updatedUser)
-                    }
-                })
 
                 const returnableUser = await User.findOne({ _id: req.body._id });
 

@@ -17,6 +17,12 @@
   align-items: center;
 }
 
+.gameAlert{
+  background-color: gray;
+  color: white;
+  padding: 20px;
+}
+
 .container{
   margin-top: 40px;
   display: flex;
