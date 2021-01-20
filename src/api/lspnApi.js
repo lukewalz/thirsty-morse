@@ -61,7 +61,7 @@ export async function register(username, password, firstName, lastName) {
             const cookies = new Cookies();
             cookies.set('userSession', user.token);
 
-            var u = _.pick(user, ['username', 'firstName', 'lastName'])
+            var u = _.pick(user, ['_id', 'username', 'firstName', 'lastName'])
             return u;
         })
     return userData;
@@ -87,6 +87,29 @@ export async function placeWager(wager) {
                 throw new Error('Username already exists');
             } else {
                 throw new Error('User failed to add');
+            }
+        })
+        .catch(er => { throw Error(er) })
+}
+
+export async function getWagers() {
+    const cookies = new Cookies();
+    const token = cookies.get('userSession');
+    const _id = JSON.parse(localStorage.getItem('user'))._id;
+
+    const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/wagers' : '/.netlify/functions/server/wagers'
+    return fetch(path + '?id=' + _id, {
+        method: 'GET', headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': token
+        }
+    })
+
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Wagers could not be retrieved');
             }
         })
         .catch(er => { throw Error(er) })

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
 import { loadGames } from "../redux/actions/gameActions";
-import { placeWager } from "../redux/actions/userActions"
+import { placeWager, loadUpdatedWagers } from "../redux/actions/userActions"
 import { connect } from "react-redux";
 import Matchup from './Matchup'
 import { Card, Spinner } from 'reactstrap';
@@ -11,11 +11,11 @@ import {
 
 
 
-function Games({ loadGames, placeWager, user, games }) {
+function Games({ loadGames, placeWager, loadUpdatedWagers, user, games }) {
     var { sport, week } = useParams();
 
     useEffect(() => {
-        loadGames(sport, week).then(() => setDoneLoading(true));
+        loadGames(sport, week).then(() => { loadUpdatedWagers(); setDoneLoading(true) });
 
         const interval = setInterval(() => {
             loadGames(sport, week)
@@ -37,7 +37,7 @@ function Games({ loadGames, placeWager, user, games }) {
                             if (item.status.type.name !== 'STATUS_CANCELED'
                                 && item.status.type.name !== 'STATUS_POSTPONED'
                             ) {
-                                return <Card key={index} style={{ margin: 20 }}><Matchup done={false} game={item} wagers={mapGamesToWagers(item, user.user.wagers)} placeWager={(e) => placeWager(e)} /></Card>
+                                return <Card key={index} style={{ margin: 20 }}><Matchup done={false} sport={sport} game={item} wagers={mapGamesToWagers(item, user.user.wagers)} placeWager={(e) => placeWager(e)} /></Card>
                             }
                             else {
                                 return []
@@ -56,7 +56,8 @@ function Games({ loadGames, placeWager, user, games }) {
 
 const mapDispatchToProps = {
     loadGames,
-    placeWager
+    placeWager,
+    loadUpdatedWagers
 };
 
 function mapGamesToWagers(game, wagers) {

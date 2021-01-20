@@ -42,7 +42,7 @@ function Matchup({ ...props }) {
     }
 
     return (
-        <>
+        <div>
             <WagerModal
                 teams={props.game.competitors}
                 open={openModal}
@@ -53,6 +53,7 @@ function Matchup({ ...props }) {
                 handleClose={() => setOpenModal(false)}
                 game_id={props.game.id}
                 game_date={props.game.date}
+                sport={props.sport}
             />
             <Alert color="danger" isOpen={alertVisible} toggle={onDismiss}>
                 Game has finished
@@ -137,7 +138,7 @@ function Matchup({ ...props }) {
                     :
                     <OverUnderWidget handleWagerClick={r => handleWagerClick(r)} wager={props.wagers}>{props.game.odds ? props.game.odds.overUnder : null}</OverUnderWidget>
             }
-        </>
+        </div>
     )
 }
 

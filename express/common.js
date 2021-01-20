@@ -12,8 +12,6 @@ async function determineResults(wager, user) {
         away = { score: r.__gamepackage__.awayTeam.score, team: r.__gamepackage__.awayTeam.team.abbreviation };
     }).catch(er => er);
 
-    if (wager.game_id === 401220398) console.log(home, away);
-
     const newWager = Object.assign({}, wager);
     newWager.status = 'final';
 
@@ -54,7 +52,6 @@ async function determineResults(wager, user) {
 
     }
     else if (wager.wager_type === 'ou') {
-        console.log(home, away)
         const selection = wager.selection.split('@');
         if (selection[0] === 'o') {
             if (selection[1] > (home.score + away.score))
@@ -75,7 +72,6 @@ async function determineResults(wager, user) {
 }
 
 async function addResultObject(newWager, user) {
-    console.log(newWager);
     await User.findOneAndUpdate({ "_id": user._id, "wagers.wager_date": newWager.wager_date },
         { "wagers.$": newWager });
 }

@@ -22,7 +22,6 @@ function WagerModal({ placeWager, ...props }) {
     const [amount, setAmount] = useState();
 
     useEffect(() => {
-        console.log(props);
         setWagerType(props.selectedWager ? props.selectedWager.wager_type : '');
         setSelection(props.selectedWager ? props.selectedWager.selection : '');
         setAmount(props.selectedWager ? props.selectedWager.amount : '');
@@ -151,7 +150,7 @@ function WagerModal({ placeWager, ...props }) {
             outcome: 'tbd',
             amount,
             game_date: game_date_ms,
-            sport: 'nfl'
+            sport: props.sport
         }
 
         placeWager(wager);

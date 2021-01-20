@@ -72,6 +72,28 @@ export function placeWagerSuccess(wager, error) {
     }
 }
 
+export function getUpdatedWagerSuccess(wager, error) {
+    if (wager != null) {
+        return {
+            type: types.API_SUCCESS, payload:
+            {
+                user: wager,
+                isLoading: false,
+                error: error
+            }
+        };
+    } else {
+        return {
+            type: types.API_ERROR, payload:
+            {
+                wager: wager,
+                isLoading: false,
+                error: error
+            }
+        }
+    }
+}
+
 
 export function logoutUserSuccess() {
     return {
@@ -125,5 +147,18 @@ export function placeWager(wager) {
                 return dispatch(placeWagerSuccess(null, error))
             });
     };
+}
+
+export function loadUpdatedWagers() {
+    return async function (dispatch) {
+        return lspnApi
+            .getWagers()
+            .then(w => {
+                return dispatch(getUpdatedWagerSuccess(w, null))
+            })
+            .catch(error => {
+                return dispatch(getUpdatedWagerSuccess(null, error))
+            });
+    }
 }
 
