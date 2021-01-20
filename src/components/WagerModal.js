@@ -109,7 +109,7 @@ function WagerModal({ placeWager, ...props }) {
                     <FormControl component="fieldset">
                         <FormLabel component="legend">Selection</FormLabel>
                         <RadioGroup aria-label="selection" row name="selection" value={selection} >
-                            <FormControlLabel value={selection} disabled={true} control={<Radio />} label={wagerType === 'ou' ? (selection === 'o' ? 'Over ' + props.overUnder : 'Under ' + props.overUnder) : selection} />
+                            <FormControlLabel value={selection} disabled={true} control={<Radio />} label={selection} />
                         </RadioGroup>
                     </FormControl>
 

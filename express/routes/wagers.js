@@ -61,7 +61,6 @@ router.get('/', async (req, res) => {
                     });
                     const returnableUser = await User.findOne({ _id: user._id });
 
-                    console.log(returnableUser)
                     res.status(200).send(returnableUser)
                 }
 

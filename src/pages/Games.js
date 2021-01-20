@@ -15,7 +15,8 @@ function Games({ loadGames, placeWager, loadUpdatedWagers, user, games }) {
     var { sport, week } = useParams();
 
     useEffect(() => {
-        loadGames(sport, week).then(() => { loadUpdatedWagers(); setDoneLoading(true) });
+        loadGames(sport, week);
+        loadUpdatedWagers().then(() => setDoneLoading(true))
 
         const interval = setInterval(() => {
             loadGames(sport, week)

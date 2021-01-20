@@ -13,6 +13,8 @@ import Games from "./pages/Games.js";
 import { ThemeProvider } from '@material-ui/core/styles'
 import theme from './theme'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import MyAccount from './pages/MyAccount'
+
 
 
 
@@ -42,6 +44,7 @@ export default function App() {
               <RegisterPage />
             </AuthRoute>
             <AuthRoute path='/games/:sport/:week?' render={props => <Games {...props} />} type="private" />
+            <AuthRoute path="/my-account" render={props => <MyAccount {...props} />} type="private" />
             <Route path="/" render={IndexPage} />
           </Switch>
         </Router>

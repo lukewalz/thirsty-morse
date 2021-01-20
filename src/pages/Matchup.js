@@ -47,7 +47,7 @@ function Matchup({ ...props }) {
                 teams={props.game.competitors}
                 open={openModal}
                 line={[firstTeamLineIsFav, secondTeamLineIsFav]}
-                overUnder={props.game.odds && props.game.odds[0] ? props.game.odds[0].overUnder : null}
+                overUnder={props.game.odds ? props.game.odds.overUnder : null}
                 disabled={disabled}
                 selectedWager={selectedWager}
                 handleClose={() => setOpenModal(false)}
@@ -122,7 +122,7 @@ function Matchup({ ...props }) {
                     <Row>
                         <Col xs='3'>
 
-                            <OverUnderWidget wager={props.wagers}>{props.game.odds.overUnder}</OverUnderWidget>
+                            <OverUnderWidget handleWagerClick={r => handleWagerClick(r)} wager={props.wagers}>{props.game.odds.overUnder}</OverUnderWidget>
 
                         </Col>
                         <Col xs='7'>

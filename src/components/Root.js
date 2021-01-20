@@ -5,8 +5,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import App from '../App'
 import Dashboard from '../pages/HomePage'
 import Auth from '../pages/Login'
-import AuthRoute from './AuthRoute'
 import NavBar from './Nav'
+import MyAccount from '../pages/MyAccount'
 
 const Root = ({ store }) => (
     <Provider store={store}>
@@ -15,6 +15,7 @@ const Root = ({ store }) => (
             <Route path='/' component={Auth} />
             <Route path='/sports' component={Dashboard} />
             <Route path='/games/:sport/:week?' component={App} />
+            <Route path='/my-account' component={MyAccount} />
         </Router>
     </Provider>
 )
