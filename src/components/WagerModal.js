@@ -17,6 +17,8 @@ import { connect } from "react-redux";
 import { placeWager } from '../redux/actions/userActions';
 
 function WagerModal({ placeWager, ...props }) {
+    console.log(props)
+
     const [wagerType, setWagerType] = useState();
     const [selection, setSelection] = useState();
     const [amount, setAmount] = useState();
@@ -141,6 +143,7 @@ function WagerModal({ placeWager, ...props }) {
             return;
         }
 
+
         var game_date_ms = new Date(props.game_date).getTime();
         const wager = {
             game_id: props.game_id,
@@ -150,7 +153,8 @@ function WagerModal({ placeWager, ...props }) {
             outcome: 'tbd',
             amount,
             game_date: game_date_ms,
-            sport: props.sport
+            sport: props.sport,
+            matchup: props.teams.map(t => t.team.abbreviation).join(' vs ')
         }
 
         placeWager(wager);

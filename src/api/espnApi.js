@@ -1,3 +1,4 @@
+import { array, string } from "joi";
 
 export async function getGames(league) {
     var apiPath = 'https://secure.espn.com/core/' + league + '/schedule?year=2020&xhr=1';
@@ -18,13 +19,13 @@ export async function getGames(league) {
     })).then(r => {
         var dto = [];
         r.map(g => {
-            if ((g.hasOdds && g.odds.findIndex(e => e.details && e.overUnder) >= 0) || league !== 'soccer') {
+            if ((g.odds && g.odds.findIndex(e => e.details && e.overUnder) >= 0) || league !== 'soccer') {
                 var game = {
                     competitors: g.header.competitions[0].competitors,
-                    odds: g.hasOdds ? g.odds[g.odds.findIndex(e => e.details && e.overUnder)] : g.pickcenter[g.pickcenter.findIndex(e => e.details && e.overUnder)],
+                    odds: league === 'soccer' ? g.odds[g.odds.findIndex(e => e.details && e.overUnder)] : g.pickcenter[g.pickcenter.findIndex(e => e.details && e.overUnder)],
                     date: g.header.competitions[0].date,
                     status: g.header.competitions[0].status,
-                    id: g.header.id
+                    id: g.header.id,
                 };
                 dto.push(game);
             }

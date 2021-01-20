@@ -41,7 +41,6 @@ function NavBar({ user, logout, ...props }) {
 }
 
 function getBalance(user) {
-    console.log(user.user.wagers);
 
     if (user.user.wagers) {
         var balance = 0;

@@ -8,12 +8,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { loadUpdatedWagers } from "../redux/actions/userActions"
+import { loadGames } from "../redux/actions/gameActions"
 import React, { useEffect, useState } from 'react';
 
 
 
-
-function MyAccount({ loadUpdatedWagers, user }) {
+function MyAccount({ loadUpdatedWagers, loadGames, user }) {
 
     useEffect(() => {
         loadUpdatedWagers()
@@ -21,12 +21,13 @@ function MyAccount({ loadUpdatedWagers, user }) {
 
     return (
         <Container>
-
             <TableContainer component={Paper}>
                 <Table aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell>Date Placed</TableCell>
+                            <TableCell align="right">Sport</TableCell>
+                            <TableCell align="right">Game</TableCell>
                             <TableCell align="right">Game Date</TableCell>
                             <TableCell align="right">Selection</TableCell>
                             <TableCell align="right">Amount</TableCell>
@@ -39,6 +40,8 @@ function MyAccount({ loadUpdatedWagers, user }) {
                                 <TableCell component="th" scope="row">
                                     {formatDate(row.wager_date)}
                                 </TableCell>
+                                <TableCell align="right">{row.sport.toUpperCase()}</TableCell>
+                                <TableCell align="right">{row.matchup}</TableCell>
                                 <TableCell align="right">
                                     {formatDate(row.game_date)}
                                 </TableCell>
@@ -54,21 +57,23 @@ function MyAccount({ loadUpdatedWagers, user }) {
     );
 }
 
+
 function formatDate(date) {
-    console.log(date);
     var d = new Date(date);
     return d.toLocaleString();
 }
 
 
 const mapDispatchToProps = {
-    loadUpdatedWagers
+    loadUpdatedWagers,
+    loadGames
 };
 
 
 function mapStateToProps(state) {
     return {
-        user: state.user.user
+        user: state.user.user,
+        games: state.games
     };
 }
 

@@ -11,7 +11,8 @@ const Schema = Joi.object({
         .required(),
     sport: Joi.string()
         .required(),
-
+    matchup: Joi.string()
+        .required(),
     game_id: Joi.number()
         .integer()
         .required(),

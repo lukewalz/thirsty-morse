@@ -27,6 +27,11 @@ function HomePage({ user }) {
                         <Widget image="https://www.pngkit.com/png/full/89-893116_nba-logo-transparent-png-new-nba-finals-logo.png" />
                     </Link>
                 </Col>
+                <Col>
+                    <Link to="/games/soccer">
+                        <Widget image="https://pngimg.com/uploads/fifa/fifa_PNG1.png" />
+                    </Link>
+                </Col>
             </Row>
         </Container>
     )

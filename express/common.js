@@ -7,6 +7,10 @@ async function determineResults(wager, user) {
     var home;
     var away;
 
+    if (wager.sport === 'soccer') {
+        apiPath = 'https://www.espn.com/soccer/matchstats?gameId=' + wager.game_id + '&xhr=1'
+    }
+
     await fetch(apiPath).then(e => e.json()).catch(er => er).then(r => {
         home = { score: r.__gamepackage__.homeTeam.score, team: r.__gamepackage__.homeTeam.team.abbreviation };
         away = { score: r.__gamepackage__.awayTeam.score, team: r.__gamepackage__.awayTeam.team.abbreviation };
@@ -54,18 +58,34 @@ async function determineResults(wager, user) {
     else if (wager.wager_type === 'ou') {
         const selection = wager.selection.split('@');
         if (selection[0] === 'o') {
-            if (selection[1] > (home.score + away.score))
+            if (parseFloat(selection[1]) > (parseInt(home.score) + parseInt(away.score))) {
+                newWager.outcome = 'loss'
+                addResultObject(newWager, user)
+            }
+            else if (parseFloat(selection[1]) === (parseInt(home.score) + parseInt(away.score))) {
+                newWager.outcome = 'push'
+                addResultObject(newWager, user)
+            }
+            else {
                 newWager.outcome = 'win'
-            addResultObject(newWager, user)
+                addResultObject(newWager, user)
+            }
         }
-        else if (selection[1] === (home.score + away.score)) {
-            newWager.outcome = 'push'
-            addResultObject(newWager, user)
+        if (selection[0] === 'u') {
+            if (parseFloat(selection[1]) > (parseInt(home.score) + parseInt(away.score))) {
+                newWager.outcome = 'win'
+                addResultObject(newWager, user)
+            }
+            else if (parseFloat(selection[1]) === (parseInt(home.score) + parseInt(away.score))) {
+                newWager.outcome = 'push'
+                addResultObject(newWager, user)
+            }
+            else {
+                newWager.outcome = 'loss'
+                addResultObject(newWager, user)
+            }
         }
-        else {
-            newWager.outcome = 'loss'
-            addResultObject(newWager, user)
-        }
+
     } else {
 
     }
