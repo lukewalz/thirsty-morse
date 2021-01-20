@@ -12,7 +12,7 @@ function NavBar({ user, logout, ...props }) {
                 <Typography variant="h6">LSPN</Typography>
                 <div style={{ marginLeft: "auto" }}>
                     {user.isAuthUser ? (
-                        <>
+                        <div>
                             <Link to="/home">
                                 <Button>Dashboard</Button>
                             </Link>
@@ -22,16 +22,16 @@ function NavBar({ user, logout, ...props }) {
                             <Button onClick={logout}>
                                 Logout
                 </Button>
-                        </>
+                        </div>
                     ) : (
-                            <>
+                            <div>
                                 <Link to="/login">
                                     <Button>Login</Button>
                                 </Link>
                                 <Link to="/register">
                                     <Button>Register</Button>
                                 </Link>
-                            </>
+                            </div>
                         )}
                 </div>
             </Toolbar>

@@ -8,18 +8,16 @@ import { OverUnderWidget } from '../components/OverUnderWidget'
 
 
 function Matchup({ ...props }) {
-    var lineAvailable = props.game.odds.findIndex(e => e.details);
-
-    const [firstTeamLineIsFav] = useState(props.game.odds[lineAvailable] ?
-        props.game.odds[lineAvailable].awayTeamOdds.favorite
-            ? { line: parseFloat(props.game.odds[lineAvailable].details?.split(' -')[1]), isFav: false }
-            : props.game.odds[lineAvailable].details ? { line: -parseFloat(props.game.odds[lineAvailable].details.split(' -')[1]), isFav: true } : { undefined }
-        : { undefined });
-    const [secondTeamLineIsFav] = useState(props.game.odds[lineAvailable] ?
-        props.game.odds[lineAvailable].homeTeamOdds.favorite
-            ? { line: parseFloat(props.game.odds[lineAvailable].details?.split(' -')[1]), isFav: false }
-            : props.game.odds[lineAvailable] ? { line: -parseFloat(props.game.odds[lineAvailable].details.split(' -')[1]), isFav: true } : { undefined }
-        : { undefined });
+    const [firstTeamLineIsFav] = useState(
+        props.game.odds ? props.game.odds.awayTeamOdds.favorite
+            ? { line: parseFloat(props.game.odds.details?.split(' -')[1]), isFav: false }
+            : props.game.odds.details ? { line: -parseFloat(props.game.odds.details.split(' -')[1]), isFav: true } : { undefined } : { undefined }
+    );
+    const [secondTeamLineIsFav] = useState(
+        props.game.odds ? props.game.odds.homeTeamOdds.favorite
+            ? { line: parseFloat(props.game.odds.details?.split(' -')[1]), isFav: false }
+            : props.game.odds ? { line: -parseFloat(props.game.odds.details.split(' -')[1]), isFav: true } : { undefined } : { undefined }
+    );
     const [firstTeamScore] = useState(parseInt(props.game.competitors[0].score));
     const [secondTeamScore] = useState(parseInt(props.game.competitors[1].score));
     const [actualOvers] = useState(parseInt(props.game.competitors[0].score) + parseInt(props.game.competitors[1].score));
@@ -123,21 +121,21 @@ function Matchup({ ...props }) {
                     <Row>
                         <Col xs='3'>
 
-                            <OverUnderWidget wager={props.wagers}>{props.game.odds[lineAvailable].overUnder}</OverUnderWidget>
+                            <OverUnderWidget wager={props.wagers}>{props.game.odds.overUnder}</OverUnderWidget>
 
                         </Col>
                         <Col xs='7'>
                             <Progress
                                 value={actualOvers}
-                                max={props.game.odds[0] ? props.game.odds[0]?.overUnder : undefined}
+                                max={props.game.odds.overUnder}
                                 color={determineOverUnderStatus(props.game, actualOvers)}>
-                                {actualOvers + '/' + props.game.odds[lineAvailable].overUnder}
+                                {actualOvers + '/' + props.game.odds.overUnder}
                             </Progress>
                         </Col>
 
                     </Row>
                     :
-                    <OverUnderWidget handleWagerClick={r => handleWagerClick(r)} wager={props.wagers}>{props.game.odds[lineAvailable]?.overUnder}</OverUnderWidget>
+                    <OverUnderWidget handleWagerClick={r => handleWagerClick(r)} wager={props.wagers}>{props.game.odds ? props.game.odds.overUnder : null}</OverUnderWidget>
             }
         </>
     )
@@ -145,13 +143,13 @@ function Matchup({ ...props }) {
 
 function determineOverUnderStatus(competition, actualOvers) {
     if (competition.status.type.name === 'STATUS_FINAL') {
-        if (actualOvers <= competition.odds[0].overUnder) {
+        if (actualOvers <= competition.odds.overUnder) {
             return 'danger';
         } else {
             return 'success';
         }
     } else {
-        if (actualOvers <= competition.odds[0]?.overUnder) {
+        if (actualOvers <= competition.odds.overUnder) {
             return 'warning';
         } else {
             return 'success';

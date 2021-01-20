@@ -9,6 +9,8 @@ const Schema = Joi.object({
     wager_date: Joi.number()
         .integer()
         .required(),
+    sport: Joi.string()
+        .required(),
 
     game_id: Joi.number()
         .integer()

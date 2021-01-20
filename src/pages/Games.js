@@ -16,7 +16,14 @@ function Games({ loadGames, placeWager, user, games }) {
 
     useEffect(() => {
         loadGames(sport, week).then(() => setDoneLoading(true));
-    }, [loadGames, user, sport, week]);
+
+        const interval = setInterval(() => {
+            loadGames(sport, week)
+        }, 10000)
+
+        return () => clearInterval(interval)
+
+    }, [loadGames, sport, week]);
 
     const [doneLoading, setDoneLoading] = useState(false);
 

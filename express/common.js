@@ -2,11 +2,11 @@ const fetch = require('node-fetch');
 const { User } = require('./models/user');
 
 async function determineResults(wager, user) {
-    if (wager.game_id === 401220398) console.log(wager);
 
-    var apiPath = 'https://secure.espn.com/college-football/boxscore?gameId=' + wager.game_id + '&xhr=1';
+    var apiPath = 'https://secure.espn.com/' + wager.sport + '/boxscore?gameId=' + wager.game_id + '&xhr=1';
     var home;
     var away;
+
     await fetch(apiPath).then(e => e.json()).catch(er => er).then(r => {
         home = { score: r.__gamepackage__.homeTeam.score, team: r.__gamepackage__.homeTeam.team.abbreviation };
         away = { score: r.__gamepackage__.awayTeam.score, team: r.__gamepackage__.awayTeam.team.abbreviation };
@@ -75,6 +75,7 @@ async function determineResults(wager, user) {
 }
 
 async function addResultObject(newWager, user) {
+    console.log(newWager);
     await User.findOneAndUpdate({ "_id": user._id, "wagers.wager_date": newWager.wager_date },
         { "wagers.$": newWager });
 }
