@@ -166,15 +166,15 @@ function Matchup({ ...props }) {
                             <TableRow>
                                 <TableCell />
                                 <TableCell>{props.game.competitors[0].team.abbreviation}</TableCell>
-                                <TableCell align="left">{props.game.competitors[1].team.abbreviation}</TableCell>
+                                <TableCell>{props.game.competitors[1].team.abbreviation}</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {props.game.boxScore[0].statistics.map((e, i) => {
                                 return <TableRow key={i}>
                                     <TableCell align="left">{e.label}</TableCell>
-                                    <TableCell align="left">{e.displayValue}</TableCell>
                                     <TableCell align="left">{props.game.boxScore[1].statistics[i].displayValue}</TableCell>
+                                    <TableCell align="left">{e.displayValue}</TableCell>
                                 </TableRow>
                             })
 
