@@ -33,9 +33,6 @@ export async function getGames(league) {
 
         })
 
-        console.log(dto)
-
-
         return dto
     })
 }
