@@ -25,7 +25,7 @@ export async function getGames(league) {
                     date: g.header.competitions[0].date,
                     status: g.header.competitions[0].status,
                     id: g.header.id,
-                    lastPlay: g.commentary ? g.commentary[g.commentary.length - 1]?.text : '',
+                    lastPlay: g.commentary ? g.commentary[g.commentary.length - 1]?.text : g.plays ? g.plays[g.plays.length - 1]?.text : '',
                     boxScore: g.boxscore.teams
                 };
                 dto.push(game);
