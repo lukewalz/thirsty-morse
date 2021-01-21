@@ -4,7 +4,7 @@ import "./App.css";
 import { Provider } from "react-redux";
 import configureStore from './redux/configureStore'
 import NavBar from "./components/Nav";
-import { Typography, Divider } from "@material-ui/core";
+import { Typography, Divider, Container } from "@material-ui/core";
 import AuthRoute from "./components/AuthRoute";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/Login";
@@ -22,12 +22,13 @@ import * as animationData from './lotties/34702-spray-medicine.json'
 const store = configureStore();
 
 const IndexPage = () => (
-  <div className='container'>
+  <Container style={{ marginTop: 70, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
     <Typography variant="h3">LSPN</Typography>
     <Divider style={{ marginTop: 10, marginBottom: 10 }} />
     <Lottie style={{ width: '100%', height: 300 }} animationData={animationData.default} />
     <Typography variant="h6">The only online sports book where you can track wagers realtime</Typography>
-  </div>
+  </Container>
+
 )
 
 export default function App() {
