@@ -17,6 +17,11 @@
   align-items: center;
 }
 
+.MuiToolbar-gutters{
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
 .gameAlert{
   background-color: gray;
   color: white;
@@ -27,7 +32,6 @@
   margin-top: 40px;
   display: flex;
   flex-direction: column;
-  height: 50vh;
   justify-content: space-evenly;
 }
 

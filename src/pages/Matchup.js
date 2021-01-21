@@ -85,7 +85,7 @@ function Matchup({ ...props }) {
                                     marginRight: 'auto',
                                     alignItems: 'center'
                                 }}>
-                                    <img alt={props.game.competitors[0].team.displayName} src={props.game.competitors[0].team.logos ? props.game.competitors[0].team.logos[0].href : ''} />
+                                    <img alt={props.game.competitors[0].team.displayName} src={props.game.competitors[0].team.logos ? props.game.competitors[0].team.logos[0].href : 'https://webstockreview.net/images/circle-clipart-transparent-background-7.jpg'} />
                                     {props.game.status.type.name !== "STATUS_SCHEDULED" ?
                                         <div className='score'>
                                             {props.game.status.type.name === "STATUS_SCHEDULED" ? '' : props.game.competitors[0].score}
@@ -109,7 +109,7 @@ function Matchup({ ...props }) {
                                     marginRight: 'auto',
                                     alignItems: 'center'
                                 }}>
-                                    <img alt={props.game.competitors[1].team.displayName} src={props.game.competitors[1].team.logos ? props.game.competitors[1].team.logos[0].href : ''} />
+                                    <img alt={props.game.competitors[1].team.displayName} src={props.game.competitors[1].team.logos ? props.game.competitors[1].team.logos[0].href : 'https://webstockreview.net/images/circle-clipart-transparent-background-7.jpg'} />
                                     {props.game.status.type.name !== "STATUS_SCHEDULED" ?
 
                                         <div className='score'>
