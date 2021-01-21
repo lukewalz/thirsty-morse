@@ -21,6 +21,7 @@ function MyAccount({ loadUpdatedWagers, loadGames, user }) {
 
     return (
         <Container>
+            <h3>{user.username}</h3>
             <TableContainer component={Paper}>
                 <Table aria-label="simple table">
                     <TableHead>
