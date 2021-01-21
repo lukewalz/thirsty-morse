@@ -6,17 +6,27 @@ async function determineResults(wager, user) {
     var apiPath = 'https://secure.espn.com/' + wager.sport + '/boxscore?gameId=' + wager.game_id + '&xhr=1';
     var home;
     var away;
+    var gameStatus;
 
     if (wager.sport === 'soccer') {
         apiPath = 'https://www.espn.com/soccer/matchstats?gameId=' + wager.game_id + '&xhr=1'
     }
 
     await fetch(apiPath).then(e => e.json()).catch(er => er).then(r => {
+        gameStatus = r.gamepackageJSON.header.competitions[0].status.type;
         home = { score: r.__gamepackage__.homeTeam.score, team: r.__gamepackage__.homeTeam.team.abbreviation };
         away = { score: r.__gamepackage__.awayTeam.score, team: r.__gamepackage__.awayTeam.team.abbreviation };
     }).catch(er => er);
 
     const newWager = Object.assign({}, wager);
+    if (gameStatus.completed === false) {
+        console.log('here');
+        newWager.status = gameStatus.shortDetail;
+        newWager.outcome = 'push';
+        addResultObject(newWager, user);
+        return;
+    }
+
     newWager.status = 'final';
 
     if (wager.wager_type === 'sp') {
@@ -91,7 +101,7 @@ async function determineResults(wager, user) {
 }
 
 async function addResultObject(newWager, user) {
-    await User.findOneAndUpdate({ "_id": user._id, "wagers.wager_date": newWager.wager_date },
+    var res = await User.findOneAndUpdate({ "_id": user._id, "wagers.wager_date": newWager.wager_date },
         { "wagers.$": newWager });
 }
 

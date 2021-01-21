@@ -41,6 +41,7 @@ function Games({ loadGames, placeWager, loadUpdatedWagers, user, games }) {
                                 return <Card key={index} style={{ margin: 20 }}><Matchup done={false} sport={sport} game={item} wagers={mapGamesToWagers(item, user.user.wagers)} placeWager={(e) => placeWager(e)} /></Card>
                             }
                             else {
+                                if (item.id == 401265386) console.log(item)
                                 return []
                             }
 

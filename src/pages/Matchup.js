@@ -15,6 +15,8 @@ import Paper from '@material-ui/core/Paper';
 
 
 function Matchup({ ...props }) {
+
+
     const [firstTeamLineIsFav] = useState(
         props.game.odds ? props.game.odds.awayTeamOdds.favorite
             ? { line: parseFloat(props.game.odds.details?.split(' -')[1]), isFav: false }
