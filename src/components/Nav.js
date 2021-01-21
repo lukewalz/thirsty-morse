@@ -22,7 +22,7 @@ function NavBar({ user, logout, ...props }) {
                             </Link>
                             <Button onClick={logout}>
                                 Logout
-                </Button>
+                            </Button>
                         </div>
                     ) : (
                             <div>

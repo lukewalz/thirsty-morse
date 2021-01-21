@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { loadUpdatedWagers } from "../redux/actions/userActions"
 import { loadGames } from "../redux/actions/gameActions"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 
 
@@ -17,7 +17,7 @@ function MyAccount({ loadUpdatedWagers, loadGames, user }) {
 
     useEffect(() => {
         loadUpdatedWagers()
-    }, []);
+    }, [loadGames, loadUpdatedWagers]);
 
     return (
         <Container>

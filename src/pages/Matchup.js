@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { Row, Col, Progress, Button, Alert, Collapse } from 'reactstrap';
 import WagerModal from '../components/WagerModal'
 import { OverUnderWidget } from '../components/OverUnderWidget'
-import { Snackbar } from '@material-ui/core/'
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';

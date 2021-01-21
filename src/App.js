@@ -14,7 +14,8 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import theme from './theme'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import MyAccount from './pages/MyAccount'
-
+import Lottie from "lottie-react";
+import * as animationData from './lotties/34702-spray-medicine.json'
 
 
 
@@ -24,6 +25,7 @@ const IndexPage = () => (
   <div className='container'>
     <Typography variant="h3">LSPN</Typography>
     <Divider style={{ marginTop: 10, marginBottom: 10 }} />
+    <Lottie style={{ width: '100%', height: 300 }} animationData={animationData.default} />
     <Typography variant="h6">The only online sports book where you can track wagers realtime</Typography>
   </div>
 )
