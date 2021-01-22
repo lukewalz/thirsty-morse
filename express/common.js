@@ -19,8 +19,8 @@ async function determineResults(wager, user) {
     }).catch(er => er);
 
     const newWager = Object.assign({}, wager);
+    console.log(gameStatus);
     if (gameStatus.completed === false) {
-        console.log('here');
         newWager.status = gameStatus.shortDetail;
         newWager.outcome = 'push';
         addResultObject(newWager, user);
@@ -100,9 +100,23 @@ async function determineResults(wager, user) {
     }
 }
 
+async function log(type, user, funct) {
+    const path = 'https://compassionate-almeida-c1cf6f.netlify.app/.netlify/functions/server/text';
+    var number = 4029812986;
+    var message = `${user} executed funtion: ${type} with a status: ${funct}`;
+    var carrier = 'verizon';
+
+    fetch(path, {
+        method: 'POST', headers: {
+            'Content-Type': 'application/json'
+        }, body: JSON.stringify({ number, message, carrier })
+    }).then(e => console.log(e.status))
+}
+
 async function addResultObject(newWager, user) {
     var res = await User.findOneAndUpdate({ "_id": user._id, "wagers.wager_date": newWager.wager_date },
         { "wagers.$": newWager });
 }
 
 module.exports = determineResults;
+module.exports = log;

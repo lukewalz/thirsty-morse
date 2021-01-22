@@ -6,6 +6,10 @@ const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const determineResults = require('../common');
+const statusTypes = require('../statusTypes');
+const log = require('../common');
+
+
 
 
 router.post('/', async (req, res) => {
@@ -23,6 +27,8 @@ router.post('/', async (req, res) => {
         await user.save();
         const token = jwt.sign({ _id: user._id }, process.env.API_KEY);
         user.token = token;
+        log(statusTypes.USER_TYPE_ADD, user.username, 'success');
+
         res.send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token']));
     }
 });
@@ -38,23 +44,28 @@ router.get('/', async (req, res) => {
             if (user._id == tokenId) {
                 if (user.wagers) {
                     user.wagers.map(w => {
-                        console.log('here');
                         if (w.game_date <= Date.now()) {
-                            console.log(w.game_date, Date.now())
                             determineResults(w, user)
                         }
                     })
                 }
+                log(statusTypes.USER_TYPE_GET, user.username, 'success');
 
                 res.status(200).send(user)
             } else {
+                log(statusTypes.USER_ERROR_CREDENTIALS, user.username, 'error');
+
                 res.status(401).send('Incorrect credentials')
             }
         } else {
+            log(statusTypes.USER_ERROR_USER, user.username, 'fail');
+
             res.status(404).send('Could not find user')
         }
 
     } catch {
+        log(statusTypes.USER_ERROR_TOKEN, user.username, 'fail');
+
         res.status(401).send('Must use a valid token')
     }
 })

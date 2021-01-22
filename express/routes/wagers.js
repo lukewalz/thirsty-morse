@@ -4,7 +4,10 @@ const router = express.Router();
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 const determineResults = require('../common');
+const log = require('../common');
 require('dotenv').config();
+const statusTypes = require('../statusTypes');
+const { useRadioGroup } = require('@material-ui/core');
 
 
 router.post('/', async (req, res) => {
@@ -32,17 +35,24 @@ router.post('/', async (req, res) => {
 
                 const returnableUser = await User.findOne({ _id: req.body._id });
 
+                log(statusTypes.WAGER_TYPE_ADD, returnableUser.username, 'success');
+
 
                 res.status(200).send(returnableUser)
             } else {
+                log(statusTypes.WAGER_ERROR_CREDENTIALS, returnableUser.username, 'fail');
+
                 res.status(401).send('Incorrect credentials')
             }
         } else {
+            log(statusTypes.WAGER_ERROR_USER, returnableUser.username, 'fail');
+
             res.status(404).send('Could not find user')
         }
 
     } catch (er) {
-        console.log(er)
+        log(statusTypes.WAGER_ERROR_TOKEN, returnableUser.username, 'fail');
+
         res.status(401).send('Must use a valid token')
     }
 });
@@ -63,25 +73,32 @@ router.get('/', async (req, res) => {
                     });
                     const returnableUser = await User.findOne({ _id: user._id });
 
+                    log(statusTypes.WAGER_TYPE_GET, returnableUser.username, 'success');
+
                     res.status(200).send(returnableUser)
                 }
 
 
                 else {
+                    log(statusTypes.WAGER_TYPE_GET, user.username, 'success: no wagers');
+
                     res.status(200).send(user)
                 }
 
 
 
             } else {
+                log(statusTypes.WAGER_ERROR_CREDENTIALS, user.username, 'fail');
                 res.status(401).send('Incorrect credentials')
             }
         } else {
+            log(statusTypes.WAGER_ERROR_USER, user.username, 'fail');
             res.status(404).send('Could not find user')
         }
 
     } catch (er) {
-        console.log(er)
+        log(statusTypes.WAGER_ERROR_TOKEN, user.username, 'fail');
+
         res.status(401).send('Must use a valid token')
     }
 });
