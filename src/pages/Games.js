@@ -38,10 +38,9 @@ function Games({ loadGames, placeWager, loadUpdatedWagers, user, games }) {
                             if (item.status.type.name !== 'STATUS_CANCELED'
                                 && item.status.type.name !== 'STATUS_POSTPONED'
                             ) {
-                                return <Card key={index} style={{ margin: 20 }}><Matchup done={false} sport={sport} game={item} wagers={mapGamesToWagers(item, user.user.wagers)} placeWager={(e) => placeWager(e)} /></Card>
+                                return <Card key={index} style={{ margin: 20 }}><Matchup setDoneLoading={setDoneLoading} sport={sport} game={item} wagers={mapGamesToWagers(item, user.user.wagers)} /></Card>
                             }
                             else {
-                                if (item.id == 401265386) console.log(item)
                                 return []
                             }
 

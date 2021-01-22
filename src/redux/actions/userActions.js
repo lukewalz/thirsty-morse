@@ -2,8 +2,9 @@ import * as types from "./actionTypes";
 import * as lspnApi from "../../api/lspnApi";
 import Cookies from 'universal-cookie';
 
-export function loginUserSuccess(user, error) {
-    if (user != null) {
+export function operationSuccess(user, error) {
+    console.log(user)
+    if (user !== null) {
         return {
             type: types.API_SUCCESS, payload:
             {
@@ -17,8 +18,6 @@ export function loginUserSuccess(user, error) {
         return {
             type: types.API_ERROR, payload:
             {
-                isAuthUser: false,
-                user: user,
                 isLoading: false,
                 error: error
             }
@@ -26,73 +25,7 @@ export function loginUserSuccess(user, error) {
     }
 }
 
-export function registerUserSuccess(user, error) {
-    if (user != null) {
-        return {
-            type: types.API_SUCCESS, payload:
-            {
-                isAuthUser: true,
-                user: user,
-                isLoading: false,
-                error: error
-            }
-        };
-    } else {
-        return {
-            type: types.API_ERROR, payload:
-            {
-                isAuthUser: false,
-                user: user,
-                isLoading: false,
-                error: error
-            }
-        }
-    }
-}
 
-export function placeWagerSuccess(wager, error) {
-    if (wager != null) {
-        return {
-            type: types.API_SUCCESS, payload:
-            {
-                user: wager,
-                isLoading: false,
-                error: error
-            }
-        };
-    } else {
-        return {
-            type: types.API_ERROR, payload:
-            {
-                wager: wager,
-                isLoading: false,
-                error: error
-            }
-        }
-    }
-}
-
-export function getUpdatedWagerSuccess(wager, error) {
-    if (wager != null) {
-        return {
-            type: types.API_SUCCESS, payload:
-            {
-                user: wager,
-                isLoading: false,
-                error: error
-            }
-        };
-    } else {
-        return {
-            type: types.API_ERROR, payload:
-            {
-                wager: wager,
-                isLoading: false,
-                error: error
-            }
-        }
-    }
-}
 
 
 export function logoutUserSuccess() {
@@ -106,10 +39,10 @@ export function login(username, password) {
         return lspnApi
             .login(username, password)
             .then(user => {
-                return dispatch(loginUserSuccess(user, null))
+                return dispatch(operationSuccess(user, null))
             })
             .catch(error => {
-                return dispatch(loginUserSuccess(null, error))
+                return dispatch(operationSuccess(null, error))
             });
     };
 }
@@ -119,10 +52,10 @@ export function register(username, password, firstName, lastName) {
         return lspnApi
             .register(username, password, firstName, lastName)
             .then(user => {
-                return dispatch(registerUserSuccess(user, null))
+                return dispatch(operationSuccess(user, null))
             })
             .catch(error => {
-                return dispatch(registerUserSuccess(null, error))
+                return dispatch(operationSuccess(null, error))
             });
     };
 }
@@ -141,10 +74,10 @@ export function placeWager(wager) {
         return lspnApi
             .placeWager(wager)
             .then(w => {
-                return dispatch(placeWagerSuccess(w, null))
+                return dispatch(operationSuccess(w, null))
             })
             .catch(error => {
-                return dispatch(placeWagerSuccess(null, error))
+                return dispatch(operationSuccess(null, error))
             });
     };
 }
@@ -154,10 +87,10 @@ export function loadUpdatedWagers() {
         return lspnApi
             .getWagers()
             .then(w => {
-                return dispatch(getUpdatedWagerSuccess(w, null))
+                return dispatch(operationSuccess(w, null))
             })
             .catch(error => {
-                return dispatch(getUpdatedWagerSuccess(null, error))
+                return dispatch(operationSuccess(null, error))
             });
     }
 }

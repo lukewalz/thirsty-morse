@@ -65,6 +65,7 @@ function Matchup({ ...props }) {
                 game_id={props.game.id}
                 game_date={props.game.date}
                 sport={props.sport}
+                setDoneLoading={props.setDoneLoading}
             />
             <Alert color="danger" isOpen={alertVisible} toggle={onDismiss}>
                 Game is finished or in progress
@@ -171,14 +172,14 @@ function Matchup({ ...props }) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {props.game.boxScore[0].statistics.map((e, i) => {
+                            {props.game.boxScore[0].statistics ? props.game.boxScore[0].statistics.map((e, i) => {
                                 return <TableRow key={i}>
                                     <TableCell align="left">{e.label}</TableCell>
                                     <TableCell align="left">{props.game.boxScore[1].statistics[i].displayValue}</TableCell>
                                     <TableCell align="left">{e.displayValue}</TableCell>
                                 </TableRow>
                             })
-
+                                : []
                             }
                         </TableBody>
 

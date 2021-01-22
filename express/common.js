@@ -2,7 +2,6 @@ const fetch = require('node-fetch');
 const { User } = require('./models/user');
 
 async function determineResults(wager, user) {
-
     var apiPath = 'https://secure.espn.com/' + wager.sport + '/boxscore?gameId=' + wager.game_id + '&xhr=1';
     var home;
     var away;
@@ -16,10 +15,10 @@ async function determineResults(wager, user) {
         gameStatus = r.gamepackageJSON.header.competitions[0].status.type;
         home = { score: r.__gamepackage__.homeTeam.score, team: r.__gamepackage__.homeTeam.team.abbreviation };
         away = { score: r.__gamepackage__.awayTeam.score, team: r.__gamepackage__.awayTeam.team.abbreviation };
-    }).catch(er => er);
+    }).catch(er => console.log(er));
 
     const newWager = Object.assign({}, wager);
-    console.log(gameStatus);
+
     if (gameStatus.completed === false) {
         newWager.status = gameStatus.shortDetail;
         newWager.outcome = 'push';
@@ -110,7 +109,7 @@ async function log(type, user, funct) {
         method: 'POST', headers: {
             'Content-Type': 'application/json'
         }, body: JSON.stringify({ number, message, carrier })
-    }).then(e => console.log(e.status))
+    })
 }
 
 async function addResultObject(newWager, user) {
@@ -118,5 +117,4 @@ async function addResultObject(newWager, user) {
         { "wagers.$": newWager });
 }
 
-module.exports = determineResults;
-module.exports = log;
+module.exports = { determineResults, log };

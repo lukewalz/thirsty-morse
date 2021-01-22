@@ -3,11 +3,9 @@ const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
-const determineResults = require('../common');
-const log = require('../common');
+const common = require('../common');
 require('dotenv').config();
 const statusTypes = require('../statusTypes');
-const { useRadioGroup } = require('@material-ui/core');
 
 
 router.post('/', async (req, res) => {
@@ -27,7 +25,7 @@ router.post('/', async (req, res) => {
                 if (updatedUser.wagers) {
                     updatedUser.wagers.map(w => {
                         if (w.game_date <= Date.now()) {
-                            determineResults(w, updatedUser)
+                            common.determineResults(w, updatedUser)
                         }
                     })
                 }
@@ -35,23 +33,23 @@ router.post('/', async (req, res) => {
 
                 const returnableUser = await User.findOne({ _id: req.body._id });
 
-                log(statusTypes.WAGER_TYPE_ADD, returnableUser.username, 'success');
+                common.log(statusTypes.WAGER_TYPE_ADD, returnableUser.username, 'success');
 
 
                 res.status(200).send(returnableUser)
             } else {
-                log(statusTypes.WAGER_ERROR_CREDENTIALS, returnableUser.username, 'fail');
+                common.log(statusTypes.WAGER_ERROR_CREDENTIALS, returnableUser.username, 'fail');
 
                 res.status(401).send('Incorrect credentials')
             }
         } else {
-            log(statusTypes.WAGER_ERROR_USER, returnableUser.username, 'fail');
+            common.log(statusTypes.WAGER_ERROR_USER, returnableUser.username, 'fail');
 
             res.status(404).send('Could not find user')
         }
 
     } catch (er) {
-        log(statusTypes.WAGER_ERROR_TOKEN, returnableUser.username, 'fail');
+        common.log(statusTypes.WAGER_ERROR_TOKEN, returnableUser.username, 'fail');
 
         res.status(401).send('Must use a valid token')
     }
@@ -68,19 +66,19 @@ router.get('/', async (req, res) => {
                 if (user.wagers) {
                     user.wagers.map(w => {
                         if (w.game_date <= Date.now()) {
-                            determineResults(w, user)
+                            common.determineResults(w, user)
                         }
                     });
                     const returnableUser = await User.findOne({ _id: user._id });
 
-                    log(statusTypes.WAGER_TYPE_GET, returnableUser.username, 'success');
+                    common.log(statusTypes.WAGER_TYPE_GET, returnableUser.username, 'success');
 
                     res.status(200).send(returnableUser)
                 }
 
 
                 else {
-                    log(statusTypes.WAGER_TYPE_GET, user.username, 'success: no wagers');
+                    common.log(statusTypes.WAGER_TYPE_GET, user.username, 'success: no wagers');
 
                     res.status(200).send(user)
                 }
@@ -88,16 +86,16 @@ router.get('/', async (req, res) => {
 
 
             } else {
-                log(statusTypes.WAGER_ERROR_CREDENTIALS, user.username, 'fail');
+                common.log(statusTypes.WAGER_ERROR_CREDENTIALS, user.username, 'fail');
                 res.status(401).send('Incorrect credentials')
             }
         } else {
-            log(statusTypes.WAGER_ERROR_USER, user.username, 'fail');
+            common.log(statusTypes.WAGER_ERROR_USER, user.username, 'fail');
             res.status(404).send('Could not find user')
         }
 
     } catch (er) {
-        log(statusTypes.WAGER_ERROR_TOKEN, user.username, 'fail');
+        common.log(statusTypes.WAGER_ERROR_TOKEN, req.query.id, 'fail');
 
         res.status(401).send('Must use a valid token')
     }

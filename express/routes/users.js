@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const determineResults = require('../common');
 const statusTypes = require('../statusTypes');
-const log = require('../common');
+const common = require('../common');
 
 
 
@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
         await user.save();
         const token = jwt.sign({ _id: user._id }, process.env.API_KEY);
         user.token = token;
-        log(statusTypes.USER_TYPE_ADD, user.username, 'success');
+        common.log(statusTypes.USER_TYPE_ADD, user.username, 'success');
 
         res.send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token']));
     }
@@ -38,33 +38,32 @@ router.get('/', async (req, res) => {
     try {
         jwt.verify(req.headers['x-auth-token'], token);
         const tokenId = jwt.decode(req.headers['x-auth-token'], token)._id;
-
         const user = await User.findOne({ username: req.query.username });
         if (user) {
             if (user._id == tokenId) {
                 if (user.wagers) {
                     user.wagers.map(w => {
                         if (w.game_date <= Date.now()) {
-                            determineResults(w, user)
+                            common.determineResults(w, user)
                         }
                     })
                 }
-                log(statusTypes.USER_TYPE_GET, user.username, 'success');
+                common.log(statusTypes.USER_TYPE_GET, user.username, 'success');
 
                 res.status(200).send(user)
             } else {
-                log(statusTypes.USER_ERROR_CREDENTIALS, user.username, 'error');
+                common.log(statusTypes.USER_ERROR_CREDENTIALS, user.username, 'error');
 
                 res.status(401).send('Incorrect credentials')
             }
         } else {
-            log(statusTypes.USER_ERROR_USER, user.username, 'fail');
+            common.log(statusTypes.USER_ERROR_USER, user.username, 'fail');
 
             res.status(404).send('Could not find user')
         }
 
     } catch {
-        log(statusTypes.USER_ERROR_TOKEN, user.username, 'fail');
+        common.log(statusTypes.USER_ERROR_TOKEN, req.query.username, 'fail');
 
         res.status(401).send('Must use a valid token')
     }
