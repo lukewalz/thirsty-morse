@@ -65,7 +65,6 @@ function Matchup({ ...props }) {
                 game_id={props.game.id}
                 game_date={props.game.date}
                 sport={props.sport}
-                setDoneLoading={props.setDoneLoading}
             />
             <Alert color="danger" isOpen={alertVisible} toggle={onDismiss}>
                 Game is finished or in progress

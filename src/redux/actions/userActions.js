@@ -3,7 +3,6 @@ import * as lspnApi from "../../api/lspnApi";
 import Cookies from 'universal-cookie';
 
 export function operationSuccess(user, error) {
-    console.log(user)
     if (user !== null) {
         return {
             type: types.API_SUCCESS, payload:
@@ -21,6 +20,14 @@ export function operationSuccess(user, error) {
                 isLoading: false,
                 error: error
             }
+        }
+    }
+}
+
+export function startLoading() {
+    return {
+        type: types.SET_LOADER, payload: {
+            isLoading: true
         }
     }
 }
@@ -71,6 +78,8 @@ export function logout() {
 
 export function placeWager(wager) {
     return async function (dispatch) {
+        dispatch(startLoading())
+
         return lspnApi
             .placeWager(wager)
             .then(w => {
@@ -84,6 +93,8 @@ export function placeWager(wager) {
 
 export function loadUpdatedWagers() {
     return async function (dispatch) {
+        dispatch(startLoading())
+
         return lspnApi
             .getWagers()
             .then(w => {

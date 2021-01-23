@@ -154,9 +154,8 @@ function WagerModal({ placeWager, ...props }) {
             sport: props.sport,
             matchup: props.teams.map(t => t.team.abbreviation).join(' vs ')
         }
-        props.setDoneLoading(false);
 
-        placeWager(wager).then(() => props.setDoneLoading(true));
+        placeWager(wager);
     }
 }
 

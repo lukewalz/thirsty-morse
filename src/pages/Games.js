@@ -11,26 +11,25 @@ import {
 
 
 
-function Games({ loadGames, placeWager, loadUpdatedWagers, user, games }) {
+function Games({ loadGames, loadUpdatedWagers, user, games }) {
     var { sport, week } = useParams();
 
     useEffect(() => {
         loadGames(sport, week);
-        loadUpdatedWagers().then(() => setDoneLoading(true))
+        loadUpdatedWagers();
 
         const interval = setInterval(() => {
             loadGames(sport, week)
-        }, 10000)
+        }, 5000)
 
         return () => clearInterval(interval)
 
     }, [loadGames, sport, week]);
 
-    const [doneLoading, setDoneLoading] = useState(false);
-
+    console.log(user.isLoading);
 
     return (
-        doneLoading ?
+        !user.isLoading ?
             <div className="App">
                 {games ? games.sort((a, b) => a.date > b.date ? 1 : -1)
                     .map(
@@ -38,7 +37,7 @@ function Games({ loadGames, placeWager, loadUpdatedWagers, user, games }) {
                             if (item.status.type.name !== 'STATUS_CANCELED'
                                 && item.status.type.name !== 'STATUS_POSTPONED'
                             ) {
-                                return <Card key={index} style={{ margin: 20 }}><Matchup setDoneLoading={setDoneLoading} sport={sport} game={item} wagers={mapGamesToWagers(item, user.user.wagers)} /></Card>
+                                return <Card key={index} style={{ margin: 20 }}><Matchup sport={sport} game={item} wagers={mapGamesToWagers(item, user.user.wagers)} /></Card>
                             }
                             else {
                                 return []
@@ -57,7 +56,6 @@ function Games({ loadGames, placeWager, loadUpdatedWagers, user, games }) {
 
 const mapDispatchToProps = {
     loadGames,
-    placeWager,
     loadUpdatedWagers
 };
 

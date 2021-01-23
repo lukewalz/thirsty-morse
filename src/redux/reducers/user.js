@@ -22,11 +22,11 @@ export default function user(
     switch (action.type) {
         case API_SUCCESS:
             localStorage.setItem("user", JSON.stringify(action.payload.user));
-            return { ...state, isAuthUser: true, user: action.payload.user, error: null };
+            return { ...state, isAuthUser: true, user: action.payload.user, error: null, isLoading: false };
         case API_ERROR:
             return { ...state, isAuthUser: false, user: {}, error: action.payload.error };
         case SET_LOADER:
-            return { ...state, isLoading: action.payload };
+            return { ...state, isLoading: action.payload.isLoading };
         case LOGOUT:
             return { ...state, isAuthUser: false, user: {} };
         default:
