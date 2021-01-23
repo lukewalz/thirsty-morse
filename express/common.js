@@ -20,10 +20,21 @@ async function determineResults(wager, user) {
     const newWager = Object.assign({}, wager);
 
     if (gameStatus.completed === false) {
-        newWager.status = gameStatus.shortDetail.toLowerCase;
-        newWager.outcome = 'push';
-        addResultObject(newWager, user);
-        return;
+        if (gameStatus.state === 'in') {
+            console.log(gameStatus)
+            newWager.status = 'pending';
+            newWager.outcome = 'tbd';
+            addResultObject(newWager, user);
+            return;
+        }
+        else {
+            console.log(gameStatus)
+            newWager.status = gameStatus.shortDetail.toLowerCase();
+            newWager.outcome = 'push';
+            addResultObject(newWager, user);
+            return;
+        }
+
     }
 
     newWager.status = 'final';

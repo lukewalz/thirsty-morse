@@ -49,7 +49,7 @@ function MyAccount({ loadUpdatedWagers, loadGames, user }) {
                                 </TableCell>
                                 <TableCell align="right">{row.selection}</TableCell>
                                 <TableCell align="right">{row.amount}</TableCell>
-                                <TableCell align="right">{row.status.toUpperCase()}</TableCell>
+                                <TableCell align="right">{row.status ? row.status.toUpperCase() : ''}</TableCell>
                                 <TableCell align="right">{row.outcome.toUpperCase()}</TableCell>
                             </TableRow>
                         )) : []}
