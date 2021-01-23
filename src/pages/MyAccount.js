@@ -32,6 +32,7 @@ function MyAccount({ loadUpdatedWagers, loadGames, user }) {
                             <TableCell align="right">Game Date</TableCell>
                             <TableCell align="right">Selection</TableCell>
                             <TableCell align="right">Amount</TableCell>
+                            <TableCell align="right">Status</TableCell>
                             <TableCell align="right">Result</TableCell>
                         </TableRow>
                     </TableHead>
@@ -48,6 +49,7 @@ function MyAccount({ loadUpdatedWagers, loadGames, user }) {
                                 </TableCell>
                                 <TableCell align="right">{row.selection}</TableCell>
                                 <TableCell align="right">{row.amount}</TableCell>
+                                <TableCell align="right">{row.status.toUpperCase()}</TableCell>
                                 <TableCell align="right">{row.outcome.toUpperCase()}</TableCell>
                             </TableRow>
                         )) : []}

@@ -33,8 +33,6 @@ router.post('/', async (req, res) => {
 
                 const returnableUser = await User.findOne({ _id: req.body._id });
 
-                common.log(statusTypes.WAGER_TYPE_ADD, returnableUser.username, 'success');
-
 
                 res.status(200).send(returnableUser)
             } else {
