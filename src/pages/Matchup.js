@@ -15,18 +15,6 @@ import Paper from '@material-ui/core/Paper';
 
 
 function Matchup({ ...props }) {
-
-
-    const [firstTeamLineIsFav] = useState(
-        props.game.odds ? props.game.odds.awayTeamOdds.favorite
-            ? { line: parseFloat(props.game.odds.details?.split(' -')[1]), isFav: false }
-            : props.game.odds.details ? { line: -parseFloat(props.game.odds.details.split(' -')[1]), isFav: true } : { undefined } : { undefined }
-    );
-    const [secondTeamLineIsFav] = useState(
-        props.game.odds ? props.game.odds.homeTeamOdds.favorite
-            ? { line: parseFloat(props.game.odds.details?.split(' -')[1]), isFav: false }
-            : props.game.odds ? { line: -parseFloat(props.game.odds.details.split(' -')[1]), isFav: true } : { undefined } : { undefined }
-    );
     const [firstTeamScore] = useState(parseInt(props.game.competitors[0].score));
     const [secondTeamScore] = useState(parseInt(props.game.competitors[1].score));
     const [actualOvers] = useState(Number(props.game.competitors[0].score) + Number(props.game.competitors[1].score));
@@ -57,7 +45,7 @@ function Matchup({ ...props }) {
             <WagerModal
                 teams={props.game.competitors}
                 open={openModal}
-                line={[firstTeamLineIsFav, secondTeamLineIsFav]}
+                line={props.game.odds}
                 overUnder={props.game.odds ? props.game.odds.overUnder : null}
                 disabled={disabled}
                 selectedWager={selectedWager}
@@ -96,9 +84,13 @@ function Matchup({ ...props }) {
                                 </div>
                                 <div className='teamTitle'>{props.game.competitors[0].team.displayName}</div>
                             </div>
-                            {firstTeamLineIsFav.line}
+                            <div>{props.game.odds.homeTeamOdds.moneyLine}</div>
+
+                            <div>{(props.game.odds.spread !== 0 ? props.game.odds.spread : 'PICK') + ' (' + props.game.odds.homeTeamOdds.spreadOdds + ')'}</div>
                             {props.game.status.type.name !== 'STATUS_SCHEDULED' ?
-                                <div xs='7'><Progress value={((firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line) < 0 ? 0 : (firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line}></Progress></div> : []}
+                                <div xs='7'>
+                                    <Progress value={(firstTeamScore - secondTeamScore) + props.game.odds.spread} />
+                                </div> : []}
                         </div>
                         <div className='teamSection'>
                             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
@@ -111,6 +103,7 @@ function Matchup({ ...props }) {
                                     marginRight: 'auto',
                                     alignItems: 'center'
                                 }}>
+
                                     <img alt={props.game.competitors[1].team.displayName} src={props.game.competitors[1].team.logos ? props.game.competitors[1].team.logos[0].href : 'https://webstockreview.net/images/circle-clipart-transparent-background-7.jpg'} />
                                     {props.game.status.type.name !== "STATUS_SCHEDULED" ?
 
@@ -120,9 +113,13 @@ function Matchup({ ...props }) {
                                 </div>
                                 <div className='teamTitle'>{props.game.competitors[1].team.displayName}</div>
                             </div>
-                            {secondTeamLineIsFav.line}
+                            <div>{props.game.odds.awayTeamOdds.moneyLine}</div>
+                            <div> {(props.game.odds.spread !== 0 ? -props.game.odds.spread : 'PICK') + ' (' + props.game.odds.awayTeamOdds.spreadOdds + ')'}
+                            </div>
                             {props.game.status.type.name !== 'STATUS_SCHEDULED' ?
-                                <div xs='7'><Progress value={((secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line) < 0 ? 0 : (secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line}></Progress></div> : []}
+                                <div xs='7'>
+                                    <Progress value={(secondTeamScore - firstTeamScore) - props.game.odds.spread} />
+                                </div> : []}
                         </div>
                     </Col>
                 </Row>
