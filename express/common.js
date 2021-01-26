@@ -21,7 +21,6 @@ async function determineResults(wager, user) {
 
     if (gameStatus.completed === false) {
         if (gameStatus.state === 'in') {
-            console.log(gameStatus)
             newWager.status = 'pending';
             newWager.outcome = 'tbd';
             addResultObject(newWager, user);
@@ -105,7 +104,35 @@ async function determineResults(wager, user) {
         }
 
     } else {
-
+        const selection = wager.selection.split('@');
+        if (selection[0] === home.team) {
+            if (parseInt(home.score) > parseInt(away.score)) {
+                newWager.outcome = 'win'
+                addResultObject(newWager, user)
+            }
+            else if (parseInt(home.score) === parseInt(away.score)) {
+                newWager.outcome = 'push'
+                addResultObject(newWager, user)
+            }
+            else {
+                newWager.outcome = 'loss'
+                addResultObject(newWager, user)
+            }
+        }
+        else {
+            if (parseInt(home.score) < parseInt(away.score)) {
+                newWager.outcome = 'win'
+                addResultObject(newWager, user)
+            }
+            else if (parseInt(home.score) === parseInt(away.score)) {
+                newWager.outcome = 'push'
+                addResultObject(newWager, user)
+            }
+            else {
+                newWager.outcome = 'loss'
+                addResultObject(newWager, user)
+            }
+        }
     }
 }
 
@@ -123,8 +150,42 @@ async function log(type, user, funct) {
 }
 
 async function addResultObject(newWager, user) {
+    var amount = await calculatePayout(newWager.boost, newWager.amount, newWager.outcome);
+    newWager.amount = amount;
     var res = await User.findOneAndUpdate({ "_id": user._id, "wagers.wager_date": newWager.wager_date },
         { "wagers.$": newWager });
+}
+
+async function calculatePayout(boost, amountBet, result) {
+    if (boost) {
+        var rate = 0;
+        if (boost > 0) {
+            rate = ((parseInt(boost) / 100) * amountBet)
+        }
+        else {
+            rate = ((100 / parseInt(boost)) * amountBet)
+        }
+
+        if (result === 'win') {
+            return rate;
+        }
+        else if (result === 'loss') {
+            return -parseInt(rate)
+        } else {
+            return 0
+        }
+    }
+    else {
+        if (result === 'win') {
+            return amountBet;
+        }
+        else if (result === 'loss') {
+            return -amountBet
+        } else {
+            return 0
+        }
+    }
+
 }
 
 module.exports = { determineResults, log };

@@ -31,6 +31,7 @@ function MyAccount({ loadUpdatedWagers, loadGames, user }) {
                             <TableCell align="right">Game</TableCell>
                             <TableCell align="right">Game Date</TableCell>
                             <TableCell align="right">Selection</TableCell>
+                            <TableCell align="right">Type</TableCell>
                             <TableCell align="right">Amount</TableCell>
                             <TableCell align="right">Status</TableCell>
                             <TableCell align="right">Result</TableCell>
@@ -48,6 +49,7 @@ function MyAccount({ loadUpdatedWagers, loadGames, user }) {
                                     {formatDate(row.game_date)}
                                 </TableCell>
                                 <TableCell align="right">{row.selection}</TableCell>
+                                <TableCell align="right">{row.wager_type.toUpperCase()}</TableCell>
                                 <TableCell align="right">{row.amount}</TableCell>
                                 <TableCell align="right">{row.status ? row.status.toUpperCase() : ''}</TableCell>
                                 <TableCell align="right">{row.outcome.toUpperCase()}</TableCell>

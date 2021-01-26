@@ -29,6 +29,8 @@ const Schema = Joi.object({
         .required(),
     game_date: Joi.number()
         .integer()
+        .required(),
+    boost: Joi.number()
         .required()
 })
 
