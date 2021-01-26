@@ -28,7 +28,6 @@ async function determineResults(wager, user) {
             return;
         }
         else {
-            console.log(gameStatus)
             newWager.status = gameStatus.shortDetail.toLowerCase();
             newWager.outcome = 'push';
             addResultObject(newWager, user);

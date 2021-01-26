@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 import { logout } from "../redux/actions/userActions";
 
-function NavBar({ user, logout, ...props }) {
+function NavBar({ user, logout }) {
     return (
         <AppBar position="static" style={{ display: "flex", backgroundColor: '#78b13f' }}>
             <Toolbar>

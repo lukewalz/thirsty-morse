@@ -41,7 +41,7 @@ function Matchup({ ...props }) {
 
     const onDismiss = () => setAlertVisible(false);
 
-    function handleWagerClick(w) {
+    async function handleWagerClick(w) {
         setDisabled(false);
         setSelectedWager(w);
         setOpenModal(true);
@@ -71,7 +71,7 @@ function Matchup({ ...props }) {
              </Alert>
             <div onClick={() => { props.game.status.type.state !== 'pre' ? setAlertVisible(true) : handleRowClick() }}>
                 <Row>
-                    <Col xs="5">{props.game.status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.date).toLocaleString() : props.game.status.type.name === 'STATUS_FINAL' && props.game.status.type.name === 'STATUS_HALF' ? props.game.status.type.description : props.game.status.type.description + ' ' + props.game.status.type.detail}</Col>
+                    <Col xs="5">{props.game.status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.date).toLocaleString() : props.game.status.type.name === 'STATUS_FINAL' && props.game.status.type.name === 'STATUS_HALF' ? props.game.status.type.description : props.game.status.type.completed === true ? props.game.status.type.description : props.game.status.type.description + ' ' + props.game.status.type.detail}</Col>
                     <Col xs="5">{ }</Col>
                 </Row>
                 <Row>
@@ -98,7 +98,7 @@ function Matchup({ ...props }) {
                             </div>
                             {firstTeamLineIsFav.line}
                             {props.game.status.type.name !== 'STATUS_SCHEDULED' ?
-                                <div xs='7'><Progress value={((firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line) < 0 ? 0 : (firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line}>COVERING</Progress></div> : []}
+                                <div xs='7'><Progress value={((firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line) < 0 ? 0 : (firstTeamScore - secondTeamScore) + firstTeamLineIsFav.line}></Progress></div> : []}
                         </div>
                         <div className='teamSection'>
                             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
@@ -122,7 +122,7 @@ function Matchup({ ...props }) {
                             </div>
                             {secondTeamLineIsFav.line}
                             {props.game.status.type.name !== 'STATUS_SCHEDULED' ?
-                                <div xs='7'><Progress value={((secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line) < 0 ? 0 : (secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line}>COVERING</Progress></div> : []}
+                                <div xs='7'><Progress value={((secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line) < 0 ? 0 : (secondTeamScore - firstTeamScore) + secondTeamLineIsFav.line}></Progress></div> : []}
                         </div>
                     </Col>
                 </Row>
@@ -186,7 +186,7 @@ function Matchup({ ...props }) {
                 </TableContainer>
             </Collapse>
 
-        </div >
+        </div>
     )
 }
 

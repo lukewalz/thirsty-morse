@@ -135,7 +135,7 @@ function WagerModal({ placeWager, ...props }) {
         </Dialog>)
     }
 
-    function handleClick() {
+    async function handleClick() {
         if (!wagerType || !selection || !amount) {
             console.log('All fields are required');
             return;
