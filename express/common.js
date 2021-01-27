@@ -150,8 +150,9 @@ async function log(type, user, funct) {
 }
 
 async function addResultObject(newWager, user) {
-    var amount = await calculatePayout(newWager.boost, newWager.amount, newWager.outcome);
+    var amount = await calculatePayout(newWager.boost, Math.abs(newWager.amount), newWager.outcome);
     newWager.amount = amount;
+    if (newWager.outcome === 'loss') console.log(newWager)
     var res = await User.findOneAndUpdate({ "_id": user._id, "wagers.wager_date": newWager.wager_date },
         { "wagers.$": newWager });
 }
@@ -170,9 +171,9 @@ async function calculatePayout(boost, amountBet, result) {
             return rate;
         }
         else if (result === 'loss') {
-            return -parseInt(rate)
+            return (parseInt(-ate)).toString()
         } else {
-            return 0
+            return "0"
         }
     }
     else {
@@ -180,9 +181,9 @@ async function calculatePayout(boost, amountBet, result) {
             return amountBet;
         }
         else if (result === 'loss') {
-            return -amountBet
+            return (parseInt(-amountBet)).toString()
         } else {
-            return 0
+            return "0"
         }
     }
 
