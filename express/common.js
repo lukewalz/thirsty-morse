@@ -171,7 +171,7 @@ async function calculatePayout(boost, amountBet, result) {
             return rate;
         }
         else if (result === 'loss') {
-            return (parseInt(-ate)).toString()
+            return (parseInt(rate)).toString()
         } else {
             return "0"
         }
