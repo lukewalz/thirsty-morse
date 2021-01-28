@@ -13,7 +13,6 @@ export function operationSuccess(user, error) {
         }
     };
 }
-}
 
 export function startLoading() {
     return {
