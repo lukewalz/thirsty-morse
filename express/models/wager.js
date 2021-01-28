@@ -31,7 +31,9 @@ const Schema = Joi.object({
         .integer()
         .required(),
     boost: Joi.number()
-        .required()
+        .required(),
+    result: Joi.number()
+        .integer()
 })
 
 const Wager = new Mongoose.model('Wagers',

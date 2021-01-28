@@ -3,25 +3,16 @@ import * as lspnApi from "../../api/lspnApi";
 import Cookies from 'universal-cookie';
 
 export function operationSuccess(user, error) {
-    if (user !== null) {
-        return {
-            type: types.API_SUCCESS, payload:
-            {
-                isAuthUser: true,
-                user: user,
-                isLoading: false,
-                error: error
-            }
-        };
-    } else {
-        return {
-            type: types.API_ERROR, payload:
-            {
-                isLoading: false,
-                error: error
-            }
+    return {
+        type: types.API_SUCCESS, payload:
+        {
+            isAuthUser: true,
+            user: user,
+            isLoading: false,
+            error: error
         }
-    }
+    };
+}
 }
 
 export function startLoading() {
@@ -49,7 +40,7 @@ export function login(username, password) {
                 return dispatch(operationSuccess(user, null))
             })
             .catch(error => {
-                return dispatch(operationSuccess(null, error))
+                console.log(error)
             });
     };
 }
@@ -62,7 +53,7 @@ export function register(username, password, firstName, lastName) {
                 return dispatch(operationSuccess(user, null))
             })
             .catch(error => {
-                return dispatch(operationSuccess(null, error))
+                console.log(error)
             });
     };
 }
@@ -86,7 +77,7 @@ export function placeWager(wager) {
                 return dispatch(operationSuccess(w, null))
             })
             .catch(error => {
-                return dispatch(operationSuccess(null, error))
+                console.log(error)
             });
     };
 }
