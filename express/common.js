@@ -15,7 +15,7 @@ async function determineResults(wager, user) {
         gameStatus = r.gamepackageJSON.header.competitions[0].status.type;
         home = { score: r.__gamepackage__.homeTeam.score, team: r.__gamepackage__.homeTeam.team.abbreviation };
         away = { score: r.__gamepackage__.awayTeam.score, team: r.__gamepackage__.awayTeam.team.abbreviation };
-    }).catch(er => console.log(er));
+    }).catch(er => new Error(er));
 
     const newWager = Object.assign({}, wager);
 

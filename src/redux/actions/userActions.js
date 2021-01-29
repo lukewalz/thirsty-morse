@@ -59,7 +59,7 @@ export function login(username, password) {
                 return dispatch(loginUserSuccess(user))
             })
             .catch(error => {
-                console.log(error)
+                throw error;
             });
     };
 }
@@ -72,7 +72,7 @@ export function register(username, password, firstName, lastName) {
                 return dispatch(addUserSuccess(user))
             })
             .catch(error => {
-                console.log(error)
+                throw error;
             });
     };
 }
@@ -94,7 +94,7 @@ export function placeWager(wager) {
                 return dispatch(placeWagerSuccess(w))
             })
             .catch(error => {
-                console.log(error)
+                throw error;
             });
     };
 }
@@ -107,7 +107,7 @@ export function loadUpdatedWagers() {
                 return dispatch(loadWagersSuccess(wagers))
             })
             .catch(error => {
-                console.log(error)
+                throw error;
             });
     }
 }

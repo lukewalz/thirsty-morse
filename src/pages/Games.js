@@ -18,8 +18,6 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
 
         loadGames(sport, week);
 
-        console.log('------------------------------------------------------')
-
         const interval = setInterval(() => {
             loadGames(sport, week)
         }, 60000)
