@@ -43,7 +43,7 @@ router.get('/', async (req, res) => {
             if (user._id == tokenId) {
                 common.log(statusTypes.USER_TYPE_GET, user.username, 'success');
 
-                res.status(200).send(user)
+                res.status(200).send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token']))
             } else {
                 common.log(statusTypes.USER_ERROR_CREDENTIALS, user.username, 'error');
 

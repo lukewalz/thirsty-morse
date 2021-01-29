@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AppBar, Toolbar, Button, Typography, Badge } from "@material-ui/core";
 import { connect } from "react-redux";
@@ -7,18 +7,19 @@ import { logout } from "../redux/actions/userActions";
 
 function NavBar({ logout, user }) {
 
-    function getBalance() {
-        if (user.wagers > 0) {
+    useEffect(() => {
+        function getBalance() {
             var balance = 0;
-            user.wagers.filter(e => e.status === 'final').map(w => {
-                balance += parseInt(w.result);
-            });
-            return '$' + balance;
+            user.wagers > 0 ? user.wagers.filter(e => e.status === 'final').map(w => {
+                return balance += parseInt(w.result);
+            }) : setBalance(0);
+            setBalance(balance);
         }
-        else {
-            return '$0'
-        }
-    }
+        getBalance();
+    }, [user.wagers]);
+
+    const [balance, setBalance] = useState();
+
 
     return (
         <AppBar position="static" style={{ display: "flex", backgroundColor: '#78b13f' }}>
@@ -27,7 +28,7 @@ function NavBar({ logout, user }) {
                 <div style={{ marginLeft: "auto" }}>
                     {user.isAuthUser ? (
                         <div>
-                            <Badge>{getBalance(user)}</Badge>
+                            <Badge>{balance}</Badge>
                             <Link to="/home">
                                 <Button>Dashboard</Button>
                             </Link>

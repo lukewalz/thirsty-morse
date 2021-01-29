@@ -40,7 +40,7 @@ function MyAccount({ loadUpdatedWagers, user }) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {user && user.wagers ? user.wagers.map((row) => (
+                        {user.wagers.map((row) => (
                             <TableRow key={row.wager_date}>
                                 <TableCell component="th" scope="row">
                                     {formatDate(row.wager_date)}
@@ -58,7 +58,7 @@ function MyAccount({ loadUpdatedWagers, user }) {
                                 <TableCell style={row.outcome.toLowerCase() === 'win' ? { color: 'green' } : row.outcome.toLowerCase() === 'loss' ? { color: 'red' } : []} align="right">{row.outcome.toUpperCase()}</TableCell>
                                 <TableCell align="right">{row.result ? Math.round(row.result) : row.result}</TableCell>
                             </TableRow>
-                        )) : []}
+                        ))}
                     </TableBody>
                 </Table>
             </TableContainer>

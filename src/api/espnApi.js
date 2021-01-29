@@ -30,7 +30,7 @@ export async function getGames(league) {
                 };
                 dto.push(game);
             }
-
+            return true;
         })
 
         return dto

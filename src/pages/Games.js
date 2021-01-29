@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import '../App.css';
 import { loadGames } from "../redux/actions/gameActions";
 import { loadUpdatedWagers } from "../redux/actions/userActions"
 import { connect } from "react-redux";
+import { Card } from 'reactstrap';
 import Matchup from './Matchup'
-import { Card, Spinner } from 'reactstrap';
 import {
     useParams
 } from "react-router-dom";
@@ -17,11 +17,11 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
         loadGames(sport, week);
         loadUpdatedWagers();
 
-        // const interval = setInterval(() => {
-        //     loadGames(sport, week)
-        // }, 5000)
+        const interval = setInterval(() => {
+            loadGames(sport, week)
+        }, 5000)
 
-        // return () => clearInterval(interval)
+        return () => clearInterval(interval)
 
     }, []);
 

@@ -57,7 +57,7 @@ router.get('/', async (req, res) => {
         const user = await User.findOne({ _id: req.query.id });
         if (user) {
             if (user._id == tokenId) {
-
+                console.log(user._id, tokenId)
                 if (user.wagers) {
                     user.wagers.map(w => {
                         if (w.game_date <= Date.now()) {

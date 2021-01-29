@@ -21,10 +21,7 @@ function Matchup({ placeWager, user, ...props }) {
 
     useEffect(() => {
         var t = user.wagers?.filter(w => w.game_id === props.game.id);
-        console.log(t)
         setWagers(t);
-
-
     }, [user.wagers, props.game]);
 
     const [firstTeamScore] = useState(parseInt(props.game.competitors[0].score));
