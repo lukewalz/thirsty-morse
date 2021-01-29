@@ -10,7 +10,7 @@ function NavBar({ logout, user }) {
     useEffect(() => {
         function getBalance() {
             var balance = 0;
-            user.wagers > 0 ? user.wagers.filter(e => e.status === 'final').map(w => {
+            user.wagers.length > 0 ? user.wagers.filter(e => e.status === 'final').map(w => {
                 return balance += parseInt(w.result);
             }) : setBalance(0);
             setBalance(balance);

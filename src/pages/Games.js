@@ -14,12 +14,15 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
     var { sport, week } = useParams();
 
     useEffect(() => {
-        loadGames(sport, week);
         loadUpdatedWagers();
+
+        loadGames(sport, week);
+
+        console.log('------------------------------------------------------')
 
         const interval = setInterval(() => {
             loadGames(sport, week)
-        }, 5000)
+        }, 60000)
 
         return () => clearInterval(interval)
 
@@ -27,20 +30,20 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
 
     return (
         <div className="App">
-            {games
-                .map(
+            {games ?
+                games.map(
                     (item, index) => {
                         if (item.status.type.name !== 'STATUS_CANCELED'
                             && item.status.type.name !== 'STATUS_POSTPONED'
                         ) {
-                            return <Card key={index} style={{ margin: 20 }}><Matchup sport={sport} game={item} /></Card>
+                            return <Card key={item.id} style={{ margin: 20 }}><Matchup sport={sport} game={item} /></Card>
                         }
                         else {
                             return []
                         }
 
                     }
-                )}
+                ) : []}
         </div>
     )
 }

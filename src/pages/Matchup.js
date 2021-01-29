@@ -20,7 +20,7 @@ function Matchup({ placeWager, user, ...props }) {
     const [wagers, setWagers] = useState(user.wagers);
 
     useEffect(() => {
-        var t = user.wagers?.filter(w => w.game_id === props.game.id);
+        var t = user.wagers.length > 0 ? user.wagers.filter(w => w.game_id === props.game.id) : [];
         setWagers(t);
     }, [user.wagers, props.game]);
 
@@ -75,7 +75,7 @@ function Matchup({ placeWager, user, ...props }) {
                     <Col>
                         <div className='teamSection'>
                             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                                {wagers ? wagers.map((e, i) => e.selection.split('@')[0] === team1Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>{e.status !== 'final' ? '$' + e.amount : e.outcome}</Button> : '') : ''}
+                                {wagers.length > 0 ? wagers.map((e, i) => e.selection.split('@')[0] === team1Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>{e.status !== 'final' ? '$' + e.amount : e.outcome}</Button> : '') : ''}
                             </div>
                             <div>
                                 <div style={{
@@ -103,7 +103,7 @@ function Matchup({ placeWager, user, ...props }) {
                         </div>
                         <div className='teamSection'>
                             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                                {wagers ? wagers.map((e, i) => e.selection.split('@')[0] === team2Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>{e.status !== 'final' ? '$' + e.amount : e.outcome}</Button> : '') : ''}
+                                {wagers.length > 0 ? wagers.map((e, i) => e.selection.split('@')[0] === team2Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>{e.status !== 'final' ? '$' + e.amount : e.outcome}</Button> : '') : ''}
                             </div>
                             <div>
                                 <div style={{

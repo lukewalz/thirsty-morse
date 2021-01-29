@@ -47,6 +47,11 @@ export function addUserSuccess(user) {
 }
 
 export function login(username, password) {
+    /// clear first
+    localStorage.removeItem("user");
+    const cookies = new Cookies();
+    cookies.remove('userSession');
+
     return async function (dispatch) {
         return lspnApi
             .login(username, password)

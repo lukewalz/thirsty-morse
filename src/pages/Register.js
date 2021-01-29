@@ -3,6 +3,10 @@ import { TextField, Typography, Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import { register } from "../redux/actions/userActions";
 import MuiAlert from "@material-ui/lab/Alert";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import CheckIcon from '@material-ui/icons/Check';
+
+
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -14,7 +18,7 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { registe
     const [lastName, setLastName] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState("");
-
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setErrors(props.user.error?.message)
@@ -25,7 +29,8 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { registe
             setErrors("Fields are required");
             return;
         }
-        props.register(email, password, firstName, lastName);
+        setLoading(true)
+        props.register(email, password, firstName, lastName).then(() => setLoading(false));
     };
 
     return (
@@ -39,7 +44,7 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { registe
                 fullWidth
                 className="form-input"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value.toLowerCase())}
             />
             <TextField
                 label="First Name"
@@ -73,9 +78,8 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { registe
                 className="form-input"
                 size="large"
                 onClick={submitForm}
-            >
-                Register
-      </Button>
+            >{loading ? <CheckIcon /> : 'REGISTER'}
+            </Button>
 
             {(props.errors || errors) && (
                 <Alert severity="error" onClick={() => setErrors(null)}>

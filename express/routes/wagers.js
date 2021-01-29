@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 const common = require('../common');
 require('dotenv').config();
 const statusTypes = require('../statusTypes');
-const { TramRounded } = require('@material-ui/icons');
 
 
 router.post('/', async (req, res) => {
@@ -57,14 +56,12 @@ router.get('/', async (req, res) => {
         const user = await User.findOne({ _id: req.query.id });
         if (user) {
             if (user._id == tokenId) {
-                console.log(user._id, tokenId)
                 if (user.wagers) {
                     user.wagers.map(w => {
                         if (w.game_date <= Date.now()) {
                             common.determineResults(w, user)
                         }
                     });
-
                     common.log(statusTypes.WAGER_TYPE_GET, user.username, 'success');
                     res.status(200).send(user.wagers);
                 }
@@ -73,7 +70,7 @@ router.get('/', async (req, res) => {
                 else {
                     common.log(statusTypes.WAGER_TYPE_GET, user.username, 'success: no wagers');
 
-                    res.status(200).send(user)
+                    res.status(200).send([])
                 }
 
 
@@ -88,8 +85,6 @@ router.get('/', async (req, res) => {
         }
 
     } catch (er) {
-        console.log(er)
-
         common.log(statusTypes.WAGER_ERROR_TOKEN, req.query.id, 'fail');
 
         res.status(401).send('Must use a valid token')
