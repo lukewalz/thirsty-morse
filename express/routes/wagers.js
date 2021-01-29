@@ -41,10 +41,9 @@ router.post('/', async (req, res) => {
         }
 
     } catch (er) {
-        console.log(er)
-        common.log(statusTypes.WAGER_ERROR_TOKEN, 'NA', 'fail');
-
         res.status(401).send('Must use a valid token')
+
+        throw new Error(er);
     }
 });
 
@@ -85,9 +84,9 @@ router.get('/', async (req, res) => {
         }
 
     } catch (er) {
-        common.log(statusTypes.WAGER_ERROR_TOKEN, req.query.id, 'fail');
-
         res.status(401).send('Must use a valid token')
+
+        throw new Error(er);
     }
 });
 

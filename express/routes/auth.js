@@ -10,29 +10,35 @@ const common = require('../common');
 
 
 router.post('/', async (req, res) => {
-    //  Now find the user by their email address
-    let user = await User.findOne({ username: req.body.username });
+    try {
+        //  Now find the user by their email address
+        let user = await User.findOne({ username: req.body.username });
 
-    if (!user) {
-        return res.status(400).send('Incorrect email or password.');
+        if (!user) {
+            return res.status(400).send('Incorrect email or password.');
+        }
+
+        // Then validate the Credentials in MongoDB match
+        // those provided in the request
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
+
+        if (!validPassword) {
+            console.log('Login failed');
+            return res.status(401).send('Incorrect email or password.');
+        }
+
+        console.log('Log in successful');
+        const token = jwt.sign({ _id: user._id }, process.env.API_KEY);
+
+        common.log(statusTypes.AUTH_TYPE, user.username, 'success');
+
+
+        res.status(200).contentType('application/json').send(JSON.stringify(token));
+
+    } catch (er) {
+        throw new Error(er);
     }
 
-    // Then validate the Credentials in MongoDB match
-    // those provided in the request
-    const validPassword = await bcrypt.compare(req.body.password, user.password);
-
-    if (!validPassword) {
-        console.log('Login failed');
-        return res.status(401).send('Incorrect email or password.');
-    }
-
-    console.log('Log in successful');
-    const token = jwt.sign({ _id: user._id }, process.env.API_KEY);
-
-    common.log(statusTypes.AUTH_TYPE, user.username, 'success');
-
-
-    res.status(200).contentType('application/json').send(JSON.stringify(token));
 });
 
 router.get("/", (req, res) => {

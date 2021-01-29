@@ -19,17 +19,23 @@ router.post('/', async (req, res) => {
     if (user) {
         return res.status(400).send('That user already exisits!');
     } else {
-        // Insert the new user if they do not exist yet
-        user = new User(_.pick(req.body, ['username', 'password', 'firstName', 'lastName']));
-        user.dateAdded = Date.now();
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(user.password, salt);
-        await user.save();
-        const token = jwt.sign({ _id: user._id }, process.env.API_KEY);
-        user.token = token;
-        common.log(statusTypes.USER_TYPE_ADD, user.username, 'success');
+        try {
+            // Insert the new user if they do not exist yet
+            user = new User(_.pick(req.body, ['username', 'password', 'firstName', 'lastName']));
+            user.dateAdded = Date.now();
+            const salt = await bcrypt.genSalt(10);
+            user.password = await bcrypt.hash(user.password, salt);
+            await user.save();
+            const token = jwt.sign({ _id: user._id }, process.env.API_KEY);
+            user.token = token;
+            common.log(statusTypes.USER_TYPE_ADD, user.username, 'success');
 
-        res.send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token']));
+            res.send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token']));
+
+        }
+        catch (er) {
+            throw new Error(er);
+        }
     }
 });
 
@@ -56,9 +62,10 @@ router.get('/', async (req, res) => {
         }
 
     } catch {
-        common.log(statusTypes.USER_ERROR_TOKEN, req.query.username, 'fail');
-
         res.status(401).send('Must use a valid token')
+
+        throw new Error(er);
+
     }
 })
 
