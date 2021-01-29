@@ -5,6 +5,11 @@ import App from "./App";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 
+
+function isPushNotificationSupported() {
+    return "serviceWorker" in navigator && "PushManager" in window;
+}
+
 Sentry.init({
     dsn: "https://42a79955943a43b5bfac3e08782eae65@o247578.ingest.sentry.io/5615152",
     integrations: [
@@ -15,6 +20,8 @@ Sentry.init({
     // for finer control
     tracesSampleRate: 1.0,
 });
+
+console.log(isPushNotificationSupported())
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(<App />, rootElement);
