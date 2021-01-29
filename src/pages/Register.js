@@ -4,8 +4,6 @@ import { connect } from "react-redux";
 import { register } from "../redux/actions/userActions";
 import MuiAlert from "@material-ui/lab/Alert";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import CheckIcon from '@material-ui/icons/Check';
-
 
 
 function Alert(props) {
@@ -39,14 +37,6 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { registe
                 Register
       </Typography>
             <TextField
-                label="Email"
-                variant="outlined"
-                fullWidth
-                className="form-input"
-                value={email}
-                onChange={e => setEmail(e.target.value.toLowerCase())}
-            />
-            <TextField
                 label="First Name"
                 variant="outlined"
                 fullWidth
@@ -63,6 +53,16 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { registe
                 onChange={e => setLastName(e.target.value)}
             />
             <TextField
+                label="Email"
+                variant="outlined"
+                fullWidth
+                type="email"
+                className="form-input"
+                value={email}
+                onChange={e => setEmail(e.target.value.toLowerCase())}
+            />
+
+            <TextField
                 label="Password"
                 variant="outlined"
                 fullWidth
@@ -78,7 +78,7 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { registe
                 className="form-input"
                 size="large"
                 onClick={submitForm}
-            >{loading ? <CheckIcon /> : 'REGISTER'}
+            >{loading ? <CircularProgress /> : 'REGISTER'}
             </Button>
 
             {(props.errors || errors) && (

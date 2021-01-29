@@ -22,6 +22,7 @@ function HomePage({ user }) {
                         <Widget image="https://static.www.nfl.com/image/upload/v1554321393/league/nvfr7ogywskqrfaiu38m.svg" />
                     </Link>
                 </Col>
+            </Row><Row>
                 <Col>
                     <Link to="/games/nba">
                         <Widget image="https://www.pngkit.com/png/full/89-893116_nba-logo-transparent-png-new-nba-finals-logo.png" />
