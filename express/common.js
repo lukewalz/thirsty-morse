@@ -152,7 +152,6 @@ async function log(type, user, funct) {
 async function addResultObject(newWager, user) {
     var amount = await calculatePayout(newWager.boost, Math.abs(newWager.amount), newWager.outcome);
     newWager.result = amount;
-    if (newWager.outcome === 'loss') console.log(newWager)
     var res = await User.findOneAndUpdate({ "_id": user._id, "wagers.wager_date": newWager.wager_date },
         { "wagers.$": newWager });
 }

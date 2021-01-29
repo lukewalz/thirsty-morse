@@ -17,7 +17,7 @@ function MyAccount({ loadUpdatedWagers, user }) {
 
     useEffect(() => {
         loadUpdatedWagers()
-    }, []);
+    }, [loadUpdatedWagers]);
 
     return (
         <Container>
@@ -56,7 +56,7 @@ function MyAccount({ loadUpdatedWagers, user }) {
                                 <TableCell align="right">{row.boost}</TableCell>
                                 <TableCell align="right">{row.status.toUpperCase()}</TableCell>
                                 <TableCell style={row.outcome.toLowerCase() === 'win' ? { color: 'green' } : row.outcome.toLowerCase() === 'loss' ? { color: 'red' } : []} align="right">{row.outcome.toUpperCase()}</TableCell>
-                                <TableCell align="right">{row.result}</TableCell>
+                                <TableCell align="right">{row.result ? Math.round(row.result) : row.result}</TableCell>
                             </TableRow>
                         )) : []}
                     </TableBody>
@@ -81,7 +81,7 @@ const mapDispatchToProps = {
 
 function mapStateToProps(state) {
     return {
-        user: state.user.user,
+        user: state.user,
         games: state.games
     };
 }

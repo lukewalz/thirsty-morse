@@ -10,11 +10,12 @@ import {
 } from "react-router-dom";
 
 
-function Games({ loadGames, games }) {
+function Games({ loadGames, games, loadUpdatedWagers }) {
     var { sport, week } = useParams();
 
     useEffect(() => {
         loadGames(sport, week);
+        loadUpdatedWagers();
 
         // const interval = setInterval(() => {
         //     loadGames(sport, week)

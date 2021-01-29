@@ -38,6 +38,14 @@ export function logoutUserSuccess() {
     };
 }
 
+export function addUserSuccess(user) {
+    return {
+        type: types.ADD_USER_SUCCESS,
+        payload: user
+
+    }
+}
+
 export function login(username, password) {
     return async function (dispatch) {
         return lspnApi
@@ -56,7 +64,7 @@ export function register(username, password, firstName, lastName) {
         return lspnApi
             .register(username, password, firstName, lastName)
             .then(user => {
-                return dispatch(operationSuccess(user, null))
+                return dispatch(addUserSuccess(user))
             })
             .catch(error => {
                 console.log(error)

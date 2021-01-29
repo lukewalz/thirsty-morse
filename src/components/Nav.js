@@ -8,9 +8,9 @@ import { logout } from "../redux/actions/userActions";
 function NavBar({ logout, user }) {
 
     function getBalance() {
-        if (user.user.wagers) {
+        if (user.wagers > 0) {
             var balance = 0;
-            user.user.wagers.filter(e => e.status === 'final').map(w => {
+            user.wagers.filter(e => e.status === 'final').map(w => {
                 balance += parseInt(w.result);
             });
             return '$' + balance;

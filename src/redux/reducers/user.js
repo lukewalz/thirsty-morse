@@ -27,7 +27,10 @@ export const user = produce((draft, action) => {
             break;
         }
         case types.ADD_USER_SUCCESS: {
-
+            localStorage.setItem("user", JSON.stringify(action.payload));
+            draft.user = action.payload;
+            draft.isAuthUser = isAuth();
+            break;
         }
         case types.LOGOUT_SUCCESS: {
             draft.user = {};
@@ -35,15 +38,11 @@ export const user = produce((draft, action) => {
             break
         }
         case types.ADD_WAGER_SUCCESS: {
-            var t = Object.assign({}, draft);
-            t.user.wagers.push(action.payload);
-            draft = t;
-            console.log(t);
+            draft.wagers.push(action.payload);
             break;
-
         }
         case types.GET_WAGERS_SUCCESS: {
-            draft.user.wagers = action.payload;
+            draft.wagers = action.payload;
             break;
         }
     }

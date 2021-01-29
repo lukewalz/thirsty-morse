@@ -11,18 +11,21 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { loadUpdatedWagers, placeWager } from "../redux/actions/userActions"
+import { placeWager } from "../redux/actions/userActions"
 
 
 
-function Matchup({ placeWager, loadUpdatedWagers, user, ...props }) {
+function Matchup({ placeWager, user, ...props }) {
+
+    const [wagers, setWagers] = useState(user.wagers);
+
     useEffect(() => {
-        loadUpdatedWagers().then(() => {
-            var t = user.user.wagers.filter(w => w.game_id === props.game.id);
-            console.log(t)
-            setWagers(t);
-        })
-    }, [props.game]);
+        var t = user.wagers?.filter(w => w.game_id === props.game.id);
+        console.log(t)
+        setWagers(t);
+
+
+    }, [user.wagers, props.game]);
 
     const [firstTeamScore] = useState(parseInt(props.game.competitors[0].score));
     const [secondTeamScore] = useState(parseInt(props.game.competitors[1].score));
@@ -34,7 +37,6 @@ function Matchup({ placeWager, loadUpdatedWagers, user, ...props }) {
     const [selectedWager, setSelectedWager] = useState();
     const [alertVisible, setAlertVisible] = useState(false);
     const [collapse, setCollapse] = useState(false);
-    const [wagers, setWagers] = useState()
 
 
     const onDismiss = () => setAlertVisible(false);
@@ -214,7 +216,6 @@ function determineOverUnderStatus(competition, actualOvers) {
 }
 
 const mapDispatchToProps = {
-    loadUpdatedWagers,
     placeWager
 }
 

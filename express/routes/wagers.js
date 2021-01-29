@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const common = require('../common');
 require('dotenv').config();
 const statusTypes = require('../statusTypes');
-const { useRadioGroup } = require('@material-ui/core');
+const { TramRounded } = require('@material-ui/icons');
 
 
 router.post('/', async (req, res) => {
@@ -21,10 +21,15 @@ router.post('/', async (req, res) => {
             if (user._id == tokenId) {
                 const updatedUser = await User.findByIdAndUpdate(
                     { _id: user._id },
-                    { $push: { wagers: req.body.wagers } }
+                    { $push: { wagers: req.body.wagers } },
+                    { new: true }
                 );
-                console.log(updatedUser.wagers[updatedUser.wagers.length - 1])
-                res.status(200).send(updatedUser.wagers[updatedUser.wagers.length - 1])
+
+                if (updatedUser.wagers > 0) {
+                    res.status(200).send(updatedUser.wagers)[0]
+                } else {
+                    res.status(200).send(updatedUser.wagers[updatedUser.wagers.length - 1])
+                }
             } else {
                 common.log(statusTypes.WAGER_ERROR_CREDENTIALS, user.username, 'fail');
 
@@ -52,9 +57,15 @@ router.get('/', async (req, res) => {
         const user = await User.findOne({ _id: req.query.id });
         if (user) {
             if (user._id == tokenId) {
-                if (user.wagers) {
-                    common.log(statusTypes.WAGER_TYPE_GET, user.username, 'success');
 
+                if (user.wagers) {
+                    user.wagers.map(w => {
+                        if (w.game_date <= Date.now()) {
+                            common.determineResults(w, user)
+                        }
+                    });
+
+                    common.log(statusTypes.WAGER_TYPE_GET, user.username, 'success');
                     res.status(200).send(user.wagers);
                 }
 
