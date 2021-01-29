@@ -3,11 +3,7 @@ import * as espnApi from "../../api/espnApi";
 
 
 export function loadGamesSuccess(games) {
-    if (games != null) {
-        return { type: types.LOAD_GAMES_SUCCESS, games };
-    } else {
-        return;
-    }
+    return { type: types.GET_GAMES_SUCCESS, payload: games };
 }
 
 export function loadGames(league, week) {

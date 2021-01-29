@@ -10,43 +10,37 @@ import {
 } from "react-router-dom";
 
 
-function Games({ loadGames, loadUpdatedWagers, user, games }) {
+function Games({ loadGames, games }) {
     var { sport, week } = useParams();
 
     useEffect(() => {
         loadGames(sport, week);
-        loadUpdatedWagers();
 
-        const interval = setInterval(() => {
-            loadGames(sport, week)
-        }, 5000)
+        // const interval = setInterval(() => {
+        //     loadGames(sport, week)
+        // }, 5000)
 
-        return () => clearInterval(interval)
+        // return () => clearInterval(interval)
 
     }, []);
 
     return (
-        !user.isLoading ?
-            <div className="App">
-                {games ? games.sort((a, b) => a.date > b.date ? 1 : -1)
-                    .map(
-                        (item, index) => {
-                            if (item.status.type.name !== 'STATUS_CANCELED'
-                                && item.status.type.name !== 'STATUS_POSTPONED'
-                            ) {
-                                return <Card key={index} style={{ margin: 20 }}><Matchup sport={sport} game={item} wagers={mapGamesToWagers(item, user.user.wagers)} /></Card>
-                            }
-                            else {
-                                return []
-                            }
-
+        <div className="App">
+            {games
+                .map(
+                    (item, index) => {
+                        if (item.status.type.name !== 'STATUS_CANCELED'
+                            && item.status.type.name !== 'STATUS_POSTPONED'
+                        ) {
+                            return <Card key={index} style={{ margin: 20 }}><Matchup sport={sport} game={item} /></Card>
                         }
-                    ) : []}
-            </div>
-            : <div className="App">
-                <Spinner style={{ marginTop: '30px' }} type="grow" color="dark" />
-            </div>
+                        else {
+                            return []
+                        }
 
+                    }
+                )}
+        </div>
     )
 }
 
@@ -56,22 +50,9 @@ const mapDispatchToProps = {
     loadUpdatedWagers
 };
 
-function mapGamesToWagers(game, wagers) {
-    var newWagers = Object.assign({}, game);
-    if (wagers) {
-        newWagers = wagers.filter(e => e.game_id === game.id);
-        return newWagers;
-    }
-    else {
-        return wagers;
-    }
-}
-
 function mapStateToProps(state) {
     return {
-
         games: state.games,
-        user: state.user
     };
 }
 

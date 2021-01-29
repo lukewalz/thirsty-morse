@@ -137,16 +137,16 @@ async function determineResults(wager, user) {
 }
 
 async function log(type, user, funct) {
-    const path = 'https://compassionate-almeida-c1cf6f.netlify.app/.netlify/functions/server/text';
-    var number = 4029812986;
-    var message = `${user} executed funtion: ${type} with a status: ${funct}`;
-    var carrier = 'verizon';
+    // const path = 'https://compassionate-almeida-c1cf6f.netlify.app/.netlify/functions/server/text';
+    // var number = 4029812986;
+    // var message = `${user} executed funtion: ${type} with a status: ${funct}`;
+    // var carrier = 'verizon';
 
-    fetch(path, {
-        method: 'POST', headers: {
-            'Content-Type': 'application/json'
-        }, body: JSON.stringify({ number, message, carrier })
-    })
+    // fetch(path, {
+    //     method: 'POST', headers: {
+    //         'Content-Type': 'application/json'
+    //     }, body: JSON.stringify({ number, message, carrier })
+    // })
 }
 
 async function addResultObject(newWager, user) {
@@ -168,12 +168,12 @@ async function calculatePayout(boost, amountBet, result) {
         }
 
         if (result === 'win') {
-            return rate;
+            return Math.abs(rate);
         }
         else if (result === 'loss') {
-            return (parseInt(rate)).toString()
+            return - + amountBet
         } else {
-            return "0"
+            return 0
         }
     }
     else {

@@ -4,21 +4,28 @@ import Cookies from 'universal-cookie';
 
 export function operationSuccess(user, error) {
     return {
-        type: types.API_SUCCESS, payload:
-        {
-            isAuthUser: true,
-            user: user,
-            isLoading: false,
-            error: error
-        }
+
     };
 }
 
-export function startLoading() {
+export function loginUserSuccess(user) {
     return {
-        type: types.SET_LOADER, payload: {
-            isLoading: true
-        }
+        type: types.LOGIN_SUCCESS,
+        payload: user
+    }
+}
+
+export function loadWagersSuccess(wagers) {
+    return {
+        type: types.GET_WAGERS_SUCCESS,
+        payload: wagers
+    }
+}
+
+export function placeWagerSuccess(wager) {
+    return {
+        type: types.ADD_WAGER_SUCCESS,
+        payload: wager
     }
 }
 
@@ -27,7 +34,7 @@ export function startLoading() {
 
 export function logoutUserSuccess() {
     return {
-        type: types.LOGOUT
+        type: types.LOGOUT_SUCCESS
     };
 }
 
@@ -36,7 +43,7 @@ export function login(username, password) {
         return lspnApi
             .login(username, password)
             .then(user => {
-                return dispatch(operationSuccess(user, null))
+                return dispatch(loginUserSuccess(user))
             })
             .catch(error => {
                 console.log(error)
@@ -68,12 +75,10 @@ export function logout() {
 
 export function placeWager(wager) {
     return async function (dispatch) {
-        dispatch(startLoading())
-
         return lspnApi
             .placeWager(wager)
             .then(w => {
-                return dispatch(operationSuccess(w, null))
+                return dispatch(placeWagerSuccess(w))
             })
             .catch(error => {
                 console.log(error)
@@ -83,15 +88,13 @@ export function placeWager(wager) {
 
 export function loadUpdatedWagers() {
     return async function (dispatch) {
-        dispatch(startLoading())
-
         return lspnApi
             .getWagers()
-            .then(w => {
-                return dispatch(operationSuccess(w, null))
+            .then(wagers => {
+                return dispatch(loadWagersSuccess(wagers))
             })
             .catch(error => {
-                return dispatch(operationSuccess(null, error))
+                console.log(error)
             });
     }
 }

@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const common = require('../common');
 require('dotenv').config();
 const statusTypes = require('../statusTypes');
+const { useRadioGroup } = require('@material-ui/core');
 
 
 router.post('/', async (req, res) => {
@@ -22,32 +23,22 @@ router.post('/', async (req, res) => {
                     { _id: user._id },
                     { $push: { wagers: req.body.wagers } }
                 );
-                if (updatedUser.wagers) {
-                    updatedUser.wagers.map(w => {
-                        if (w.game_date <= Date.now()) {
-                            common.determineResults(w, updatedUser)
-                        }
-                    })
-                }
-
-
-                const returnableUser = await User.findOne({ _id: req.body._id });
-
-
-                res.status(200).send(returnableUser)
+                console.log(updatedUser.wagers[updatedUser.wagers.length - 1])
+                res.status(200).send(updatedUser.wagers[updatedUser.wagers.length - 1])
             } else {
-                common.log(statusTypes.WAGER_ERROR_CREDENTIALS, returnableUser.username, 'fail');
+                common.log(statusTypes.WAGER_ERROR_CREDENTIALS, user.username, 'fail');
 
                 res.status(401).send('Incorrect credentials')
             }
         } else {
-            common.log(statusTypes.WAGER_ERROR_USER, returnableUser.username, 'fail');
+            common.log(statusTypes.WAGER_ERROR_USER, user.username, 'fail');
 
             res.status(404).send('Could not find user')
         }
 
     } catch (er) {
-        common.log(statusTypes.WAGER_ERROR_TOKEN, returnableUser.username, 'fail');
+        console.log(er)
+        common.log(statusTypes.WAGER_ERROR_TOKEN, 'NA', 'fail');
 
         res.status(401).send('Must use a valid token')
     }
@@ -57,21 +48,14 @@ router.get('/', async (req, res) => {
     const token = process.env.API_KEY;
     try {
         jwt.verify(req.headers['x-auth-token'], token);
-        const tokenId = jwt.decode(req.headers['x-auth-token'], token)._id;
+        const tokenId = jwt.decode(req.headers['x-auth-token'], token)._id;;
         const user = await User.findOne({ _id: req.query.id });
         if (user) {
             if (user._id == tokenId) {
                 if (user.wagers) {
-                    user.wagers.map(w => {
-                        if (w.game_date <= Date.now()) {
-                            common.determineResults(w, user)
-                        }
-                    });
-                    const returnableUser = await User.findOne({ _id: user._id });
+                    common.log(statusTypes.WAGER_TYPE_GET, user.username, 'success');
 
-                    common.log(statusTypes.WAGER_TYPE_GET, returnableUser.username, 'success');
-
-                    res.status(200).send(returnableUser)
+                    res.status(200).send(user.wagers);
                 }
 
 
@@ -93,6 +77,8 @@ router.get('/', async (req, res) => {
         }
 
     } catch (er) {
+        console.log(er)
+
         common.log(statusTypes.WAGER_ERROR_TOKEN, req.query.id, 'fail');
 
         res.status(401).send('Must use a valid token')

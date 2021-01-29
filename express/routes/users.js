@@ -41,13 +41,6 @@ router.get('/', async (req, res) => {
         const user = await User.findOne({ username: req.query.username });
         if (user) {
             if (user._id == tokenId) {
-                if (user.wagers) {
-                    user.wagers.map(w => {
-                        if (w.game_date <= Date.now()) {
-                            common.determineResults(w, user)
-                        }
-                    })
-                }
                 common.log(statusTypes.USER_TYPE_GET, user.username, 'success');
 
                 res.status(200).send(user)

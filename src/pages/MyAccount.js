@@ -13,11 +13,11 @@ import React, { useEffect } from 'react';
 
 
 
-function MyAccount({ loadUpdatedWagers, loadGames, user }) {
+function MyAccount({ loadUpdatedWagers, user }) {
 
     useEffect(() => {
         loadUpdatedWagers()
-    }, [loadGames, loadUpdatedWagers]);
+    }, []);
 
     return (
         <Container>
@@ -33,7 +33,9 @@ function MyAccount({ loadUpdatedWagers, loadGames, user }) {
                             <TableCell align="right">Selection</TableCell>
                             <TableCell align="right">Type</TableCell>
                             <TableCell align="right">Amount</TableCell>
+                            <TableCell align="right">Boost</TableCell>
                             <TableCell align="right">Status</TableCell>
+                            <TableCell align="right">Outcome</TableCell>
                             <TableCell align="right">Result</TableCell>
                         </TableRow>
                     </TableHead>
@@ -51,8 +53,10 @@ function MyAccount({ loadUpdatedWagers, loadGames, user }) {
                                 <TableCell align="right">{row.selection}</TableCell>
                                 <TableCell align="right">{row.wager_type.toUpperCase()}</TableCell>
                                 <TableCell align="right">{row.amount}</TableCell>
-                                <TableCell align="right">{row.status ? row.status.toUpperCase() : ''}</TableCell>
-                                <TableCell align="right">{row.outcome.toUpperCase()}</TableCell>
+                                <TableCell align="right">{row.boost}</TableCell>
+                                <TableCell align="right">{row.status.toUpperCase()}</TableCell>
+                                <TableCell style={row.outcome.toLowerCase() === 'win' ? { color: 'green' } : row.outcome.toLowerCase() === 'loss' ? { color: 'red' } : []} align="right">{row.outcome.toUpperCase()}</TableCell>
+                                <TableCell align="right">{row.result}</TableCell>
                             </TableRow>
                         )) : []}
                     </TableBody>

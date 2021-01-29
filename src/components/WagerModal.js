@@ -24,8 +24,10 @@ function WagerModal({ placeWager, ...props }) {
 
     function buildRadioGroup() {
         if (wagerType === 'ou') {
-            setBoost(100);
-            return <RadioGroup aria-label="selection" row name="selection" value={selection} onChange={val => setSelection(val.target.value)}>
+            return <RadioGroup aria-label="selection" row name="selection" value={selection} onChange={val => {
+                setSelection(val.target.value);
+                setBoost(100)
+            }}>
                 <FormControlLabel value={'o@' + props.overUnder} control={<Radio color='primary' />} label={'Over ' + props.overUnder} />
                 <FormControlLabel value={'u@' + props.overUnder} control={<Radio color='primary' />} label={'Under ' + props.overUnder} />
             </RadioGroup>
@@ -200,6 +202,10 @@ function WagerModal({ placeWager, ...props }) {
         }
 
         placeWager(wager);
+
+
+
+        props.handleClose();
     }
 }
 

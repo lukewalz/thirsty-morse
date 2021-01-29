@@ -1,12 +1,14 @@
 import * as types from "../actions/actionTypes";
+import produce from "immer"
 
-export default function games(state = [], action) {
+
+const INITIAL_STATE = []
+
+
+export const games = produce((draft, action) => {
     switch (action.type) {
-        case types.LOAD_GAMES_SUCCESS:
-
-            return action.games;
-
-        default:
-            return null;
+        case types.GET_GAMES_SUCCESS: {
+            return action.payload
+        }
     }
-}
+}, INITIAL_STATE);

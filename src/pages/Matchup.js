@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../App.css';
 import { connect } from "react-redux";
 import { Row, Col, Progress, Button, Alert, Collapse } from 'reactstrap';
@@ -11,10 +11,19 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { loadUpdatedWagers, placeWager } from "../redux/actions/userActions"
 
 
 
-function Matchup({ ...props }) {
+function Matchup({ placeWager, loadUpdatedWagers, user, ...props }) {
+    useEffect(() => {
+        loadUpdatedWagers().then(() => {
+            var t = user.user.wagers.filter(w => w.game_id === props.game.id);
+            console.log(t)
+            setWagers(t);
+        })
+    }, [props.game]);
+
     const [firstTeamScore] = useState(parseInt(props.game.competitors[0].score));
     const [secondTeamScore] = useState(parseInt(props.game.competitors[1].score));
     const [actualOvers] = useState(Number(props.game.competitors[0].score) + Number(props.game.competitors[1].score));
@@ -25,6 +34,7 @@ function Matchup({ ...props }) {
     const [selectedWager, setSelectedWager] = useState();
     const [alertVisible, setAlertVisible] = useState(false);
     const [collapse, setCollapse] = useState(false);
+    const [wagers, setWagers] = useState()
 
 
     const onDismiss = () => setAlertVisible(false);
@@ -66,7 +76,7 @@ function Matchup({ ...props }) {
                     <Col>
                         <div className='teamSection'>
                             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                                {props.wagers ? props.wagers.map((e, i) => e.selection.split('@')[0] === team1Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>{e.status !== 'final' ? '$' + e.amount : e.outcome}</Button> : '') : ''}
+                                {wagers ? wagers.map((e, i) => e.selection.split('@')[0] === team1Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>{e.status !== 'final' ? '$' + e.amount : e.outcome}</Button> : '') : ''}
                             </div>
                             <div>
                                 <div style={{
@@ -94,7 +104,7 @@ function Matchup({ ...props }) {
                         </div>
                         <div className='teamSection'>
                             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                                {props.wagers ? props.wagers.map((e, i) => e.selection.split('@')[0] === team2Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>{e.status !== 'final' ? '$' + e.amount : e.outcome}</Button> : '') : ''}
+                                {wagers ? wagers.map((e, i) => e.selection.split('@')[0] === team2Abbreviation ? <Button style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>{e.status !== 'final' ? '$' + e.amount : e.outcome}</Button> : '') : ''}
                             </div>
                             <div>
                                 <div style={{
@@ -129,7 +139,7 @@ function Matchup({ ...props }) {
                 <Row>
                     <Col xs='3'>
 
-                        <OverUnderWidget handleWagerClick={r => handleWagerClick(r)} wager={props.wagers}>{props.game.odds.overUnder}</OverUnderWidget>
+                        <OverUnderWidget handleWagerClick={r => handleWagerClick(r)} wager={wagers}>{props.game.odds.overUnder}</OverUnderWidget>
 
                     </Col>
                     <Col xs='5'>
@@ -203,6 +213,17 @@ function determineOverUnderStatus(competition, actualOvers) {
     }
 }
 
-export default connect(null, null)(Matchup);
+const mapDispatchToProps = {
+    loadUpdatedWagers,
+    placeWager
+}
+
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Matchup);
 
 

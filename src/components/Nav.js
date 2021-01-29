@@ -11,8 +11,7 @@ function NavBar({ logout, user }) {
         if (user.user.wagers) {
             var balance = 0;
             user.user.wagers.filter(e => e.status === 'final').map(w => {
-                balance += parseInt(w.amount);
-                console.log(balance);
+                balance += parseInt(w.result);
             });
             return '$' + balance;
         }

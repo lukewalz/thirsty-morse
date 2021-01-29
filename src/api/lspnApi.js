@@ -81,6 +81,7 @@ export async function placeWager(wager) {
     })
 
         .then(response => {
+            console.log(response)
             if (response.ok) {
                 return response.json();
             } else if (response.status === 400) {
