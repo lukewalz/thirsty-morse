@@ -16,7 +16,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import MyAccount from './pages/MyAccount'
 import Lottie from "lottie-react";
 import * as animationData from './lotties/34702-spray-medicine.json'
-
+import PushNotificationDemo from "./PushNotificationDemo";
 
 
 const store = configureStore();
@@ -51,6 +51,8 @@ export default function App() {
             <Route path="/" render={IndexPage} />
           </Switch>
         </Router>
+        <PushNotificationDemo />
+
       </Provider>
     </ThemeProvider>
   );
