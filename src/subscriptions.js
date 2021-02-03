@@ -15,7 +15,7 @@ export default function subscribePush() {
             console.log(y);
             registration.pushManager
                 .subscribe(y.options)
-                .then(subscription => axios.post("http://localhost:9000/.netlify/functions/server/notifications/register", subscription))
+                .then(subscription => axios.post(path, subscription))
                 .catch(err => console.error("Push subscription error: ", err))
         })
 
