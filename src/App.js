@@ -16,10 +16,11 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import MyAccount from './pages/MyAccount'
 import Lottie from "lottie-react";
 import * as animationData from './lotties/34702-spray-medicine.json'
-import PushNotificationDemo from "./PushNotificationDemo";
+import subscribePush from './subscriptions';
 
 
 const store = configureStore();
+subscribePush();
 
 const IndexPage = () => (
   <Container style={{ marginTop: 70, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -51,8 +52,6 @@ export default function App() {
             <Route path="/" render={IndexPage} />
           </Switch>
         </Router>
-        <PushNotificationDemo />
-
       </Provider>
     </ThemeProvider>
   );

@@ -2,6 +2,7 @@ const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
 const users = require('./routes/users');
+const notifications = require('./routes/register');
 const express = require('express');
 const auth = require('./routes/auth');
 const wagers = require('./routes/wagers');
@@ -11,9 +12,7 @@ require('dotenv').config();
 const serverless = require('serverless-http');
 const bodyParser = require('body-parser');
 const path = require('path');
-const cors = require('cors')
-
-
+const cors = require('cors');
 
 
 const connectionString = 'mongodb+srv://luke_walz:ukKMvIfGUBZxGUBO@cluster0.3x57e.mongodb.net/walzsportsdb?retryWrites=true&w=majority';
@@ -57,6 +56,8 @@ app.use(cors());
 app.use('/.netlify/functions/server/auth', auth);
 app.use('/.netlify/functions/server/users', users);
 app.use('/.netlify/functions/server/wagers', wagers);
+app.use('/.netlify/functions/server/notifications', notifications);
+
 
 module.exports = app;
 module.exports.handler = serverless(app);
