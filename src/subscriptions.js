@@ -1,6 +1,8 @@
 
 import axios from "axios";
 
+const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/notifications/register' : '/.netlify/functions/server/notifications/register'
+
 const vapidPublicKey = 'BGuyWcyfyg50-ixydbkI2AEeFDFJvHhN-5xD4c1bGz5zWySLs1Zh8d3HZPoAxnSyWkAKn-erIqSN-5l1a6jZbTQ'
 const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey)
 
@@ -28,7 +30,7 @@ export default function subscribePush() {
                 userVisibleOnly: true,
                 applicationServerKey: convertedVapidKey
             })
-            .then(subscription => axios.post("http://localhost:9000/.netlify/functions/server/notifications/register", subscription))
+            .then(subscription => axios.post(path, subscription))
             .catch(err => console.error("Push subscription error: ", err))
     })
 }
