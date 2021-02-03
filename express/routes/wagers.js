@@ -5,8 +5,6 @@ const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 const common = require('../common');
 require('dotenv').config();
-const statusTypes = require('../statusTypes');
-
 
 router.post('/', async (req, res) => {
     const token = process.env.API_KEY;
@@ -30,12 +28,10 @@ router.post('/', async (req, res) => {
                     res.status(200).send(updatedUser.wagers[updatedUser.wagers.length - 1])
                 }
             } else {
-                common.log(statusTypes.WAGER_ERROR_CREDENTIALS, user.username, 'fail');
 
                 res.status(401).send('Incorrect credentials')
             }
         } else {
-            common.log(statusTypes.WAGER_ERROR_USER, user.username, 'fail');
 
             res.status(404).send('Could not find user')
         }
@@ -61,25 +57,20 @@ router.get('/', async (req, res) => {
                             common.determineResults(w, user)
                         }
                     });
-                    common.log(statusTypes.WAGER_TYPE_GET, user.username, 'success');
                     res.status(200).send(user.wagers);
                 }
 
 
                 else {
-                    common.log(statusTypes.WAGER_TYPE_GET, user.username, 'success: no wagers');
-
                     res.status(200).send([])
                 }
 
 
 
             } else {
-                common.log(statusTypes.WAGER_ERROR_CREDENTIALS, user.username, 'fail');
                 res.status(401).send('Incorrect credentials')
             }
         } else {
-            common.log(statusTypes.WAGER_ERROR_USER, user.username, 'fail');
             res.status(404).send('Could not find user')
         }
 

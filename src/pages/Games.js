@@ -29,19 +29,20 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
     return (
         <div className="App">
             {games ?
-                games.map(
-                    (item, index) => {
-                        if (item.status.type.name !== 'STATUS_CANCELED'
-                            && item.status.type.name !== 'STATUS_POSTPONED'
-                        ) {
-                            return <Card key={item.id} style={{ margin: 20 }}><Matchup sport={sport} game={item} /></Card>
-                        }
-                        else {
-                            return []
-                        }
+                games.slice().sort((a, b) => a.date > b.date ? 1 : -1)
+                    .map(
+                        (item) => {
+                            if (item.status.type.name !== 'STATUS_CANCELED'
+                                && item.status.type.name !== 'STATUS_POSTPONED'
+                            ) {
+                                return <Card key={item.id} style={{ margin: 20 }}><Matchup sport={sport} game={item} /></Card>
+                            }
+                            else {
+                                return []
+                            }
 
-                    }
-                ) : []}
+                        }
+                    ) : []}
         </div>
     )
 }

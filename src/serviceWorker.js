@@ -20,6 +20,18 @@ const isLocalhost = Boolean(
   )
 );
 
+
+async function createNotificationSubscription() {
+  //wait for service worker installation to be ready
+  const serviceWorker = await navigator.serviceWorker.ready;
+  // subscribe and return the subscription
+  return await serviceWorker.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: pushServerPublicKey
+  });
+}
+
+
 export function register(config) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.

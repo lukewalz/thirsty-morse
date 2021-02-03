@@ -5,12 +5,6 @@ const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const determineResults = require('../common');
-const statusTypes = require('../statusTypes');
-const common = require('../common');
-
-
-
 
 router.post('/', async (req, res) => {
 
@@ -28,8 +22,6 @@ router.post('/', async (req, res) => {
             await user.save();
             const token = jwt.sign({ _id: user._id }, process.env.API_KEY);
             user.token = token;
-            common.log(statusTypes.USER_TYPE_ADD, user.username, 'success');
-
             res.send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token']));
 
         }
@@ -47,17 +39,11 @@ router.get('/', async (req, res) => {
         const user = await User.findOne({ username: req.query.username });
         if (user) {
             if (user._id == tokenId) {
-                common.log(statusTypes.USER_TYPE_GET, user.username, 'success');
-
                 res.status(200).send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token']))
             } else {
-                common.log(statusTypes.USER_ERROR_CREDENTIALS, user.username, 'error');
-
                 res.status(401).send('Incorrect credentials')
             }
         } else {
-            common.log(statusTypes.USER_ERROR_USER, user.username, 'fail');
-
             res.status(404).send('Could not find user')
         }
 

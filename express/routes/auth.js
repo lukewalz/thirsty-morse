@@ -4,8 +4,6 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const statusTypes = require('../statusTypes')
-const common = require('../common');
 
 
 
@@ -29,9 +27,6 @@ router.post('/', async (req, res) => {
 
         console.log('Log in successful');
         const token = jwt.sign({ _id: user._id }, process.env.API_KEY);
-
-        common.log(statusTypes.AUTH_TYPE, user.username, 'success');
-
 
         res.status(200).contentType('application/json').send(JSON.stringify(token));
 

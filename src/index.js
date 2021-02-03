@@ -10,6 +10,12 @@ function isPushNotificationSupported() {
     return "serviceWorker" in navigator && "PushManager" in window;
 }
 
+async function askUserPermission() {
+    return await Notification.requestPermission();
+}
+
+askUserPermission();
+
 Sentry.init({
     dsn: "https://42a79955943a43b5bfac3e08782eae65@o247578.ingest.sentry.io/5615152",
     integrations: [
