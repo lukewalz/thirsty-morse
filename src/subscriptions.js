@@ -1,6 +1,9 @@
 
 import axios from "axios";
 
+
+const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/notifications/register' : '/.netlify/functions/server/notifications/register'
+
 export default function subscribePush() {
     navigator.serviceWorker.ready.then(registration => {
         if (!registration.pushManager) {
