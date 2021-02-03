@@ -80,7 +80,7 @@ function WagerModal({ placeWager, ...props }) {
                     <div>
                         <InputLabel id="label">Type</InputLabel>
 
-                        <Select displayEmpty labelId="label" defaultValue={wagerType} id="select" value={wagerType} onChange={val => setWagerType(val.target.value)}>
+                        <Select displayEmpty labelId="label" id="select" defaultValue={""} value={wagerType} onChange={val => setWagerType(val.target.value)}>
                             <MenuItem value="">
                                 Make a selection
                             </MenuItem>
