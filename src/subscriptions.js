@@ -27,7 +27,6 @@ export default function subscribePush() {
             alert("Push Unsupported")
             return
         };
-        console.log(registration.pushManager);
         registration.pushManager
             .subscribe({
                 userVisibleOnly: true,

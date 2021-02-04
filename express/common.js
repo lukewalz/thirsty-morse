@@ -19,9 +19,10 @@ async function determineResults(wager, user) {
 
     const newWager = Object.assign({}, wager);
 
-    if (!gameStatus) { console.log(wager) }
+    console.log(wager.selection + ':' + gameStatus);
 
     if (gameStatus.completed === false) {
+        console.log(gameStatus)
         if (gameStatus.state === 'in') {
             newWager.status = 'pending';
             newWager.outcome = 'tbd';
