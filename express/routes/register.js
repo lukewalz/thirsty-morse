@@ -19,6 +19,7 @@ let pushIntervalID
 
 
 router.post("/register", (req, res, next) => {
+    console.log(req.body);
     subscription = req.body
     res.sendStatus(201)
     pushIntervalID = setInterval(() => {
