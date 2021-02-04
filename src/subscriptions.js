@@ -20,7 +20,7 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 export default function subscribePush() {
-    console.log('subscribepush')
+    console.log(navigator.serviceWorker)
     navigator.serviceWorker.ready.then(registration => {
         if (!registration.pushManager) {
             alert("Push Unsupported")
