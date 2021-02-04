@@ -22,6 +22,14 @@ function WagerModal({ placeWager, ...props }) {
     const [amount, setAmount] = useState();
     const [boost, setBoost] = useState();
 
+
+
+    useEffect(() => {
+        setWagerType(props.selectedWager ? props.selectedWager.wager_type : '');
+        setSelection(props.selectedWager ? props.selectedWager.selection : '');
+        setAmount(props.selectedWager ? props.selectedWager.amount : '');
+    }, [props.selectedWager, placeWager])
+
     function buildRadioGroup() {
         if (wagerType === 'ou') {
             return <RadioGroup aria-label="selection" row name="selection" value={selection} onChange={val => {
@@ -63,13 +71,6 @@ function WagerModal({ placeWager, ...props }) {
         }
 
     }
-
-    useEffect(() => {
-        setWagerType(props.selectedWager ? props.selectedWager.wager_type : '');
-        setSelection(props.selectedWager ? props.selectedWager.selection : '');
-        setAmount(props.selectedWager ? props.selectedWager.amount : '');
-    }, [props.selectedWager, placeWager])
-
 
     if (props.disabled) {
         return (
@@ -113,7 +114,13 @@ function WagerModal({ placeWager, ...props }) {
                         color="secondary"
                         className="form-input"
                         size="large"
-                        onClick={props.handleClose} >
+                        onClick={() => {
+                            setWagerType();
+                            setSelection();
+                            setAmount();
+                            setBoost();
+                            return props.handleClose()
+                        }} >
                         Cancel
                     </Button>
                     <Button variant="contained"
@@ -203,7 +210,11 @@ function WagerModal({ placeWager, ...props }) {
 
         placeWager(wager);
 
-
+        // reset modal state
+        setWagerType();
+        setSelection();
+        setAmount();
+        setBoost();
 
         props.handleClose();
     }

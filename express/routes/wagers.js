@@ -86,12 +86,8 @@ router.get('/', async (req, res) => {
             if (user._id == tokenId) {
                 if (user.wagers) {
                     user.wagers.map(w => {
-                        if (w.game_date <= Date.now()) {
-                            common.determineResults(w, user)
-                        }
-                        else {
-                            console.log(w.game_date, Date.now())
-                        }
+                        common.determineResults(w, user)
+
                     });
                     res.status(200).send(user.wagers);
                 }

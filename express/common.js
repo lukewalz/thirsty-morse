@@ -19,11 +19,16 @@ async function determineResults(wager, user) {
 
     const newWager = Object.assign({}, wager);
 
+    if (!gameStatus) { console.log(wager) }
+
     if (gameStatus.completed === false) {
         if (gameStatus.state === 'in') {
             newWager.status = 'pending';
             newWager.outcome = 'tbd';
             addResultObject(newWager, user);
+            return;
+        }
+        else if (gameStatus.state === 'pre') {
             return;
         }
         else {
@@ -34,106 +39,108 @@ async function determineResults(wager, user) {
         }
 
     }
+    else {
+        newWager.status = 'final';
 
-    newWager.status = 'final';
-
-    if (wager.wager_type === 'sp') {
-        const selection = wager.selection.split('@');
-        if (selection[0] === home.team) {
-            var diff = parseFloat(home.score) + parseFloat(selection[1]);
-            if (diff > parseInt(away.score)) {
-                newWager.outcome = 'win'
-                addResultObject(newWager, user);
-            }
-            else if (diff === parseInt(away.score)) {
-                newWager.outcome = 'push'
-                addResultObject(newWager, user)
+        if (wager.wager_type === 'sp') {
+            const selection = wager.selection.split('@');
+            if (selection[0] === home.team) {
+                var diff = parseFloat(home.score) + parseFloat(selection[1]);
+                if (diff > parseInt(away.score)) {
+                    newWager.outcome = 'win'
+                    addResultObject(newWager, user);
+                }
+                else if (diff === parseInt(away.score)) {
+                    newWager.outcome = 'push'
+                    addResultObject(newWager, user)
+                }
+                else {
+                    newWager.outcome = 'loss'
+                    addResultObject(newWager, user);
+                }
             }
             else {
-                newWager.outcome = 'loss'
-                addResultObject(newWager, user);
+                var diff = parseFloat(away.score) + parseFloat(selection[1]);
+                if (diff > parseInt(home.score)) {
+                    newWager.outcome = 'win'
+                    addResultObject(newWager, user)
+                }
+                else if (diff === parseInt(home.score)) {
+                    newWager.outcome = 'push'
+                    addResultObject(newWager, user)
+                }
+                else {
+                    newWager.outcome = 'loss'
+                    addResultObject(newWager, user)
+                }
             }
+
+
         }
-        else {
-            var diff = parseFloat(away.score) + parseFloat(selection[1]);
-            if (diff > parseInt(home.score)) {
-                newWager.outcome = 'win'
-                addResultObject(newWager, user)
+        else if (wager.wager_type === 'ou') {
+            const selection = wager.selection.split('@');
+            if (selection[0] === 'o') {
+                if (parseFloat(selection[1]) > (parseInt(home.score) + parseInt(away.score))) {
+                    newWager.outcome = 'loss'
+                    addResultObject(newWager, user)
+                }
+                else if (parseFloat(selection[1]) === (parseInt(home.score) + parseInt(away.score))) {
+                    newWager.outcome = 'push'
+                    addResultObject(newWager, user)
+                }
+                else {
+                    newWager.outcome = 'win'
+                    addResultObject(newWager, user)
+                }
             }
-            else if (diff === parseInt(home.score)) {
-                newWager.outcome = 'push'
-                addResultObject(newWager, user)
+            if (selection[0] === 'u') {
+                if (parseFloat(selection[1]) > (parseInt(home.score) + parseInt(away.score))) {
+                    newWager.outcome = 'win'
+                    addResultObject(newWager, user)
+                }
+                else if (parseFloat(selection[1]) === (parseInt(home.score) + parseInt(away.score))) {
+                    newWager.outcome = 'push'
+                    addResultObject(newWager, user)
+                }
+                else {
+                    newWager.outcome = 'loss'
+                    addResultObject(newWager, user)
+                }
+            }
+
+        } else {
+            const selection = wager.selection.split('@');
+            if (selection[0] === home.team) {
+                if (parseInt(home.score) > parseInt(away.score)) {
+                    newWager.outcome = 'win'
+                    addResultObject(newWager, user)
+                }
+                else if (parseInt(home.score) === parseInt(away.score)) {
+                    newWager.outcome = 'push'
+                    addResultObject(newWager, user)
+                }
+                else {
+                    newWager.outcome = 'loss'
+                    addResultObject(newWager, user)
+                }
             }
             else {
-                newWager.outcome = 'loss'
-                addResultObject(newWager, user)
+                if (parseInt(home.score) < parseInt(away.score)) {
+                    newWager.outcome = 'win'
+                    addResultObject(newWager, user)
+                }
+                else if (parseInt(home.score) === parseInt(away.score)) {
+                    newWager.outcome = 'push'
+                    addResultObject(newWager, user)
+                }
+                else {
+                    newWager.outcome = 'loss'
+                    addResultObject(newWager, user)
+                }
             }
         }
-
-
     }
-    else if (wager.wager_type === 'ou') {
-        const selection = wager.selection.split('@');
-        if (selection[0] === 'o') {
-            if (parseFloat(selection[1]) > (parseInt(home.score) + parseInt(away.score))) {
-                newWager.outcome = 'loss'
-                addResultObject(newWager, user)
-            }
-            else if (parseFloat(selection[1]) === (parseInt(home.score) + parseInt(away.score))) {
-                newWager.outcome = 'push'
-                addResultObject(newWager, user)
-            }
-            else {
-                newWager.outcome = 'win'
-                addResultObject(newWager, user)
-            }
-        }
-        if (selection[0] === 'u') {
-            if (parseFloat(selection[1]) > (parseInt(home.score) + parseInt(away.score))) {
-                newWager.outcome = 'win'
-                addResultObject(newWager, user)
-            }
-            else if (parseFloat(selection[1]) === (parseInt(home.score) + parseInt(away.score))) {
-                newWager.outcome = 'push'
-                addResultObject(newWager, user)
-            }
-            else {
-                newWager.outcome = 'loss'
-                addResultObject(newWager, user)
-            }
-        }
 
-    } else {
-        const selection = wager.selection.split('@');
-        if (selection[0] === home.team) {
-            if (parseInt(home.score) > parseInt(away.score)) {
-                newWager.outcome = 'win'
-                addResultObject(newWager, user)
-            }
-            else if (parseInt(home.score) === parseInt(away.score)) {
-                newWager.outcome = 'push'
-                addResultObject(newWager, user)
-            }
-            else {
-                newWager.outcome = 'loss'
-                addResultObject(newWager, user)
-            }
-        }
-        else {
-            if (parseInt(home.score) < parseInt(away.score)) {
-                newWager.outcome = 'win'
-                addResultObject(newWager, user)
-            }
-            else if (parseInt(home.score) === parseInt(away.score)) {
-                newWager.outcome = 'push'
-                addResultObject(newWager, user)
-            }
-            else {
-                newWager.outcome = 'loss'
-                addResultObject(newWager, user)
-            }
-        }
-    }
 }
 
 async function log(type, user, funct) {
