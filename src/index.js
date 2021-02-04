@@ -27,7 +27,5 @@ Sentry.init({
     tracesSampleRate: 1.0,
 });
 
-console.log(isPushNotificationSupported())
-
 const rootElement = document.getElementById("root");
 ReactDOM.render(<App />, rootElement);
