@@ -25,7 +25,10 @@ export default function subscribePush() {
         if (!registration.pushManager) {
             alert("Push Unsupported")
             return
-        }
+        };
+
+        console.log(registration);
+        console.log(convertedVapidKey)
         registration.pushManager
             .subscribe({
                 userVisibleOnly: true,
