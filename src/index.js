@@ -14,7 +14,8 @@ async function askUserPermission() {
     return await Notification.requestPermission();
 }
 
-askUserPermission();
+console.log(askUserPermission());
+console.log(isPushNotificationSupported());
 
 Sentry.init({
     dsn: "https://42a79955943a43b5bfac3e08782eae65@o247578.ingest.sentry.io/5615152",

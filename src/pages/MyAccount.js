@@ -16,7 +16,12 @@ import React, { useEffect } from 'react';
 function MyAccount({ loadUpdatedWagers, user }) {
 
     useEffect(() => {
-        loadUpdatedWagers()
+        loadUpdatedWagers();
+        const interval = setInterval(() => {
+            loadUpdatedWagers()
+        }, 60000)
+
+        return () => clearInterval(interval)
     }, []);
 
     return (
