@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Widget from '../components/Widget';
 import { Container, Row, Col } from 'reactstrap'
 import { connect } from "react-redux";
 import {
     Link
 } from "react-router-dom";
+import { loadUpdatedWagers } from "../redux/actions/userActions"
 
 
-function HomePage({ user }) {
+function HomePage({ user, loadUpdatedWagers }) {
+    useEffect(() => {
+
+    }, [])
     return (
         <Container>
             <h1 style={{ textTransform: 'capitalize' }}>{user.username} Dashboard</h1>
@@ -51,4 +55,8 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, null)(HomePage);
+const mapDispatchToProps = {
+    loadUpdatedWagers,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
