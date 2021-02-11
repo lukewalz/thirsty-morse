@@ -6,16 +6,16 @@ import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 
 
-function isPushNotificationSupported() {
-    return "serviceWorker" in navigator && "PushManager" in window;
-}
+// function isPushNotificationSupported() {
+//     return "serviceWorker" in navigator && "PushManager" in window;
+// }
 
-async function askUserPermission() {
-    return await Notification.requestPermission();
-}
+// async function askUserPermission() {
+//     return await Notification.requestPermission();
+// }
 
-console.log(askUserPermission());
-console.log(isPushNotificationSupported());
+// console.log(askUserPermission());
+// console.log(isPushNotificationSupported());
 
 Sentry.init({
     dsn: "https://42a79955943a43b5bfac3e08782eae65@o247578.ingest.sentry.io/5615152",
