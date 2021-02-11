@@ -3,6 +3,7 @@ import { TextField, Typography, Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import { login } from "../redux/actions/userActions";
 import MuiAlert from "@material-ui/lab/Alert";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 function Alert(props) {
@@ -13,6 +14,7 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { login }
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState("");
+    const [loading, setLoading] = useState(false);
 
 
     useEffect(() => {
@@ -24,6 +26,7 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { login }
             setErrors("Fields are required");
             return;
         }
+        setLoading(true);
         props.login(email, password);
     };
 
@@ -59,8 +62,8 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { login }
                 size="large"
                 onClick={submitForm}
             >
-                Login
-      </Button>
+                {loading ? <CircularProgress /> : 'REGISTER'}
+            </Button>
 
             {(props.errors || errors) && (
                 <Alert severity="error" onClick={() => setErrors(null)}>
