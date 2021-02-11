@@ -3,7 +3,6 @@ import { Card, Button } from 'reactstrap'
 import Chip from '@material-ui/core/Chip';
 
 export const OverUnderWidget = (props) => {
-    console.log(props)
     return (
         <Card style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
 

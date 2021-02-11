@@ -86,7 +86,6 @@ router.get('/', async (req, res) => {
             if (user._id == tokenId) {
                 if (user.wagers) {
                     user.wagers.map(w => {
-                        if (w.status === 'pending') console.log(w);
                         common.determineResults(w, user)
 
                     });
