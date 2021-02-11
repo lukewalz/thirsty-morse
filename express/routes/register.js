@@ -19,7 +19,7 @@ let pushIntervalID
 
 
 router.post("/register", (req, res, next) => {
-    console.log('sfsdfsd---------------------------------------------')
+    console.log(req.body)
     subscription = req.body
     pushIntervalID = setInterval(() => {
         console.log('atleastr this')
@@ -27,7 +27,7 @@ router.post("/register", (req, res, next) => {
         webpush.sendNotification(subscription, JSON.stringify(testData)).then(resp => { console.log(resp); res.sendStatus(201) })
             .catch((er) => { clearInterval(pushIntervalID); res.send(er); throw Error(er + ' ' + subscription.endpoint) })
     }, 10000);
-    res.sendStatus(201).send(pushIntervalID)
+    res.sendStatus(201)
 })
 
 router.delete("/unregister", (req, res, next) => {
