@@ -19,7 +19,8 @@ async function determineResults(wager, user) {
 
     const newWager = Object.assign({}, wager);
 
-    console.log(wager.selection + ':' + gameStatus);
+    console.log(wager.selection);
+    console.log(gameStatus ? gameStatus : 'no status');
 
     if (gameStatus.completed === false) {
         console.log(gameStatus)
@@ -144,19 +145,6 @@ async function determineResults(wager, user) {
 
 }
 
-async function log(type, user, funct) {
-    // const path = 'https://compassionate-almeida-c1cf6f.netlify.app/.netlify/functions/server/text';
-    // var number = 4029812986;
-    // var message = `${user} executed funtion: ${type} with a status: ${funct}`;
-    // var carrier = 'verizon';
-
-    // fetch(path, {
-    //     method: 'POST', headers: {
-    //         'Content-Type': 'application/json'
-    //     }, body: JSON.stringify({ number, message, carrier })
-    // })
-}
-
 async function addResultObject(newWager, user) {
     var amount = await calculatePayout(newWager.boost, Math.abs(newWager.amount), newWager.outcome);
     newWager.result = amount;
@@ -196,4 +184,4 @@ async function calculatePayout(boost, amountBet, result) {
 
 }
 
-module.exports = { determineResults, log };
+module.exports = { determineResults };

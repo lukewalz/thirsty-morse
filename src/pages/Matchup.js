@@ -139,7 +139,7 @@ function Matchup({ placeWager, user, ...props }) {
                 <Row>
                     <Col xs='3'>
 
-                        <OverUnderWidget handleWagerClick={r => handleWagerClick(r)} wager={wagers}>{props.game.odds.overUnder}</OverUnderWidget>
+                        <OverUnderWidget handleWagerClick={r => handleWagerClick(r)} wager={wagers} overUnder={props.game.odds.overUnder}>{props.game.odds.overUnder}</OverUnderWidget>
 
                     </Col>
                     <Col xs='5'>

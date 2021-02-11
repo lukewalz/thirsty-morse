@@ -21,7 +21,7 @@ function urlBase64ToUint8Array(base64String) {
 
 export default function subscribePush() {
     navigator.serviceWorker.register("/sw.js");
-
+    console.log('here')
     navigator.serviceWorker.ready.then(registration => {
         if (!registration.pushManager) {
             alert("Push Unsupported")
