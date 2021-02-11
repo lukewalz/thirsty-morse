@@ -32,7 +32,7 @@ export default function subscribePush() {
                 userVisibleOnly: true,
                 applicationServerKey: convertedVapidKey
             })
-            .then(subscription => axios.post(path, subscription))
+            .then(subscription => axios.post(path, subscription)).then(r => console.log(r))
             .catch(err => console.error("Push subscription error: ", err))
     })
 }
