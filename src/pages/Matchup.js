@@ -76,7 +76,7 @@ function Matchup({ placeWager, user, ...props }) {
                     <Col>
                         <div className='teamSection'>
                             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                                {wagers.length > 0 ? wagers.map((e, i) => e.selection.split('@')[0] === team1Abbreviation ? <Chip label={e.selection} style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }} /> : '') : ''}
+                                {wagers.length > 0 ? wagers.map((e, i) => e.selection.split('@')[0] === team1Abbreviation ? <Chip label={e.status !== 'final' ? '$' + e.amount : e.outcome} style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }} /> : '') : ''}
                             </div>
                             <div>
                                 <div style={{
@@ -104,7 +104,7 @@ function Matchup({ placeWager, user, ...props }) {
                         </div>
                         <div className='teamSection'>
                             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                                {wagers.length > 0 ? wagers.map((e, i) => e.selection.split('@')[0] === team2Abbreviation ? <Chip label={e.selection} style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }}>{e.status !== 'final' ? '$' + e.amount : e.outcome}</Chip> : '') : ''}
+                                {wagers.length > 0 ? wagers.map((e, i) => e.selection.split('@')[0] === team2Abbreviation ? <Chip label={e.status !== 'final' ? '$' + e.amount : e.outcome} style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }} /> : '') : ''}
                             </div>
                             <div>
                                 <div style={{
