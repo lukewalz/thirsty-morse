@@ -28,8 +28,7 @@ const Schema = Joi.object({
     wagers: [Wager],
 
     notification: {
-        endpoint: Joi.string()
-            .required(),
+        endpoint: Joi.string(),
         keys: Joi.object({
             auth: Joi.string(),
             p256dh: Joi.string()
