@@ -34,6 +34,19 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("/index.html"), {
-  
-  blacklist: [/^\/_/,/\/[^/?]+\.[^/]+$/],
+
+  blacklist: [/^\/_/, /\/[^/?]+\.[^/]+$/],
 });
+
+self.addEventListener("push", event => {
+  const data = event.data.json();
+
+  const { title } = data
+
+  const body = {
+    body: data.body,
+    icon: data.icon
+  }
+
+  event.waitUntil(self.registration.showNotification(title, body))
+})
