@@ -6,6 +6,41 @@ const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+router.put("/", async (req, res, next) => {
+    const token = process.env.API_KEY;
+    try {
+        jwt.verify(req.headers['x-auth-token'], token);
+        const tokenId = jwt.decode(req.headers['x-auth-token'], token)._id;
+        const user = await User.findOne({ _id: req.body._id });
+        if (user) {
+            if (user._id == tokenId) {
+                var res = await User.updateOne({ "_id": user._id },
+                    {
+                        $set: {
+                            'notification': req.body.e,
+                        }
+                    },
+                    function (err, success) {
+                        console.log(err);
+                        console.log(success)
+                    }
+                );
+                console.log(res.notification)
+            } else {
+                res.status(401).send('Incorrect credentials')
+            }
+        } else {
+            res.status(404).send('Could not find user')
+        }
+
+    } catch {
+        res.status(401).send('Must use a valid token')
+
+        throw new Error(er);
+
+    }
+})
+
 router.post('/', async (req, res) => {
 
     // Check if this user already exisits
@@ -36,18 +71,26 @@ router.get('/', async (req, res) => {
     try {
         jwt.verify(req.headers['x-auth-token'], token);
         const tokenId = jwt.decode(req.headers['x-auth-token'], token)._id;
-        const user = await User.findOne({ username: req.query.username });
-        if (user) {
-            if (user._id == tokenId) {
-                res.status(200).send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token']))
+        if (req.query.username) {
+            const user = await User.findOne({ username: req.query.username });
+            if (user) {
+                if (user._id == tokenId) {
+                    res.status(200).send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token']))
+                } else {
+                    res.status(401).send('Incorrect credentials')
+                }
             } else {
-                res.status(401).send('Incorrect credentials')
+                res.status(404).send('Could not find user')
             }
-        } else {
-            res.status(404).send('Could not find user')
+        }
+        else {
+            var users = await User.find({});
+            users = users.filter(u => u.notification.endpoint)
+            res.status(200).send(users)
         }
 
-    } catch {
+
+    } catch (er) {
         res.status(401).send('Must use a valid token')
 
         throw new Error(er);

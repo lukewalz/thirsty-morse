@@ -1,5 +1,7 @@
 
 import axios from "axios";
+import { addSubscription } from './api/lspnApi'
+
 
 const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/notifications/register' : '/.netlify/functions/server/notifications/register'
 
@@ -19,10 +21,9 @@ function urlBase64ToUint8Array(base64String) {
     return outputArray
 }
 
-export default function subscribePush() {
+export default async function subscribePush() {
     navigator.serviceWorker.register("/sw.js");
-    console.log('here')
-    navigator.serviceWorker.ready.then(registration => {
+    var data = navigator.serviceWorker.ready.then(registration => {
         if (!registration.pushManager) {
             alert("Push Unsupported")
             return
@@ -32,7 +33,9 @@ export default function subscribePush() {
                 userVisibleOnly: true,
                 applicationServerKey: convertedVapidKey
             })
-            .then(subscription => axios.post(path, subscription)).then(r => console.log(JSON.parse(r.config.data)))
+            .then(subscription => { addSubscription(subscription); return axios.post(path, subscription) }).then(r => JSON.parse(r.config.data))
             .catch(err => console.error("Push subscription error: ", err))
     })
+
+    return data;
 }

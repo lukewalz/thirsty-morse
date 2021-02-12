@@ -114,3 +114,20 @@ export async function getWagers() {
         })
         .catch(er => { throw Error(er) })
 }
+
+export async function addSubscription(e) {
+    const cookies = new Cookies();
+    const token = cookies.get('userSession');
+    const _id = JSON.parse(localStorage.getItem('user'))._id;
+    const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/users' : '/.netlify/functions/server/users'
+    return fetch(path, {
+        method: 'PUT', headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': token
+        }, body: JSON.stringify({ _id, e })
+    })
+        .then(response => {
+            console.log(response)
+        })
+        .catch(er => { throw Error(er) })
+}

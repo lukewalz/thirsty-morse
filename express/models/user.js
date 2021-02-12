@@ -3,7 +3,6 @@ const Mongoose = require('mongoose');
 const Joigoose = require("joigoose")(Mongoose);
 const { Wager } = require('../models/wager');
 
-
 const Schema = Joi.object({
     username: Joi.string()
         .min(3)
@@ -26,7 +25,16 @@ const Schema = Joi.object({
     dateAdded: Joi.number()
         .integer(),
 
-    wagers: [Wager]
+    wagers: [Wager],
+
+    notification: {
+        endpoint: Joi.string()
+            .required(),
+        keys: Joi.object({
+            auth: Joi.string(),
+            p256dh: Joi.string()
+        })
+    }
 })
     .with('username', 'birth_year')
     .xor('password', 'access_token')

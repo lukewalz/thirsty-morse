@@ -18,7 +18,6 @@ function MyAccount({ loadUpdatedWagers, user }) {
     useEffect(() => {
         loadUpdatedWagers();
         const interval = setInterval(() => {
-            console.log('again')
             loadUpdatedWagers()
         }, 10000)
 
