@@ -19,13 +19,15 @@ let pushIntervalID
 
 
 router.post("/register", (req, res, next) => {
+    console.log(req.body)
     subscription = req.body
     pushIntervalID = setInterval(() => {
         console.log('atleastr this')
         // sendNotification can only take a string as it's second parameter
-        webpush.sendNotification(subscription, JSON.stringify(testData)).then(resp => { console.log(resp); res.sendStatus(201).send(webpush.generateVAPIDKeys().config.data) })
-            .catch((er) => { throw Error(er) })
+        webpush.sendNotification(subscription, JSON.stringify(testData)).then(resp => { console.log(resp); res.sendStatus(201) })
+            .catch((er) => { clearInterval(pushIntervalID); res.send(er); throw Error(er + ' ' + subscription.endpoint) })
     }, 10000);
+    res.sendStatus(201);
 })
 
 router.delete("/unregister", (req, res, next) => {
