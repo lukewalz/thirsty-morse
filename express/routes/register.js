@@ -20,7 +20,10 @@ let pushIntervalID
 
 router.post("/register", (req, res, next) => {
     console.log(req.body)
-    subscription = req.body
+    subscription = req.body;
+
+    console.log(subscription.endpoint);
+
     pushIntervalID = setInterval(() => {
         console.log('atleastr this')
         // sendNotification can only take a string as it's second parameter
