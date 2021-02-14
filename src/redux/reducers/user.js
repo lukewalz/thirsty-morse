@@ -45,5 +45,7 @@ export const user = produce((draft, action) => {
             draft.wagers = action.payload;
             break;
         }
+        default:
+            return draft;
     }
 }, INITIAL_STATE);

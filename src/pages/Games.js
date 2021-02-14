@@ -25,7 +25,8 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
 
         return () => clearInterval(interval)
 
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sport, week]);
 
     return (
         <div className="App">

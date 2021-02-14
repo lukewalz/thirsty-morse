@@ -8,7 +8,9 @@ const INITIAL_STATE = []
 export const games = produce((draft, action) => {
     switch (action.type) {
         case types.GET_GAMES_SUCCESS: {
-            return action.payload
+            return action.payload;
         }
+        default:
+            return draft;
     }
 }, INITIAL_STATE);

@@ -7,7 +7,17 @@ import { Integrations } from "@sentry/tracing";
 
 
 function isPushNotificationSupported() {
-    return "serviceWorker" in navigator && "PushManager" in window;
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => {
+                    console.log('Service Worker Registered!')
+                })
+                .catch(err => {
+                    console.log('Service Worker Registration Failed', err)
+                })
+        })
+    }
 }
 
 async function askUserPermission() {

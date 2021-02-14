@@ -21,9 +21,7 @@ let pushIntervalID
 router.post("/register", (req, res, next) => {
     subscription = req.body;
 
-
     pushIntervalID = setInterval(() => {
-        console.log('atleastr this')
         // sendNotification can only take a string as it's second parameter
         webpush.sendNotification(subscription, JSON.stringify(testData)).then(resp => res.sendStatus(201))
             .catch((er) => { clearInterval(pushIntervalID); res.send(er); throw Error(er + ' ' + subscription.endpoint) })
