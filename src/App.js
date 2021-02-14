@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import { Provider } from "react-redux";
@@ -16,7 +16,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import MyAccount from './pages/MyAccount'
 import Lottie from "lottie-react";
 import * as animationData from './lotties/34702-spray-medicine.json'
-import subscribePush from './subscriptions'
+
 const store = configureStore();
 
 const IndexPage = () => (
@@ -30,38 +30,6 @@ const IndexPage = () => (
 )
 
 export default function App() {
-  useEffect(() => {
-    askUserPermission()
-      .then(() => {
-        return subscribePush()
-      })
-      .then((data) => {
-        console.warn("token", data)
-      })
-  })
-
-  async function askUserPermission() {
-    return await Notification.requestPermission();
-  }
-
-  function isPushNotificationSupported() {
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-        navigator.serviceWorker.register('./firebase-messaging-sw.js')
-          .then(reg => {
-            console.log('Service Worker Registered!')
-          })
-          .catch(err => {
-            console.log('Service Worker Registration Failed', err)
-          })
-      })
-    }
-  }
-
-  isPushNotificationSupported();
-
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
