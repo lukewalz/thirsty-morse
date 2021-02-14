@@ -1,7 +1,7 @@
 
+import { addSubscription } from './api/lspnApi'
 
-
-// const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/notifications/register' : '/.netlify/functions/server/notifications/register'
+const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/users' : '/.netlify/functions/server/users'
 
 const vapidPublicKey = 'BGuyWcyfyg50-ixydbkI2AEeFDFJvHhN-5xD4c1bGz5zWySLs1Zh8d3HZPoAxnSyWkAKn-erIqSN-5l1a6jZbTQ'
 const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey)
@@ -20,18 +20,17 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 export default async function subscribePush() {
-    var data = navigator.serviceWorker.ready.then(registration => {
-        if (!registration.pushManager) {
-            alert("Push Unsupported")
-            return
-        };
-        registration.pushManager
-            .subscribe({
+    navigator.serviceWorker.ready.then(
+        function (serviceWorkerRegistration) {
+            var options = {
                 userVisibleOnly: true,
                 applicationServerKey: convertedVapidKey
-            })
-            .catch(err => console.error("Push subscription error: ", err))
-    })
-
-    return data;
+            };
+            serviceWorkerRegistration.pushManager.subscribe(options).then(
+                function (pushSubscription) {
+                    var endpoint = pushSubscription.endpoint;
+                    addSubscription(endpoint)
+                }
+            );
+        });
 }

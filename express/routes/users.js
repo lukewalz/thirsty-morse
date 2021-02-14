@@ -85,7 +85,7 @@ router.get('/', async (req, res) => {
         }
         else {
             var users = await User.find({});
-            users = users.filter(u => u.notification.endpoint)
+            users = users.filter(u => u.notification)
             res.status(200).send(users)
         }
 

@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { login } from "../redux/actions/userActions";
 import MuiAlert from "@material-ui/lab/Alert";
 import CircularProgress from '@material-ui/core/CircularProgress';
-import subscribePush from '../subscriptions';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -27,7 +26,7 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { login }
             return;
         }
         setLoading(true);
-        props.login(email, password).then(() => subscribePush())
+        props.login(email, password)
     };
 
 
