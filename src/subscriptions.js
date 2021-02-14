@@ -1,8 +1,4 @@
 
-
-
-// const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/notifications/register' : '/.netlify/functions/server/notifications/register'
-
 const vapidPublicKey = 'BGuyWcyfyg50-ixydbkI2AEeFDFJvHhN-5xD4c1bGz5zWySLs1Zh8d3HZPoAxnSyWkAKn-erIqSN-5l1a6jZbTQ'
 const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey)
 
@@ -20,6 +16,7 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 export default async function subscribePush() {
+    console.log('subscribe spushhh')
     var data = navigator.serviceWorker.ready.then(registration => {
         if (!registration.pushManager) {
             alert("Push Unsupported")
@@ -29,6 +26,10 @@ export default async function subscribePush() {
             .subscribe({
                 userVisibleOnly: true,
                 applicationServerKey: convertedVapidKey
+            })
+            .then(token => {
+                console.log(token)
+                return token;
             })
             .catch(err => console.error("Push subscription error: ", err))
     })

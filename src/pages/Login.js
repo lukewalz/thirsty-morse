@@ -27,7 +27,7 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { login }
             return;
         }
         setLoading(true);
-        props.login(email, password).then(() => subscribePush())
+        props.login(email, password)
     };
 
 
