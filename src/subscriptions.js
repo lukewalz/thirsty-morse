@@ -29,7 +29,15 @@ export default async function subscribePush() {
             serviceWorkerRegistration.pushManager.subscribe(options).then(
                 function (pushSubscription) {
                     var endpoint = pushSubscription.endpoint;
-                    addSubscription(endpoint)
+                    var key = pushSubscription.getKey('p256dh');
+                    var auth = pushSubscription.getKey('auth');
+                    addSubscription({
+                        endpoint: endpoint,
+                        keys: {
+                            p256dh: key,
+                            auth: auth
+                        }
+                    })
                 }
             );
         });
