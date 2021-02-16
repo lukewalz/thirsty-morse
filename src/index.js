@@ -21,7 +21,9 @@ function isPushNotificationSupported() {
 }
 
 async function askUserPermission() {
-    return await Notification.requestPermission();
+    if (typeof Notification !== 'undefined') {
+        return await Notification.requestPermission();
+    }
 }
 
 isPushNotificationSupported();
