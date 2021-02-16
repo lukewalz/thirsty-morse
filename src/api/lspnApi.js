@@ -119,6 +119,7 @@ export async function addSubscription(e) {
     console.log(e);
     const cookies = new Cookies();
     const token = cookies.get('userSession');
+    console.log(JSON.parse(localStorage.getItem('user')));
     const _id = JSON.parse(localStorage.getItem('user'))._id;
     const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/users' : '/.netlify/functions/server/users'
     return fetch(path, {
