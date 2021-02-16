@@ -116,6 +116,7 @@ export async function getWagers() {
 }
 
 export async function addSubscription(e) {
+    console.log(e);
     const cookies = new Cookies();
     const token = cookies.get('userSession');
     const _id = JSON.parse(localStorage.getItem('user'))._id;
@@ -129,5 +130,5 @@ export async function addSubscription(e) {
         .then(response => {
             console.log(response)
         })
-        .catch(er => { throw Error(er) })
+        .catch(er => { console.log(er); throw Error(er) })
 }

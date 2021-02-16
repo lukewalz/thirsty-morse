@@ -1,8 +1,6 @@
 
 import { addSubscription } from './api/lspnApi'
 
-const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/users' : '/.netlify/functions/server/users'
-
 const vapidPublicKey = 'BGuyWcyfyg50-ixydbkI2AEeFDFJvHhN-5xD4c1bGz5zWySLs1Zh8d3HZPoAxnSyWkAKn-erIqSN-5l1a6jZbTQ'
 const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey)
 
@@ -28,16 +26,7 @@ export default async function subscribePush() {
             };
             serviceWorkerRegistration.pushManager.subscribe(options).then(
                 function (pushSubscription) {
-                    var endpoint = pushSubscription.endpoint;
-                    var key = pushSubscription.getKey('p256dh');
-                    var auth = pushSubscription.getKey('auth');
-                    addSubscription({
-                        endpoint: endpoint,
-                        keys: {
-                            p256dh: key,
-                            auth: auth
-                        }
-                    })
+                    addSubscription(pushSubscription.toJSON())
                 }
             );
         });
