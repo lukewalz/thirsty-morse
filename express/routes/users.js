@@ -25,7 +25,7 @@ router.put("/", async (req, res, next) => {
                             throw new Error(err)
                         }
                         else {
-                            res.sendStatus(203)
+                            res.sendStatus(204)
                         }
                     }
                 );
