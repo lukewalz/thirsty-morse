@@ -36,11 +36,4 @@ router.post('/', async (req, res) => {
 
 });
 
-router.get("/", (req, res) => {
-    res.json({
-        hello: "hi!"
-    });
-});
-
-
 module.exports = router; 
