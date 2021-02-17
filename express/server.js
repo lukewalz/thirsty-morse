@@ -2,7 +2,6 @@ const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
 const users = require('./routes/users');
-const notifications = require('./routes/register');
 const express = require('express');
 const auth = require('./routes/auth');
 const wagers = require('./routes/wagers');
@@ -58,7 +57,6 @@ app.use(cors());
 app.use('/.netlify/functions/server/auth', auth);
 app.use('/.netlify/functions/server/users', users);
 app.use('/.netlify/functions/server/wagers', wagers);
-app.use('/.netlify/functions/server/notifications', notifications);
 
 
 module.exports = app;
