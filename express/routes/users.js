@@ -75,7 +75,7 @@ router.get('/', async (req, res) => {
             const user = await User.findOne({ username: req.query.username });
             if (user) {
                 if (user._id == tokenId) {
-                    res.status(200).send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token']))
+                    res.status(200).send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token', 'wagers']))
                 } else {
                     res.status(401).send('Incorrect credentials')
                 }

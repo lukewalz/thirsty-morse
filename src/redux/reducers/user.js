@@ -1,6 +1,7 @@
 import * as types from '../actions/actionTypes';
 import Cookies from 'universal-cookie';
 import produce from "immer"
+const _ = require('lodash');
 
 const cookies = new Cookies();
 
@@ -21,8 +22,12 @@ const INITIAL_STATE = {
 export const user = produce((draft, action) => {
     switch (action.type) {
         case types.LOGIN_SUCCESS: {
-            localStorage.setItem("user", JSON.stringify(action.payload));
-            draft.user = action.payload;
+            const userObject = _.pick(action.payload, ['_id', 'username', 'firstName', 'lastName']);
+            const wagersObject = _.pick(action.payload, ['wagers']).wagers;
+            console.log(userObject, wagersObject)
+            localStorage.setItem("user", JSON.stringify(userObject));
+            draft.user = userObject;
+            draft.wagers = wagersObject
             draft.isAuthUser = isAuth();
             break;
         }

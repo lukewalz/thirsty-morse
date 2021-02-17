@@ -17,10 +17,10 @@ import { connect } from "react-redux";
 import { placeWager } from '../redux/actions/userActions';
 
 function WagerModal({ placeWager, ...props }) {
-    const [wagerType, setWagerType] = useState();
-    const [selection, setSelection] = useState();
-    const [amount, setAmount] = useState();
-    const [boost, setBoost] = useState();
+    const [wagerType, setWagerType] = useState("");
+    const [selection, setSelection] = useState("");
+    const [amount, setAmount] = useState("");
+    const [boost, setBoost] = useState("");
 
 
 
