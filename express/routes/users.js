@@ -14,18 +14,22 @@ router.put("/", async (req, res, next) => {
         const user = await User.findOne({ _id: req.body._id });
         if (user) {
             if (user._id == tokenId) {
-                var res = await User.updateOne({ "_id": user._id },
+                var resp = await User.updateOne({ "_id": user._id },
                     {
                         $set: {
                             'notification': req.body.e,
                         }
                     },
                     function (err, success) {
-                        console.log(err);
-                        console.log(success)
+                        if (err) {
+                            throw new Error(err)
+                        }
+                        else {
+                            res.sendStatus(203)
+                        }
                     }
                 );
-                console.log(res.notification)
+
             } else {
                 res.status(401).send('Incorrect credentials')
             }

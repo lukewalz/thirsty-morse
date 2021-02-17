@@ -89,7 +89,7 @@ router.get('/', async (req, res) => {
                         common.determineResults(w, user)
 
                     });
-                    console.log(user)
+
                     res.status(200).send(user.wagers);
                 }
 

@@ -4,35 +4,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
-import subscribePush from './subscriptions';
 
-function isPushNotificationSupported() {
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(reg => {
-                    console.log('Service Worker Registered!')
-                })
-                .catch(err => {
-                    console.log('Service Worker Registration Failed', err)
-                })
-        })
-    }
-}
-
-async function askUserPermission() {
-    if (typeof Notification !== 'undefined') {
-        return await Notification.requestPermission();
-    }
-}
-
-isPushNotificationSupported();
-
-askUserPermission().then((e) => {
-    if (e === 'granted') {
-        subscribePush();
-    }
-})
 
 
 Sentry.init({

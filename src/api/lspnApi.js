@@ -112,14 +112,15 @@ export async function getWagers() {
                 throw new Error('Wagers could not be retrieved');
             }
         })
-        .catch(er => { throw Error(er) })
+        .catch(er => {
+        })
 }
 
 export async function addSubscription(e) {
-    console.log(e);
+
     const cookies = new Cookies();
     const token = cookies.get('userSession');
-    console.log(JSON.parse(localStorage.getItem('user')));
+
     const _id = JSON.parse(localStorage.getItem('user'))._id;
     const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/users' : '/.netlify/functions/server/users'
     return fetch(path, {
@@ -129,7 +130,8 @@ export async function addSubscription(e) {
         }, body: JSON.stringify({ _id, e })
     })
         .then(response => {
-            console.log(response)
+
         })
-        .catch(er => { console.log(er); throw Error(er) })
+        .catch(er => {
+        })
 }

@@ -2,23 +2,58 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AppBar, Toolbar, Button, Typography, Badge } from "@material-ui/core";
 import { connect } from "react-redux";
-import { logout } from "../redux/actions/userActions";
+import { logout, loadUpdatedWagers } from "../redux/actions/userActions";
+import subscribePush from '../subscriptions';
 
 
-function NavBar({ logout, user }) {
+
+function NavBar({ logout, user, loadUpdatedWagers }) {
 
     useEffect(() => {
+        console.log('reloading')
+        askUserPermission().then((e) => {
+
+            if (e === 'granted' && user.isAuthUser) {
+                subscribePush()
+                    .then(() => loadUpdatedWagers()
+                        .then(getBalance()))
+            }
+        })
+
         function getBalance() {
+            console.log('getting balance')
             var balance = 0;
-            user.wagers.length > 0 ? user.wagers.filter(e => e.status === 'final').map(w => {
+            user.wagers && user.wagers.length > 0 ? user.wagers.filter(e => e.status === 'final').map(w => {
                 return balance += parseInt(w.result);
             }) : setBalance(0);
             setBalance(balance);
         }
-        getBalance();
-    }, [user.wagers]);
+
+    }, [user.wagers.length]);
 
     const [balance, setBalance] = useState();
+
+    function isPushNotificationSupported() {
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => {
+
+                    })
+                    .catch(err => {
+
+                    })
+            })
+        }
+    }
+
+    async function askUserPermission() {
+        if (typeof Notification !== 'undefined') {
+            return await Notification.requestPermission();
+        }
+    }
+
+    isPushNotificationSupported();
 
 
     return (
@@ -63,7 +98,8 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-    logout
+    logout,
+    loadUpdatedWagers
 };
 
 

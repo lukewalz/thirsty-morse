@@ -8,6 +8,9 @@ const cookies = new Cookies();
 
 function isAuth() {
     var auth = cookies.get('userSession') && !!localStorage.getItem("user");
+    if (auth === undefined) {
+        return false;
+    }
     return auth;
 }
 const INITIAL_STATE = {
@@ -24,7 +27,6 @@ export const user = produce((draft, action) => {
         case types.LOGIN_SUCCESS: {
             const userObject = _.pick(action.payload, ['_id', 'username', 'firstName', 'lastName']);
             const wagersObject = _.pick(action.payload, ['wagers']).wagers;
-            console.log(userObject, wagersObject)
             localStorage.setItem("user", JSON.stringify(userObject));
             draft.user = userObject;
             draft.wagers = wagersObject
@@ -47,7 +49,6 @@ export const user = produce((draft, action) => {
             break;
         }
         case types.GET_WAGERS_SUCCESS: {
-            console.log(action.payload)
             draft.wagers = action.payload;
             break;
         }
