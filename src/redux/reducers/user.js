@@ -47,6 +47,7 @@ export const user = produce((draft, action) => {
             break;
         }
         case types.GET_WAGERS_SUCCESS: {
+            console.log(action.payload)
             draft.wagers = action.payload;
             break;
         }

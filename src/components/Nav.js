@@ -16,7 +16,7 @@ function NavBar({ logout, user }) {
             setBalance(balance);
         }
         getBalance();
-    }, []);
+    }, [user.wagers]);
 
     const [balance, setBalance] = useState();
 
