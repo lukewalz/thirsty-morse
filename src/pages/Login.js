@@ -61,7 +61,7 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { login }
                 size="large"
                 onClick={submitForm}
             >
-                {loading ? <CircularProgress /> : 'REGISTER'}
+                {loading ? <CircularProgress color='secondary' /> : 'Login'}
             </Button>
 
             {(props.errors || errors) && (

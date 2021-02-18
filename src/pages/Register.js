@@ -78,7 +78,7 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { registe
                 className="form-input"
                 size="large"
                 onClick={submitForm}
-            >{loading ? <CircularProgress /> : 'REGISTER'}
+            >{loading ? <CircularProgress color='secondary' /> : 'Register'}
             </Button>
 
             {(props.errors || errors) && (

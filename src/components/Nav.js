@@ -59,7 +59,7 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
     return (
         <AppBar position="static" style={{ display: "flex", backgroundColor: '#78b13f' }}>
             <Toolbar>
-                <Typography variant="h6">LSPN</Typography>
+                <Typography variant="h6">Thirsty Morse</Typography>
                 <div style={{ marginLeft: "auto" }}>
                     {user.isAuthUser ? (
                         <div>
