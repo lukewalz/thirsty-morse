@@ -102,4 +102,39 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.delete('/', async (req, res) => {
+    const token = process.env.API_KEY;
+    try {
+        jwt.verify(req.headers['x-auth-token'], token);
+        const tokenId = jwt.decode(req.headers['x-auth-token'], token)._id;
+        if (req.query.username) {
+            const user = await User.findOne({ username: req.query.username });
+            if (user) {
+                if (user._id == tokenId) {
+                    const user = await User.deleteOne({ username: req.query.username });
+                    if (user.ok) {
+                        res.sendStatus(200)
+                    }
+                } else {
+                    res.status(401).send('Incorrect credentials')
+                }
+            } else {
+                res.status(404).send('Could not find user')
+            }
+        }
+        else {
+            var users = await User.find({});
+            users = users.filter(u => u.notification)
+            res.status(200).send(users)
+        }
+
+
+    } catch (er) {
+        res.status(401).send('Must use a valid token')
+
+        throw new Error(er);
+
+    }
+})
+
 module.exports = router;

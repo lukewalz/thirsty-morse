@@ -103,7 +103,7 @@ function WagerModal({ placeWager, ...props }) {
 
 
                     <div>
-                        <TextField id="filled-basic" label="Wager Amount" variant="filled" value={amount} onChange={e => setAmount(e.target.value)} />
+                        <TextField id="filled-basic" autoComplete='off' label="Wager Amount" variant="filled" value={amount} onChange={e => setAmount(e.target.value)} />
                     </div>
 
 

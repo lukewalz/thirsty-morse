@@ -49,20 +49,27 @@ router.post('/', async (req, res) => {
         req.body.wagers.wager_date = Date.now();
         if (user) {
             if (user._id == tokenId) {
-                const updatedUser = await User.findByIdAndUpdate(
-                    { _id: user._id },
-                    { $push: { wagers: req.body.wagers } },
-                    { new: true }
-                );
+                const wagerIsValid = true;
+                if (wagerIsValid) {
+                    const updatedUser = await User.findByIdAndUpdate(
+                        { _id: user._id },
+                        { $push: { wagers: req.body.wagers } },
+                        { new: true }
+                    );
 
-                if (updatedUser.wagers > 0) {
-                    res.status(200).send(updatedUser.wagers)[0]
-                } else {
-                    res.status(200).send(updatedUser.wagers[updatedUser.wagers.length - 1])
+                    if (updatedUser.wagers > 0) {
+                        res.status(200).send(updatedUser.wagers)[0]
+                    } else {
+                        res.status(200).send(updatedUser.wagers[updatedUser.wagers.length - 1])
+                    }
                 }
+                else {
+                    res.status(400).send('Line has changed')
+                }
+
             } else {
 
-                res.status(401).send('Incorrect credentials')
+                res.status(403).send('Incorrect credentials')
             }
         } else {
 
@@ -80,15 +87,11 @@ router.get('/', async (req, res) => {
     const token = process.env.API_KEY;
     try {
         jwt.verify(req.headers['x-auth-token'], token);
-        const tokenId = jwt.decode(req.headers['x-auth-token'], token)._id;;
-        const user = await User.findOne({ _id: req.query.id });
+        const tokenId = jwt.decode(req.headers['x-auth-token'], token)._id;
+        const user = await User.findOne({ _id: req.query._id });
         if (user) {
             if (user._id == tokenId) {
                 if (user.wagers) {
-                    user.wagers.map(w => {
-                        common.determineResults(w, user)
-
-                    });
 
                     res.status(200).send(user.wagers);
                 }

@@ -25,7 +25,6 @@ if (!process.env.API_KEY) {
 
 
 mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
-    .then(() => console.log('Connected to Mongo'))
     .catch(err => console.error('Something went wrong', err));
 
 const app = express();
@@ -49,8 +48,6 @@ Sentry.init({
 app.use(Sentry.Handlers.requestHandler());
 // TracingHandler creates a trace for every incoming request
 app.use(Sentry.Handlers.tracingHandler());
-
-console.warn('arrived')
 
 app.use(bodyParser.json());
 app.use(cors());
