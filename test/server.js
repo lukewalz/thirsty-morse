@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 // Import the dependencies for testing
 var chai = require('chai');
 var chaiHttp = require('chai-http');
