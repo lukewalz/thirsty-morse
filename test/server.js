@@ -143,7 +143,7 @@ describe('Wagers', () => {
     describe("GET /", () => {
         it('should get wagers and determine results', (done) => {
             chai.request(server)
-                .get(`${path}/?_id=${testUser._id}`)
+                .get(`${path}/?id=${testUser._id}`)
                 .set('content-type', 'application/json')
                 .set('x-auth-token', testUser.token)
                 .end(function (err, res) {

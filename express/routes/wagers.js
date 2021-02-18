@@ -89,7 +89,7 @@ router.get('/', async (req, res) => {
     try {
         jwt.verify(req.headers['x-auth-token'], token);
         const tokenId = jwt.decode(req.headers['x-auth-token'], token)._id;
-        const user = await User.findOne({ _id: req.query._id });
+        const user = await User.findOne({ _id: req.query.id });
         if (user) {
             if (user._id == tokenId) {
                 if (user.wagers) {
