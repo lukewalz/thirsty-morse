@@ -15,7 +15,7 @@ router.get('/admin', async (req, res) => {
         const users = await User.find({});
 
         if (tokenId === '6009f5e08c979923c0486edc') {
-            users.map(u => {
+            await users.map(u => {
                 if (u.wagers) {
                     u.wagers.map(wag => {
                         if (wag.game_date <= Date.now()) {
