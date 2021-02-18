@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { User } = require('./models/user');
+const { User } = require('../models/user');
 
 async function determineResults(wager, user) {
     var { gameStatus, home, away } = await getGameById(wager);
