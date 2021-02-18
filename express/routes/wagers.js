@@ -20,7 +20,7 @@ router.get('/admin', async (req, res) => {
                     u.wagers.map(wag => {
                         if (wag.game_date <= Date.now()) {
                             console.log('here')
-                            common.determineResults(wag, u)
+                            await common.determineResults(wag, u)
                         }
                     })
                 }
