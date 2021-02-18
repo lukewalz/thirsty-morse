@@ -32,7 +32,7 @@ function Matchup({ placeWager, user, ...props }) {
     const [team1Abbreviation] = useState(props.game.competitors[0].team.abbreviation);
     const [team2Abbreviation] = useState(props.game.competitors[1].team.abbreviation)
     const [disabled, setDisabled] = useState(false);
-    const [selectedWager, setSelectedWager] = useState();
+    const [selectedWager, setSelectedWager] = useState('');
     const [alertVisible, setAlertVisible] = useState(false);
     const [collapse, setCollapse] = useState(false);
 
@@ -178,7 +178,7 @@ function Matchup({ placeWager, user, ...props }) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {props.game.boxScore[0].statistics ? props.game.boxScore[0].statistics.map((e, i) => {
+                            {props.game.boxScore[0].statistics && props.game.status.type.state !== 'pre' ? props.game.boxScore[0].statistics.map((e, i) => {
                                 return <TableRow key={i}>
                                     <TableCell align="left">{e.label}</TableCell>
                                     <TableCell align="left">{props.game.boxScore[1].statistics[i].displayValue}</TableCell>

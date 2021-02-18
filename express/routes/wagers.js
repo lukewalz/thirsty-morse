@@ -91,6 +91,7 @@ router.get('/', async (req, res) => {
         const tokenId = jwt.decode(req.headers['x-auth-token'], token)._id;
         const user = await User.findOne({ _id: req.query.id });
         if (user) {
+            console.log(user._id, tokenId)
             if (user._id == tokenId) {
                 if (user.wagers) {
 

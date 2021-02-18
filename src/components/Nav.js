@@ -59,7 +59,7 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
     return (
         <AppBar position="static" style={{ display: "flex", backgroundColor: '#78b13f' }}>
             <Toolbar>
-                <Typography variant="h6">Thirsty Morse</Typography>
+                <Typography variant="h6">TMSB</Typography>
                 <div style={{ marginLeft: "auto" }}>
                     {user.isAuthUser ? (
                         <div>
@@ -68,7 +68,7 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
                                 <Button>Dashboard</Button>
                             </Link>
                             <Link to="/my-account">
-                                <Button>My Account</Button>
+                                <Button>Account</Button>
                             </Link>
                             <Button onClick={logout}>
                                 Logout

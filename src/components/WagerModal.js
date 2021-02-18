@@ -32,7 +32,7 @@ function WagerModal({ placeWager, ...props }) {
 
     function buildRadioGroup() {
         if (wagerType === 'ou') {
-            return <RadioGroup aria-label="selection" row name="selection" value={selection} onChange={val => {
+            return <RadioGroup aria-label="selection" row name="selection" value={selection ? selection : ''} onChange={val => {
                 setSelection(val.target.value);
                 setBoost(100)
             }}>
@@ -41,7 +41,7 @@ function WagerModal({ placeWager, ...props }) {
             </RadioGroup>
         }
         else if (wagerType === 'sp') {
-            return <RadioGroup aria-label="selection" row name="selection" value={selection} onChange={val => {
+            return <RadioGroup aria-label="selection" row name="selection" value={selection ? selection : ''} onChange={val => {
                 setSelection(val.target.value);
                 var boostSelected = () => {
                     var selectedTeam = props.teams.filter(t => t.team.abbreviation === val.target.value.split('@')[0]);
@@ -60,7 +60,7 @@ function WagerModal({ placeWager, ...props }) {
             </RadioGroup>
         }
         else {
-            return <RadioGroup aria-label="selection" row name="selection" value={selection} onChange={val => {
+            return <RadioGroup aria-label="selection" row name="selection" value={selection ? selection : ''} onChange={val => {
                 setSelection(val.target.value);
                 setBoost(val.target.value.split('@')[1])
             }
@@ -81,7 +81,7 @@ function WagerModal({ placeWager, ...props }) {
                     <div>
                         <InputLabel id="label">Type</InputLabel>
 
-                        <Select displayEmpty labelId="label" id="select" defaultValue={""} value={wagerType} onChange={val => setWagerType(val.target.value)}>
+                        <Select displayEmpty labelId="label" id="select" value={wagerType ? wagerType : ''} onChange={val => setWagerType(val.target.value)}>
                             <MenuItem value="">
                                 Make a selection
                             </MenuItem>
@@ -103,7 +103,7 @@ function WagerModal({ placeWager, ...props }) {
 
 
                     <div>
-                        <TextField id="filled-basic" autoComplete='off' label="Wager Amount" variant="filled" value={amount} onChange={e => setAmount(e.target.value)} />
+                        <TextField id="filled-basic" autoComplete='off' label="Wager Amount" variant="filled" value={amount ? amount : ''} onChange={e => setAmount(e.target.value)} />
                     </div>
 
 
