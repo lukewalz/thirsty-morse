@@ -15,19 +15,18 @@ router.get('/admin', async (req, res) => {
         const users = await User.find({});
 
         if (tokenId === '6009f5e08c979923c0486edc') {
-            await users.map(u => {
+            Promise.all(users.map(u => {
                 if (u.wagers) {
                     u.wagers.map(wag => {
                         if (wag.game_date <= Date.now()) {
                             console.log('here')
-                            Promise.resolve(common.determineResults(wag, u))
+                            common.determineResults(wag, u)
                         }
                     })
                 }
 
 
-            })
-            res.status(200).send('Updated')
+            })).then(e => res.sendStatus(201).send('updated'))
 
         } else {
 
