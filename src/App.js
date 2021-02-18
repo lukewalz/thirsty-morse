@@ -21,7 +21,7 @@ const store = configureStore();
 
 const IndexPage = () => (
   <Container style={{ marginTop: 70, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-    <Typography variant="h3">LSPN</Typography>
+    <Typography variant="h3">Thirsty Morse Sportsbook</Typography>
     <Divider style={{ marginTop: 10, marginBottom: 10 }} />
     <Lottie style={{ width: '100%', height: 300 }} animationData={animationData.default} />
     <Typography variant="h6">The only online sports book where you can track wagers realtime</Typography>

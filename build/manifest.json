@@ -1,6 +1,6 @@
 {
   "short_name": "Thirsty Morse",
-  "name": "Thirsty Morse Sports Gambling",
+  "name": "Thirsty Morse Sportsbook",
   "icons": [
     {
       "src": "favicon.ico",
@@ -13,7 +13,7 @@
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "logo192.png",
       "type": "image/png",
       "sizes": "512x512"
     }
