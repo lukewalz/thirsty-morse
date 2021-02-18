@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
-const common = require('../common');
+const common = require('../helpers/common');
 require('dotenv').config();
 
 router.get('/admin', async (req, res) => {
