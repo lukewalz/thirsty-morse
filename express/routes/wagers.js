@@ -19,14 +19,13 @@ router.get('/admin', async (req, res) => {
                 if (u.wagers) {
                     u.wagers.map(wag => {
                         if (wag.game_date <= Date.now()) {
-                            console.log('here')
                             common.determineResults(wag, u)
                         }
                     })
                 }
 
 
-            })).then(e => res.sendStatus(201).send('updated'))
+            })).then(e => res.status(201).send('updated'))
 
         } else {
 

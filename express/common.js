@@ -2,11 +2,7 @@ const fetch = require('node-fetch');
 const { User } = require('./models/user');
 
 async function determineResults(wager, user) {
-    console.log('step 1')
-
     var { gameStatus, home, away } = await getGameById(wager);
-
-    console.log('step 2')
 
     const newWager = Object.assign({}, wager);
 
