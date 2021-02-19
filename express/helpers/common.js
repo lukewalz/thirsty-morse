@@ -149,7 +149,6 @@ async function getGameById(wager) {
 }
 
 async function addResultObject(newWager, user) {
-    console.log('updating')
     var amount = await calculatePayout(newWager.boost, Math.abs(newWager.amount), newWager.outcome);
     newWager.result = amount;
     var res = await User.findOneAndUpdate({ "_id": user._id, "wagers.wager_date": newWager.wager_date },
