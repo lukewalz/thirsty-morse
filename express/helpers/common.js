@@ -136,7 +136,7 @@ async function getGameById(wager) {
     var currentLine;
 
     if (wager.sport === 'soccer') {
-        apiPath = 'https://secure.espn.com/core/' + wager.sport + '/' + gameOrMatch + '?gameid=' + id + '&xhr=1';
+        apiPath = 'https://secure.espn.com/core/' + wager.sport + '/match?gameid=' + id + '&xhr=1';
     }
 
     await fetch(apiPath).then(e => e.json()).catch(er => er).then(r => {
