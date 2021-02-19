@@ -139,8 +139,6 @@ async function getGameById(wager) {
         apiPath = 'https://secure.espn.com/core/' + wager.sport + '/' + gameOrMatch + '?gameid=' + id + '&xhr=1';
     }
 
-    console.log(apiPath);
-
     await fetch(apiPath).then(e => e.json()).catch(er => er).then(r => {
         gameStatus = r.gamepackageJSON.header.competitions[0].status.type;
         home = { score: r.__gamepackage__.homeTeam.score, team: r.__gamepackage__.homeTeam.team.abbreviation };

@@ -10,7 +10,6 @@ import subscribePush from '../subscriptions';
 function NavBar({ logout, user, loadUpdatedWagers }) {
 
     useEffect(() => {
-        console.log('reloading')
         askUserPermission().then((e) => {
 
             if (e === 'granted' && user.isAuthUser) {
@@ -21,7 +20,6 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
         })
 
         function getBalance() {
-            console.log('getting balance')
             var balance = 0;
             user.wagers && user.wagers.length > 0 ? user.wagers.filter(e => e.status === 'final').map(w => {
                 return balance += parseInt(w.result);

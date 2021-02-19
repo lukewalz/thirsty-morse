@@ -15,7 +15,6 @@ router.get('/admin', async (req, res) => {
         const users = await User.find({});
 
         if (tokenId === '6009f5e08c979923c0486edc') {
-            console.log('here');
             var count = 0;
             Promise.all(users.map(u => {
                 if (u.wagers) {
@@ -92,7 +91,6 @@ router.get('/', async (req, res) => {
         const tokenId = jwt.decode(req.headers['x-auth-token'], token)._id;
         const user = await User.findOne({ _id: req.query.id });
         if (user) {
-            console.log(user._id, tokenId)
             if (user._id == tokenId) {
                 if (user.wagers) {
 
