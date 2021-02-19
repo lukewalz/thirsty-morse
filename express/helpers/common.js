@@ -128,21 +128,25 @@ async function determineResults(wager, user) {
 }
 
 async function getGameById(wager) {
-    var apiPath = 'https://secure.espn.com/' + wager.sport + '/boxscore?gameId=' + wager.game_id + '&xhr=1';
+    //https://secure.espn.com/core/' + league + '/' + gameOrMatch + '?gameid=' + id + '&xhr=1
+    var apiPath = 'https://secure.espn.com/core/' + wager.sport + '/game?gameId=' + wager.game_id + '&xhr=1';
     var home;
     var away;
     var gameStatus;
     var currentLine;
 
     if (wager.sport === 'soccer') {
-        apiPath = 'https://www.espn.com/soccer/matchstats?gameId=' + wager.game_id + '&xhr=1';
+        apiPath = 'https://secure.espn.com/core/' + league + '/' + gameOrMatch + '?gameid=' + id + '&xhr=1';
     }
+
+    console.log(apiPath);
 
     await fetch(apiPath).then(e => e.json()).catch(er => er).then(r => {
         gameStatus = r.gamepackageJSON.header.competitions[0].status.type;
         home = { score: r.__gamepackage__.homeTeam.score, team: r.__gamepackage__.homeTeam.team.abbreviation };
         away = { score: r.__gamepackage__.awayTeam.score, team: r.__gamepackage__.awayTeam.team.abbreviation };
-        currentLine = r.gamepackageJSON.odds;
+        currentLine = r.gamepackageJSON.odds || r.gamepackageJSON.pickcenter;
+        // (r.gamepackageJSON.odds && r.gamepackageJSON.odds.findIndex(e => e.details && e.overUnder) || r.gamepackageJSON.pickcenter && r.gamepackageJSON.pickcenter.findIndex(e => e.details && e.overUnder))
     }).catch(er => new Error(er));
 
     return { gameStatus, home, away, currentLine };
@@ -192,93 +196,64 @@ async function validateWager(wager) {
         var isValid = false;
         var { gameStatus, currentLine } = await getGameById(wager);
 
-
         // step 1: validate game hasn't started
         if (!gameStatus || gameStatus.state !== 'pre') {
-            console.log('already started')
             isValid = false;
         }
         else {
-            const line = currentLine.findIndex(e => e.overUnder);
+            const line = currentLine.findIndex(e => e.details && e.overUnder);
+
+            const spreadSource = currentLine[line].details.split(' ');
+            const submitted = wager.selection.split('@');
+
+            const mlAwaySource = currentLine[line].awayTeamOdds.moneyLine;
+            const mlHomeSource = currentLine[line].homeTeamOdds.moneyLine;
 
             switch (wager.wager_type) {
                 case 'ml':
-                    if (currentLine[line].awayTeamOdds.abbreviation === wager.selection.split('@')[0].toUpperCase()) {
-                        if (currentLine[line].awayTeamOdds.moneyLine === wager.selection.split('@')[1]) {
-                            console.log('ok away')
-                        }
-                        else {
-                            console.log('wrong away')
-                        }
+                    if (parseInt(submitted[1]) === parseInt(mlAwaySource)
+                        || parseInt(submitted[1]) === parseInt(mlHomeSource)) {
+                        isValid = true
                     }
                     else {
-                        if (currentLine[line].homeTeamOdds.moneyLine === wager.selection.split('@')[1]) {
-                            console.log('ok home')
-                        }
-                        else {
-                            console.log('wrong home')
-                        }
-                    };
+                        isValid = false;
+                    }
                     break;
                 case 'sp':
-                    if (currentLine[line].awayTeamOdds.abbreviation === wager.selection.split('@')[0].toUpperCase()) {
-                        if (currentLine[line].awayTeamOdds.underdog) {
-                            if (Math.abs(currentLine[line].details.split(' ')[1]) === wager.selection.split('@')[1]) {
-                                if (currentLine[line].spreadOdds === wager.boost) {
-                                    console.log('away sp true')
-                                }
-                                else {
-                                    console.log('away sp false: boost')
-                                }
-                            }
-                            else {
-                                console.log('away sp false: line')
-                            }
+                    if (parseFloat(spreadSource[1]) === parseFloat(submitted[1]) && spreadSource[0] === submitted[0]) {
+                        if (currentLine[line].awayTeamOdds.spreadOdds === wager.boost) {
+                            isValid = true;
+                        }
+                        else if (currentLine[line].homeTeamOdds.spreadOdds === wager.boost) {
+                            isValid = true;
                         }
                         else {
-                            if (-(currentLine[line].details.split(' ')[1]) === wager.selection.split('@')[1]) {
-                                if (currentLine[line].spreadOdds === wager.boost) {
-                                    console.log('away sp true')
-                                }
-                                else {
-                                    console.log('away sp false: boost')
-                                }
-                            }
-                            else {
-                                console.log('away sp false: line')
-                            }
+                            isValid = false;
+                        }
+                    }
+                    else if (parseFloat(spreadSource[1]) === -parseFloat(submitted[1]) && spreadSource[0] !== submitted[0]) {
+                        if (currentLine[line].awayTeamOdds.spreadOdds === wager.boost) {
+                            isValid = true;
+                        }
+                        else if (currentLine[line].homeTeamOdds.spreadOdds === wager.boost) {
+                            isValid = true;
+                        }
+                        else {
+                            isValid = false;
                         }
                     }
                     else {
-                        if (currentLine[line].homeTeamOdds.underdog) {
-                            if (Math.abs(currentLine[line].details.split(' ')[1]) === wager.selection.split('@')[1]) {
-                                if (currentLine[line].spreadOdds === wager.boost) {
-                                    console.log('away sp true')
-                                }
-                                else {
-                                    console.log('away sp false: boost')
-                                }
-                            }
-                            else {
-                                console.log('away sp false: line')
-                            }
-                        }
-                        else {
-                            if (-(currentLine[line].details.split(' ')[1]) === wager.selection.split('@')[1]) {
-                                if (currentLine[line].spreadOdds === wager.boost) {
-                                    console.log('away sp true')
-                                }
-                                else {
-                                    console.log('away sp false: boost')
-                                }
-                            }
-                            else {
-                                console.log('away sp false: line')
-                            }
-                        }
-                    };
+                        isValid = false;
+                    }
+
                     break;
                 case 'ou':
+                    if (parseInt(submitted[1]) === parseInt(currentLine[line].overUnder)) {
+                        isValid = true;
+                    }
+                    else {
+                        isValid = false;
+                    }
                     break;
                 default:
                     break;
