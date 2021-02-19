@@ -129,14 +129,14 @@ async function determineResults(wager, user) {
 
 async function getGameById(wager) {
     //https://secure.espn.com/core/' + league + '/' + gameOrMatch + '?gameid=' + id + '&xhr=1
-    var apiPath = 'https://secure.espn.com/core/' + wager.sport + '/game?gameId=' + wager.game_id + '&xhr=1';
+    var apiPath = 'https://secure.espn.com/core/' + wager.sport + '/game?gameId=' + wager.game_id + '&xhr=1&v=' + Date.now();
     var home;
     var away;
     var gameStatus;
     var currentLine;
 
     if (wager.sport === 'soccer') {
-        apiPath = 'https://secure.espn.com/core/' + wager.sport + '/match?gameid=' + id + '&xhr=1';
+        apiPath = 'https://secure.espn.com/core/' + wager.sport + '/match?gameid=' + wager.game_id + '&xhr=1&v=' + Date.now();
     }
 
     await fetch(apiPath).then(e => e.json()).catch(er => er).then(r => {
@@ -144,7 +144,7 @@ async function getGameById(wager) {
         home = { score: r.__gamepackage__.homeTeam.score, team: r.__gamepackage__.homeTeam.team.abbreviation };
         away = { score: r.__gamepackage__.awayTeam.score, team: r.__gamepackage__.awayTeam.team.abbreviation };
         currentLine = r.gamepackageJSON.odds || r.gamepackageJSON.pickcenter;
-        // (r.gamepackageJSON.odds && r.gamepackageJSON.odds.findIndex(e => e.details && e.overUnder) || r.gamepackageJSON.pickcenter && r.gamepackageJSON.pickcenter.findIndex(e => e.details && e.overUnder))
+
     }).catch(er => new Error(er));
 
     return { gameStatus, home, away, currentLine };
