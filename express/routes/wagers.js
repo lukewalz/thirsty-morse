@@ -20,6 +20,7 @@ router.get('/admin', async (req, res) => {
                 if (u.wagers) {
                     Promise.all(u.wagers.map(wag => {
                         if (wag.game_date <= Date.now() && wag.status !== 'final') {
+                            console.log(wag.status)
                             count++
                             common.determineResults(wag, u)
                         }

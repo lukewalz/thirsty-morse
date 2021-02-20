@@ -3,7 +3,7 @@ import '../App.css';
 import { loadGames } from "../redux/actions/gameActions";
 import { loadUpdatedWagers } from "../redux/actions/userActions"
 import { connect } from "react-redux";
-import { Card } from 'reactstrap';
+import { Paper } from '@material-ui/core/'
 import Matchup from './Matchup'
 import {
     useParams
@@ -37,7 +37,7 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
                             if (item.status.type.name !== 'STATUS_CANCELED'
                                 && item.status.type.name !== 'STATUS_POSTPONED'
                             ) {
-                                return <Card key={item.id} style={{ margin: 20 }}><Matchup sport={sport} game={item} /></Card>
+                                return <Paper elevation={10} key={item.id} style={{ margin: 20 }}><Matchup sport={sport} game={item} /></Paper>
                             }
                             else {
                                 return []
