@@ -37,7 +37,7 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
                             if (item.status.type.name !== 'STATUS_CANCELED'
                                 && item.status.type.name !== 'STATUS_POSTPONED'
                             ) {
-                                return <Paper elevation={10} key={item.id} style={{ margin: 20 }}><Matchup sport={sport} game={item} /></Paper>
+                                return <Paper elevation={10} key={item.id} style={{ margin: 20, padding: 20 }}><Matchup sport={sport} game={item} /></Paper>
                             }
                             else {
                                 return []

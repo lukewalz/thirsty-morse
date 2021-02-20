@@ -181,7 +181,7 @@ function Matchup({ placeWager, user, ...props }) {
                             {props.game.boxScore[0].statistics && props.game.status.type.state !== 'pre' ? props.game.boxScore[0].statistics.map((e, i) => {
                                 return <TableRow key={i}>
                                     <TableCell align="left">{e.label}</TableCell>
-                                    <TableCell align="left">{props.game.boxScore[1].statistics[i].displayValue}</TableCell>
+                                    <TableCell align="left">{props.game.boxScore[1].statistics[i] ? props.game.boxScore[1].statistics[i].displayValue : 'fuck'}</TableCell>
                                     <TableCell align="left">{e.displayValue}</TableCell>
                                 </TableRow>
                             })
