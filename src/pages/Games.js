@@ -19,11 +19,11 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
     useEffect(() => {
         loadGames(sport, week).then(() => setLoading(false));
 
-        // const interval = setInterval(() => {
-        //     loadGames(sport, week)
-        // }, 10000)
+        const interval = setInterval(() => {
+            loadGames(sport, week)
+        }, 10000)
 
-        // return () => clearInterval(interval)
+        return () => clearInterval(interval)
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sport, week]);
@@ -34,7 +34,8 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
                 games.slice().sort((a, b) => a.date > b.date ? 1 : -1)
                     .map(
                         (item) => {
-                            if (item
+                            if (item.status.type.name !== 'STATUS_CANCELED'
+                                && item.status.type.name !== 'STATUS_POSTPONED'
                             ) {
                                 return <Paper elevation={10} key={item.id} style={{ margin: 20, padding: 20 }}><Matchup sport={sport} game={item} /></Paper>
                             }

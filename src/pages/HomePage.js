@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Widget from '../components/Widget';
 import { Container, Row, Col } from 'reactstrap'
 import { connect } from "react-redux";
@@ -6,40 +6,15 @@ import {
     Link
 } from "react-router-dom";
 import { loadUpdatedWagers } from "../redux/actions/userActions"
-import { Paper, List, ListItem, makeStyles, Avatar } from '@material-ui/core/'
-import { getGameById } from '../api/espnApi';
-import { ArrowUpward, ArrowDownward } from '@material-ui/icons/';
-
-function HomePage({ user, }) {
-    const [currentWagers, setCurrentWagers] = useState([]);
 
 
+function HomePage({ user, loadUpdatedWagers }) {
     useEffect(() => {
-        var wagerList = user.wagers.filter(e => e.status === 'pending');
-        var newWagerList = Promise.all(wagerList.map(async element => {
-            const r = await getGameById(element.sport, element.game_id);
-            console.log(element);
 
-            return {
-                amount: element.amount,
-                wager_date: element.wager_date,
-                selection: element.selection,
-                game_id: element.game_id,
-                date: r.date,
-                ouIcon: element.wager_type === 'ou' ? element.selection.split('@')[0] === 'u' ? <ArrowDownward /> : <ArrowUpward /> : [],
-                logo1: element.wager_type !== 'ou' ? r.competitors.find(e => e.team.abbreviation === element.selection.split('@')[0]).team.logos[0].href : <ArrowUpward />
-            };
-        }))
-
-        newWagerList.then(a => setCurrentWagers(a))
-
-    }, [user])
-
-
-
+    }, [])
     return (
         <Container>
-            <h1>Dashboard</h1>
+            <h1 style={{ textTransform: 'capitalize' }}>{user.username} Dashboard</h1>
             <Row>
                 <Col>
                     <Link to="/games/college-football">
@@ -68,20 +43,7 @@ function HomePage({ user, }) {
                     </Link>
                 </Col>
             </Row>
-            <h4>Pending Wagers</h4>
-            {currentWagers ? <List style={{ 'background': 'white' }}>
-                {currentWagers.map(wager =>
-                    <ListItem divider dense style={{ 'display': 'flex', 'justifyContent': 'space-between' }} key={`${wager.game_id}_${wager.wager_date}`} >
-                        <Avatar src={wager.logo1 ? wager.logo1 : ''} >
-                            {wager.ouIcon ? wager.ouIcon : ''}
-                        </Avatar>
-                        <div>{wager.selection}</div>
-                        <div>
-                            {wager.amount}
-                        </div>
-                    </ListItem>)}
-            </List> : []}
-        </Container >
+        </Container>
     )
 }
 

@@ -44,7 +44,7 @@ function WagerModal({ placeWager, ...props }) {
             return <RadioGroup aria-label="selection" row name="selection" value={selection ? selection : ''} onChange={val => {
                 setSelection(val.target.value);
                 var boostSelected = () => {
-                    var selectedTeam = props.teams.filter(t => t.name === val.target.value.split('@')[0]);
+                    var selectedTeam = props.teams.filter(t => t.team.abbreviation === val.target.value.split('@')[0]);
                     if (selectedTeam[0].homeAway === 'home') {
                         setBoost(props.line.homeTeamOdds.spreadOdds)
                     }
@@ -55,8 +55,8 @@ function WagerModal({ placeWager, ...props }) {
 
                 boostSelected();
             }}>
-                <FormControlLabel value={props.teams[0].name + '@' + props.line.spread} control={<Radio color='primary' />} label={props.teams[0].name + '@' + props.line.spread} />
-                <FormControlLabel value={props.teams[1].name + '@' + -props.line.spread} control={<Radio color='primary' />} label={props.teams[1].name + '@' + -props.line.spread} />
+                <FormControlLabel value={props.teams[0].team.abbreviation + '@' + props.line.spread} control={<Radio color='primary' />} label={props.teams[0].team.abbreviation + '@' + props.line.spread} />
+                <FormControlLabel value={props.teams[1].team.abbreviation + '@' + -props.line.spread} control={<Radio color='primary' />} label={props.teams[1].team.abbreviation + '@' + -props.line.spread} />
             </RadioGroup>
         }
         else {
@@ -65,8 +65,8 @@ function WagerModal({ placeWager, ...props }) {
                 setBoost(val.target.value.split('@')[1])
             }
             }>
-                <FormControlLabel value={props.teams[0].name + '@' + props.line.homeTeamOdds.moneyLine} control={<Radio color='primary' />} label={props.teams[0].name + '@' + props.line.homeTeamOdds.moneyLine} />
-                <FormControlLabel value={props.teams[1].name + '@' + props.line.awayTeamOdds.moneyLine} control={<Radio color='primary' />} label={props.teams[1].name + '@' + props.line.awayTeamOdds.moneyLine} />
+                <FormControlLabel value={props.teams[0].team.abbreviation + '@' + props.line.homeTeamOdds.moneyLine} control={<Radio color='primary' />} label={props.teams[0].team.abbreviation + '@' + props.line.homeTeamOdds.moneyLine} />
+                <FormControlLabel value={props.teams[1].team.abbreviation + '@' + props.line.awayTeamOdds.moneyLine} control={<Radio color='primary' />} label={props.teams[1].team.abbreviation + '@' + props.line.awayTeamOdds.moneyLine} />
             </RadioGroup>
         }
 
@@ -204,7 +204,7 @@ function WagerModal({ placeWager, ...props }) {
             amount,
             game_date: game_date_ms,
             sport: props.sport,
-            matchup: props.teams.map(t => t.name).join(' vs '),
+            matchup: props.teams.map(t => t.team.abbreviation).join(' vs '),
             boost: boost
         }
 

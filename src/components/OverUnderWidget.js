@@ -16,10 +16,8 @@ export const OverUnderWidget = (props) => {
                         <div key={i}><Chip label={e.selection} style={{ backgroundColor: '#8bc34a' }} onClick={g => { g.stopPropagation(); props.handleWagerClick(e) }} key={i} /></div> :
                         <div key={i}><Chip label={e.selection} style={{ backgroundColor: '#8bc34a' }} onClick={g => { g.stopPropagation(); props.handleWagerClick(e) }} key={i} /></div>
                 : []) : []}
-            <b style={{ fontSize: '20px' }}>{props.overUnder ? props.overUnder[0].text.split(' ')[1] : 'unavailable'}</b>
+            <b style={{ fontSize: '20px' }}>{props.overUnder}</b>
         </Card>
 
     )
 }
-
-//             
