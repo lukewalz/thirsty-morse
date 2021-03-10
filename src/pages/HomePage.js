@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Widget from '../components/Widget';
-import { Container, Row, Col } from 'reactstrap'
 import { connect } from "react-redux";
 import {
     Link
 } from "react-router-dom";
 import { loadUpdatedWagers } from "../redux/actions/userActions"
-import { Paper, List, ListItem, makeStyles, Avatar } from '@material-ui/core/'
+import {
+    Paper, List, ListItem, makeStyles, Avatar, Grid
+} from '@material-ui/core/'
 import { getGameById } from '../api/espnApi';
 import { ArrowUpward, ArrowDownward } from '@material-ui/icons/';
 
@@ -62,37 +63,28 @@ function HomePage({ user, }) {
 
 
     return (
-        <div className="App">
 
-            <Container>
-                <Row>
-                    {/* <Col>
-                    <Link to="/games/college-football">
-                        <Widget image='https://cdn.mybookie.ag/wp-content/uploads/NCAAF-logo-2018-1.png' />
-                    </Link>
-                </Col>
-                <Col>
-                    <Link to="/games/nfl">
-                        <Widget image="https://static.www.nfl.com/image/upload/v1554321393/league/nvfr7ogywskqrfaiu38m.svg" />
-                    </Link>
-                </Col>
-                 */}
-                    <Col>
-                        <Link to="/games/nba">
-                            <Widget image="https://www.pngkit.com/png/full/89-893116_nba-logo-transparent-png-new-nba-finals-logo.png" />
-                        </Link>
-                    </Col>
-                    <Col>
-                        <Link to="/games/soccer">
-                            <Widget image="https://pngimg.com/uploads/fifa/fifa_PNG1.png" />
-                        </Link>
-                    </Col>
-                    <Col>
-                        <Link to="/games/mens-college-basketball">
-                            <Widget image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/NCAA_logo.svg/220px-NCAA_logo.svg.png" />
-                        </Link>
-                    </Col>
-                </Row>
+        <Grid container
+            direction="column"
+            justify="space-evenly"
+            alignItems="center"
+            spacing={2}
+            className='App'>
+
+            <Grid container item spacing={1} justify='space-evenly'>
+                <Link to="/games/nba">
+                    <Widget image="https://www.pngkit.com/png/full/89-893116_nba-logo-transparent-png-new-nba-finals-logo.png" />
+                </Link>
+
+                <Link to="/games/soccer">
+                    <Widget image="https://pngimg.com/uploads/fifa/fifa_PNG1.png" />
+                </Link>
+
+                <Link to="/games/mens-college-basketball">
+                    <Widget image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/NCAA_logo.svg/220px-NCAA_logo.svg.png" />
+                </Link>
+            </Grid>
+            <Grid container item justify='space-evenly' direction='column' >
                 {currentWagers?.length > 0 ? <>
                     <h4>In Progress</h4>
                     <List style={{ 'background': 'white' }}>
@@ -108,8 +100,9 @@ function HomePage({ user, }) {
                                 <div>{`${wager.score.home} - ${wager.score.away} ${wager.score.leading_team}`}</div>
                             </ListItem>)}
                     </List></> : ''}
-            </Container >
-        </div>
+            </Grid>
+
+        </Grid >
     )
 }
 
