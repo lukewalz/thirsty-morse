@@ -33,7 +33,7 @@ function HomePage({ user, }) {
 
         newWagerList.then(a => setCurrentWagers(a))
 
-    }, [user])
+    }, [])
 
 
 
