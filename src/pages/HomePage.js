@@ -15,24 +15,44 @@ function HomePage({ user, }) {
 
 
     useEffect(() => {
-        var wagerList = user.wagers.filter(e => e.status === 'pending');
-        var newWagerList = Promise.all(wagerList.map(async element => {
-            const r = await getGameById(element.sport, element.game_id);
-            console.log(element);
 
-            return {
-                amount: element.amount,
-                wager_date: element.wager_date,
-                selection: element.selection,
-                game_id: element.game_id,
-                date: r.date,
-                ouIcon: element.wager_type === 'ou' ? element.selection.split('@')[0] === 'u' ? <ArrowDownward /> : <ArrowUpward /> : [],
-                logo1: element.wager_type !== 'ou' ? r.competitors.find(e => e.team.abbreviation === element.selection.split('@')[0]).team.logos[0].href : <ArrowUpward />
-            };
-        }))
+        populateWagers()
 
-        newWagerList.then(a => setCurrentWagers(a))
+        const interval = setInterval(() => {
+            populateWagers()
+        }, 10000)
 
+        return () => clearInterval(interval)
+
+        function populateWagers() {
+            var wagerList = user.wagers.filter(e => e.status === 'pending');
+            var newWagerList = Promise.all(wagerList.map(async element => {
+                const r = await getGameById(element.sport, element.game_id);
+                if (r.status.type.state === 'in') {
+                    return {
+                        status: r.status.type.detail,
+                        score: { home: r.competitors[0].score, away: r.competitors[1].score, leading_team: r.competitors[0].score > r.competitors[1].score ? r.competitors[0].team.abbreviation : r.competitors[1].team.abbreviation },
+                        amount: element.amount,
+                        wager_date: element.wager_date,
+                        selection: element.selection,
+                        game_id: element.game_id,
+                        date: r.date,
+                        ouIcon: element.wager_type === 'ou' ? element.selection.split('@')[0] === 'u' ? <ArrowDownward /> : <ArrowUpward /> : [],
+                        logo1: element.wager_type !== 'ou' ? r.competitors.find(e => e.team.abbreviation === element.selection.split('@')[0]).team.logos[0].href : <ArrowUpward />
+                    };
+                }
+
+
+            }))
+
+
+            newWagerList.then(a => {
+                a = a.filter(function (element) {
+                    return element !== undefined;
+                });
+                setCurrentWagers(a)
+            })
+        }
     }, [])
 
 
@@ -41,7 +61,7 @@ function HomePage({ user, }) {
         <Container>
             <h1>Dashboard</h1>
             <Row>
-                <Col>
+                {/* <Col>
                     <Link to="/games/college-football">
                         <Widget image='https://cdn.mybookie.ag/wp-content/uploads/NCAAF-logo-2018-1.png' />
                     </Link>
@@ -51,7 +71,7 @@ function HomePage({ user, }) {
                         <Widget image="https://static.www.nfl.com/image/upload/v1554321393/league/nvfr7ogywskqrfaiu38m.svg" />
                     </Link>
                 </Col>
-            </Row><Row>
+                 */}
                 <Col>
                     <Link to="/games/nba">
                         <Widget image="https://www.pngkit.com/png/full/89-893116_nba-logo-transparent-png-new-nba-finals-logo.png" />
@@ -76,9 +96,10 @@ function HomePage({ user, }) {
                             {wager.ouIcon ? wager.ouIcon : ''}
                         </Avatar>
                         <div>{wager.selection}</div>
-                        <div>
-                            {wager.amount}
-                        </div>
+
+
+                        <div>{wager.status}</div>
+                        <div>{`${wager.score.home} - ${wager.score.away} ${wager.score.leading_team}`}</div>
                     </ListItem>)}
             </List> : []}
         </Container >

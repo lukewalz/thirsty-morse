@@ -1,10 +1,9 @@
 import React from 'react';
-import { Card } from 'reactstrap'
-import Chip from '@material-ui/core/Chip';
+import { Chip, Paper } from '@material-ui/core';
 
 export const OverUnderWidget = (props) => {
     return (
-        <Card style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+        <Paper style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
 
             {props.wager ? props.wager.map((e, i) => e.wager_type === 'ou' ?
                 e.status === 'final' ?
@@ -17,7 +16,7 @@ export const OverUnderWidget = (props) => {
                         <div key={i}><Chip label={e.selection} style={{ backgroundColor: '#8bc34a' }} onClick={g => { g.stopPropagation(); props.handleWagerClick(e) }} key={i} /></div>
                 : []) : []}
             <b style={{ fontSize: '20px' }}>{props.overUnder}</b>
-        </Card>
+        </Paper>
 
     )
 }

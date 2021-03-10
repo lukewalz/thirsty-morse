@@ -1,14 +1,13 @@
 import React from 'react';
 import {
-    Card
-} from 'reactstrap';
+    Paper
+} from '@material-ui/core';
 
 function Widget(...props) {
     return (
-        <Card className='dashCard'>
-            <img width="100%" src={props[0].image} alt="Card cap" />
-            <h5>{props[0].title}</h5>
-        </Card>
+        <Paper elevation={5} className='dashCard'>
+            <img style={{ 'alignSelf': 'center' }} width='100%' src={props[0].image} alt="Card cap" />
+        </Paper>
     )
 }
 
