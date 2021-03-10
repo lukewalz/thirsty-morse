@@ -14,6 +14,7 @@ function HomePage({ user, }) {
     const [currentWagers, setCurrentWagers] = useState([]);
 
 
+
     useEffect(() => {
 
         populateWagers()
@@ -41,11 +42,14 @@ function HomePage({ user, }) {
                         logo1: element.wager_type !== 'ou' ? r.competitors.find(e => e.team.abbreviation === element.selection.split('@')[0]).team.logos[0].href : <ArrowUpward />
                     };
                 }
+                else {
+                    console.log(r)
+                }
 
 
             }))
 
-
+            console.log(newWagerList);
             newWagerList.then(a => {
                 a = a.filter(function (element) {
                     return element !== undefined;
@@ -58,10 +62,11 @@ function HomePage({ user, }) {
 
 
     return (
-        <Container>
-            <h1>Dashboard</h1>
-            <Row>
-                {/* <Col>
+        <div className="App">
+
+            <Container>
+                <Row>
+                    {/* <Col>
                     <Link to="/games/college-football">
                         <Widget image='https://cdn.mybookie.ag/wp-content/uploads/NCAAF-logo-2018-1.png' />
                     </Link>
@@ -72,37 +77,39 @@ function HomePage({ user, }) {
                     </Link>
                 </Col>
                  */}
-                <Col>
-                    <Link to="/games/nba">
-                        <Widget image="https://www.pngkit.com/png/full/89-893116_nba-logo-transparent-png-new-nba-finals-logo.png" />
-                    </Link>
-                </Col>
-                <Col>
-                    <Link to="/games/soccer">
-                        <Widget image="https://pngimg.com/uploads/fifa/fifa_PNG1.png" />
-                    </Link>
-                </Col>
-                <Col>
-                    <Link to="/games/mens-college-basketball">
-                        <Widget image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/NCAA_logo.svg/220px-NCAA_logo.svg.png" />
-                    </Link>
-                </Col>
-            </Row>
-            <h4>Pending Wagers</h4>
-            {currentWagers ? <List style={{ 'background': 'white' }}>
-                {currentWagers.map(wager =>
-                    <ListItem divider dense style={{ 'display': 'flex', 'justifyContent': 'space-between' }} key={`${wager.game_id}_${wager.wager_date}`} >
-                        <Avatar src={wager.logo1 ? wager.logo1 : ''} >
-                            {wager.ouIcon ? wager.ouIcon : ''}
-                        </Avatar>
-                        <div>{wager.selection}</div>
+                    <Col>
+                        <Link to="/games/nba">
+                            <Widget image="https://www.pngkit.com/png/full/89-893116_nba-logo-transparent-png-new-nba-finals-logo.png" />
+                        </Link>
+                    </Col>
+                    <Col>
+                        <Link to="/games/soccer">
+                            <Widget image="https://pngimg.com/uploads/fifa/fifa_PNG1.png" />
+                        </Link>
+                    </Col>
+                    <Col>
+                        <Link to="/games/mens-college-basketball">
+                            <Widget image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/NCAA_logo.svg/220px-NCAA_logo.svg.png" />
+                        </Link>
+                    </Col>
+                </Row>
+                {currentWagers?.length > 0 ? <>
+                    <h4>In Progress</h4>
+                    <List style={{ 'background': 'white' }}>
+                        {currentWagers.map(wager =>
+                            <ListItem divider dense style={{ 'display': 'flex', 'justifyContent': 'space-between' }} key={`${wager.game_id}_${wager.wager_date}`} >
+                                <Avatar src={wager.logo1 ? wager.logo1 : ''} >
+                                    {wager.ouIcon ? wager.ouIcon : ''}
+                                </Avatar>
+                                <div>{wager.selection}</div>
 
 
-                        <div>{wager.status}</div>
-                        <div>{`${wager.score.home} - ${wager.score.away} ${wager.score.leading_team}`}</div>
-                    </ListItem>)}
-            </List> : []}
-        </Container >
+                                <div>{wager.status}</div>
+                                <div>{`${wager.score.home} - ${wager.score.away} ${wager.score.leading_team}`}</div>
+                            </ListItem>)}
+                    </List></> : ''}
+            </Container >
+        </div>
     )
 }
 
