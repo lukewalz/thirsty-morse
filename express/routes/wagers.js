@@ -14,7 +14,7 @@ router.get('/admin', async (req, res) => {
 
         const users = await User.find({});
 
-        if (tokenId === '6009f5e08c979923c0486edc') {
+        if (tokenId === '604a9255e6884000092b8cbe') {
             var count = 0;
             Promise.all(users.map(u => {
                 if (u.wagers) {
