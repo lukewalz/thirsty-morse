@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Widget from '../components/Widget';
 import { connect } from "react-redux";
 import {
@@ -16,7 +16,7 @@ function HomePage({ user, }) {
 
 
 
-    useLayoutEffect(() => {
+    useEffect(() => {
 
         populateWagers()
 
