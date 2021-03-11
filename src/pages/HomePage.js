@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import Widget from '../components/Widget';
 import { connect } from "react-redux";
 import {
@@ -16,7 +16,7 @@ function HomePage({ user, }) {
 
 
 
-    useEffect(() => {
+    useLayoutEffect(() => {
 
         populateWagers()
 
@@ -40,17 +40,13 @@ function HomePage({ user, }) {
                         game_id: element.game_id,
                         date: r.date,
                         ouIcon: element.wager_type === 'ou' ? element.selection.split('@')[0] === 'u' ? <ArrowDownward /> : <ArrowUpward /> : [],
-                        logo1: element.wager_type !== 'ou' ? r.competitors.find(e => e.team.abbreviation === element.selection.split('@')[0]).team.logos[0].href : <ArrowUpward />
+                        logo1: element.wager_type !== 'ou' ? r.competitors.find(e => e.team.abbreviation === element.selection.split('@')[0]).team.logos[0].href : ''
                     };
-                }
-                else {
-                    console.log(r)
                 }
 
 
             }))
 
-            console.log(newWagerList);
             newWagerList.then(a => {
                 a = a.filter(function (element) {
                     return element !== undefined;
@@ -58,14 +54,13 @@ function HomePage({ user, }) {
                 setCurrentWagers(a)
             })
         }
-    }, [])
+    }, [user])
 
 
 
     return (
 
         <Grid container
-            direction="column"
             justify="space-evenly"
             className='App'>
 
@@ -85,7 +80,7 @@ function HomePage({ user, }) {
             <Grid container item justify='space-evenly' direction='column' >
                 {currentWagers?.length > 0 ? <>
                     <h4>In Progress</h4>
-                    <List style={{ 'background': 'white' }}>
+                    <List style={{ 'background': 'white', width: 'inherit' }}>
                         {currentWagers.map(wager =>
                             <ListItem divider dense style={{ 'display': 'flex', 'justifyContent': 'space-between' }} key={`${wager.game_id}_${wager.wager_date}`} >
                                 <Avatar src={wager.logo1 ? wager.logo1 : ''} >

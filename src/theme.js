@@ -25,9 +25,18 @@ const theme = createMuiTheme({
             }
         },
         MuiGrid: {
-
+            height: 100,
             alignItems: "center",
-            spacing: 2
+        },
+        MuiList: {
+            disablePadding: true,
+
+        },
+        MuiAppBar: {
+            style: {
+                margin: 0,
+                padding: 0
+            }
         }
     }
 

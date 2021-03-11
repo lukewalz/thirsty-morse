@@ -55,7 +55,7 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
 
 
     return (
-        <AppBar position="static" style={{ display: "flex", backgroundColor: '#78b13f' }}>
+        <AppBar position='sticky'>
             <Toolbar>
                 <Typography variant="h6">TMSB</Typography>
                 <div style={{ marginLeft: "auto" }}>
