@@ -10,7 +10,7 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default connect(({ isLoading, user }) => ({ isLoading, user }), { register })(props => {
+export default connect(({ user }) => ({ user }), { register })(props => {
     const [email, setEmail] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -28,7 +28,7 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { registe
             return;
         }
         setLoading(true)
-        props.register(email, password, firstName, lastName).then(() => setLoading(false));
+        props.register(email, password, firstName, lastName).catch(() => { setLoading(false); setErrors('Failed to register') })
     };
 
     return (

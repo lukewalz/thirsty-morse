@@ -9,7 +9,7 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default connect(({ isLoading, user }) => ({ isLoading, user }), { login })(props => {
+export default connect(({ user }) => ({ user }), { login })(props => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState("");
@@ -26,7 +26,7 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { login }
             return;
         }
         setLoading(true);
-        props.login(email, password)
+        props.login(email, password).catch(() => { setLoading(false); setErrors('Failed to log in') })
     };
 
 
