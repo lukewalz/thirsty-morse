@@ -64,7 +64,7 @@ function HomePage({ user, }) {
             justify="space-evenly"
             className='App'>
 
-            <Grid container item spacing={1} justify='space-evenly'>
+            <Grid container item justify='space-evenly'>
                 <Link to="/games/nba">
                     <Widget image="https://www.pngkit.com/png/full/89-893116_nba-logo-transparent-png-new-nba-finals-logo.png" />
                 </Link>
