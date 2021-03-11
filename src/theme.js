@@ -24,6 +24,12 @@ const theme = createMuiTheme({
                 padding: 20
             }
         },
+        MuiTableContainer: {
+            style: {
+                margin: 0,
+                padding: 0
+            }
+        },
         MuiGrid: {
             height: 100,
             alignItems: "center",
