@@ -69,8 +69,7 @@ function Matchup({ placeWager, user, ...props }) {
              </Alert>
             <div onClick={() => { props.game.status.type.state !== 'pre' ? setAlertVisible(true) : handleRowClick() }}>
                 <Row>
-                    <Col xs="5">{props.game.status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.date).toLocaleString() : props.game.status.type.name === 'STATUS_FINAL' && props.game.status.type.name === 'STATUS_HALF' ? props.game.status.type.description : props.game.status.type.completed === true ? props.game.status.type.description : props.game.status.type.description + ' ' + props.game.status.type.detail}</Col>
-                    <Col xs="5">{ }</Col>
+                    <Col>{props.game.status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.date).toLocaleString() : props.game.status.type.name === 'STATUS_FINAL' && props.game.status.type.name === 'STATUS_HALF' ? props.game.status.type.description : props.game.status.type.completed === true ? props.game.status.type.description : props.game.status.type.description + ' ' + props.game.status.type.detail}</Col>
                 </Row>
                 <Row>
                     <Col>
@@ -137,12 +136,12 @@ function Matchup({ placeWager, user, ...props }) {
 
             {
                 <Row>
-                    <Col xs='3'>
+                    <Col>
 
                         <OverUnderWidget handleWagerClick={r => handleWagerClick(r)} wager={wagers} overUnder={props.game.odds.overUnder}>{props.game.odds.overUnder}</OverUnderWidget>
 
                     </Col>
-                    <Col xs='5'>
+                    <Col>
                         <Progress
                             value={actualOvers}
                             max={props.game.odds.overUnder}

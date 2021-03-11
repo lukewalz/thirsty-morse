@@ -37,8 +37,6 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { login }
       </Typography>
             <TextField
                 label="Email"
-                variant="outlined"
-                className="form-input"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required={true}
@@ -46,8 +44,6 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { login }
             />
             <TextField
                 label="Password"
-                variant="outlined"
-                className="form-input"
                 type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
@@ -57,8 +53,6 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { login }
             <Button
                 variant="contained"
                 color="primary"
-                className="form-input"
-                size="large"
                 onClick={submitForm}
             >
                 {loading ? <CircularProgress color='secondary' /> : 'Login'}

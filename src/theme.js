@@ -13,5 +13,23 @@ const theme = createMuiTheme({
         },
     },
 
+    props: {
+        MuiTextField: {
+            margin: 'dense',
+            variant: 'outlined'
+        },
+        MuiPaper: {
+            style: {
+                margin: 20,
+                padding: 20
+            }
+        },
+        MuiGrid: {
+
+            alignItems: "center",
+            spacing: 2
+        }
+    }
+
 })
 export default theme

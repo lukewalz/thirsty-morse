@@ -38,7 +38,7 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
                                 && item.status.type.name !== 'STATUS_POSTPONED'
                                 && item.status.type.name !== 'STATUS_FINAL'
                             ) {
-                                return <Paper elevation={10} key={item.id} style={{ padding: 20, margin: 20 }}><Matchup sport={sport} game={item} /></Paper>
+                                return <Paper elevation={10} key={item.id}><Matchup sport={sport} game={item} /></Paper>
                             }
                             else {
                                 return []

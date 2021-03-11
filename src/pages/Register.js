@@ -33,40 +33,28 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { registe
 
     return (
         <form className='container'>
-            <Typography variant="h5" style={{ marginBottom: 8 }}>
+            <Typography variant="h5" >
                 Register
       </Typography>
             <TextField
                 label="First Name"
-                variant="outlined"
-                fullWidth
-                className="form-input"
                 value={firstName}
                 onChange={e => setFirstName(e.target.value)}
             />
             <TextField
                 label="Last Name"
-                variant="outlined"
-                fullWidth
-                className="form-input"
                 value={lastName}
                 onChange={e => setLastName(e.target.value)}
             />
             <TextField
                 label="Email"
-                variant="outlined"
-                fullWidth
                 type="email"
-                className="form-input"
                 value={email}
                 onChange={e => setEmail(e.target.value.toLowerCase())}
             />
 
             <TextField
                 label="Password"
-                variant="outlined"
-                fullWidth
-                className="form-input"
                 type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
@@ -74,8 +62,6 @@ export default connect(({ isLoading, user }) => ({ isLoading, user }), { registe
             <Button
                 variant="contained"
                 color="primary"
-                fullWidth
-                className="form-input"
                 size="large"
                 onClick={submitForm}
             >{loading ? <CircularProgress color='secondary' /> : 'Register'}

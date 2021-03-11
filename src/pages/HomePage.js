@@ -67,8 +67,6 @@ function HomePage({ user, }) {
         <Grid container
             direction="column"
             justify="space-evenly"
-            alignItems="center"
-            spacing={2}
             className='App'>
 
             <Grid container item spacing={1} justify='space-evenly'>
