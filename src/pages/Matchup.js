@@ -69,7 +69,7 @@ function Matchup({ placeWager, user, ...props }) {
              </Alert>
             <div onClick={() => { props.game.status.type.state !== 'pre' ? setAlertVisible(true) : handleRowClick() }}>
                 <Row>
-                    <Col>{props.game.status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.date).toLocaleString() : props.game.status.type.name === 'STATUS_FINAL' && props.game.status.type.name === 'STATUS_HALF' ? props.game.status.type.description : props.game.status.type.completed === true ? props.game.status.type.description : props.game.status.type.description + ' ' + props.game.status.type.detail}</Col>
+                    <Col>{props.game.status.type.name === 'STATUS_SCHEDULED' ? new Date(props.game.date).toLocaleString() : props.game.status.type.detail}</Col>
                 </Row>
                 <Row>
                     <Col>
