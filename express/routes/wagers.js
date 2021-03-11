@@ -15,12 +15,12 @@ router.get('/admin', async (req, res) => {
         const users = await User.find({});
 
         if (tokenId === '604a9255e6884000092b8cbe') {
+
             var count = 0;
             Promise.all(users.map(u => {
                 if (u.wagers) {
                     Promise.all(u.wagers.map(wag => {
-                        if (wag.game_date <= Date.now() && wag.status !== 'final') {
-                            console.log(wag.status)
+                        if (wag.status === 'pending') {
                             count++
                             common.determineResults(wag, u)
                         }
