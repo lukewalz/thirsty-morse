@@ -10,6 +10,10 @@
   min-height: 100vh;
 }
 
+.MuiTableCell-head{
+  line-height: inherit !important
+}
+
 .MuiPagination-ul {
   justify-content: center;
 }
@@ -152,6 +156,13 @@ tr{
 
 .form {
   margin-top: 30px;
+}
+
+@media screen and (max-width: 500px){
+  .MuiTableCell-root {
+    font-size: .5rem !important;
+    padding: 5px !important;
+  }
 }
 
 @keyframes App-logo-float {
