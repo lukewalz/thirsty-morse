@@ -77,18 +77,15 @@ function HomePage({ user, }) {
                     <Widget image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/NCAA_logo.svg/220px-NCAA_logo.svg.png" />
                 </Link>
             </Grid>
-            <Grid container item justify='space-evenly' direction='column' >
+            <Grid container item justify='space-evenly' direction='column' style={{ marginTop: '30px' }} >
                 {currentWagers?.length > 0 ? <>
-                    <h4>In Progress</h4>
-                    <List style={{ 'background': 'white', width: 'inherit' }}>
+                    <List subheader={<b>In Progress</b>} style={{ 'background': 'white', width: 'inherit' }}>
                         {currentWagers.map(wager =>
-                            <ListItem divider dense style={{ 'display': 'flex', 'justifyContent': 'space-between' }} key={`${wager.game_id}_${wager.wager_date}`} >
+                            <ListItem divider style={{ 'display': 'flex', 'justifyContent': 'space-between' }} key={`${wager.game_id}_${wager.wager_date}`} >
                                 <Avatar src={wager.logo1 ? wager.logo1 : ''} >
                                     {wager.ouIcon ? wager.ouIcon : ''}
                                 </Avatar>
                                 <div>{wager.selection}</div>
-
-
                                 <div>{wager.status}</div>
                                 <div>{`${wager.score.home} - ${wager.score.away} ${wager.score.leading_team}`}</div>
                             </ListItem>)}

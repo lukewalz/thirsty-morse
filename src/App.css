@@ -96,16 +96,6 @@ a:hover{
   font-size: small;
 }
 
-.dashCard{
-  display: flex;
-  width: 200px;
-  height: 200px;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
-
-
 .dashCard:hover{
   border: solid;
   border-width: 3;
