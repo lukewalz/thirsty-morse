@@ -45,10 +45,7 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
                 games.slice().sort((a, b) => a.date > b.date ? 1 : -1)
                     .map(
                         (item) => {
-                            if (item.status.type.name !== 'STATUS_CANCELED'
-                                && item.status.type.name !== 'STATUS_POSTPONED'
-                                && item.status.type.name !== 'STATUS_FINAL'
-                            ) {
+                            if (item.status.type.state !== 'post') {
                                 return <Paper elevation={10} key={item.id}><Matchup sport={sport} game={item} /></Paper>
                             }
                             else {
