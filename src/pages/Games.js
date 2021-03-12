@@ -9,27 +9,38 @@ import {
     useParams
 } from "react-router-dom";
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-
+import { Pagination } from '@material-ui/lab';
+import moment from 'moment';
 
 function Games({ loadGames, games, loadUpdatedWagers }) {
-    var { sport, week } = useParams();
+    const [day, setDay] = useState();
+
+    var { sport } = useParams();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        loadGames(sport, week).then(() => setLoading(false));
+        loadGames(sport, day).then(() => setLoading(false));
 
         const interval = setInterval(() => {
-            loadGames(sport, week)
+            loadGames(sport, day)
         }, 10000)
 
         return () => clearInterval(interval)
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sport, week]);
+    }, [sport, day]);
+
+    const handleChange = (event, value) => {
+        var newDay = moment().add(value - 1, 'days').format('YYYYMMDD');
+        setDay(newDay)
+    };
 
     return (
+
         <div className="App">
+            <Pagination
+                count={3}
+                onChange={(e, i) => handleChange(e, i)}
+            />
             {!loading ?
                 games.slice().sort((a, b) => a.date > b.date ? 1 : -1)
                     .map(

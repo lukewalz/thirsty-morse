@@ -10,7 +10,9 @@
   min-height: 100vh;
 }
 
-
+.MuiPagination-ul {
+  justify-content: center;
+}
 
 .score{
   font-size: x-large;

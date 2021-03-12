@@ -75,7 +75,11 @@ function Matchup({ placeWager, user, ...props }) {
                     <Col>
                         <div className='teamSection'>
                             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                                {wagers.length > 0 ? wagers.map((e, i) => e.selection.split('@')[0] === team1Abbreviation ? <Chip style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }} /> : '') : ''}
+                                {wagers.length > 0 ? wagers.map((e, i) => e.selection.split('@')[0] === team1Abbreviation ? <Chip style={{
+                                    backgroundColor: '#8bc34a', borderRadius: "50%",
+                                    width: 10,
+                                    height: 10
+                                }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }} /> : '') : ''}
                             </div>
                             <div>
                                 <div style={{
@@ -103,7 +107,11 @@ function Matchup({ placeWager, user, ...props }) {
                         </div>
                         <div className='teamSection'>
                             <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                                {wagers.length > 0 ? wagers.map((e, i) => e.selection.split('@')[0] === team2Abbreviation ? <Chip style={{ backgroundColor: '#8bc34a' }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }} /> : '') : ''}
+                                {wagers.length > 0 ? wagers.map((e, i) => e.selection.split('@')[0] === team2Abbreviation ? <Chip style={{
+                                    backgroundColor: '#8bc34a', borderRadius: "50%",
+                                    width: 10,
+                                    height: 10,
+                                }} key={i} onClick={g => { g.stopPropagation(); handleWagerClick(e) }} /> : '') : ''}
                             </div>
                             <div>
                                 <div style={{
