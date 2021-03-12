@@ -16,9 +16,7 @@ self.addEventListener("push", event => {
 
 var CACHE_NAME = 'thirsty-cache';
 var urlsToCache = [
-  '/',
-  '/styles/main.css',
-  '/script/main.js'
+  '/'
 ];
 
 self.addEventListener('install', function (event) {
@@ -26,7 +24,7 @@ self.addEventListener('install', function (event) {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(function (cache) {
-        console.log('Opened cache');
+        console.log('install sw')
         return cache.addAll(urlsToCache);
       })
   );
@@ -38,6 +36,8 @@ self.addEventListener('fetch', function (event) {
       .then(function (response) {
         // Cache hit - return response
         if (response) {
+          console.log('get sw')
+
           return response;
         }
         return fetch(event.request);

@@ -14,8 +14,6 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import theme from './theme'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import MyAccount from './pages/MyAccount'
-import Lottie from "lottie-react";
-import * as animationData from './lotties/34702-spray-medicine.json'
 
 const store = configureStore();
 
