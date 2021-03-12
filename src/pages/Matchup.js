@@ -158,12 +158,10 @@ function Matchup({ placeWager, user, ...props }) {
                         </Progress>
                     </Col>
                     {props.game.status.type.state !== 'pre' && props.game.boxScore ?
-                        <div>
-                            <Col xs='2'>
-                                <Button onClick={() => setCollapse(!collapse)}>{!collapse ? '+' : '-'}</Button>
+                        <Col xs='2'>
+                            <Button style={{ 'fontSize': 'xx-small' }} onClick={() => setCollapse(!collapse)}>{!collapse ? '+' : '-'}</Button>
 
-                            </Col>
-                        </div>
+                        </Col>
                         : []}
                 </Row>
 

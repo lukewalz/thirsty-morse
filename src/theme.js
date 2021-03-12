@@ -20,8 +20,8 @@ const theme = createMuiTheme({
         },
         MuiPaper: {
             style: {
-                margin: 20,
-                padding: 20
+                margin: 5,
+                padding: 5
             }
         },
         MuiTableContainer: {

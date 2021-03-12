@@ -15,9 +15,9 @@
 }
 
 .score{
-  font-size: x-large;
+  font-size: large;
   border: solid;
-  border-radius: .5em;
+  border-radius: .25em;
   height: 2em;
   width: 2em;
   justify-content: center;
@@ -33,7 +33,10 @@
 .gameAlert{
   background-color: gray;
   color: white;
-  padding: 20px;
+}
+
+.col {
+  font-size: small;
 }
 
 .container{
@@ -76,16 +79,17 @@ a:hover{
 }
 
 .teamSection{
-  margin: 20px;
+  margin: 5px;
+  font-size: small;
 }
 
 .progress{
-  height: 3rem;
+  height: 1rem;
 }
 
 
 .teamTitle{
-  font-size: medium;
+  font-size: small;
 }
 
 .dashCard{
@@ -103,15 +107,15 @@ a:hover{
   border-width: 3;
 }
 .row{
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   margin-left: 0px !important;
   margin-right: 0px !important;
   justify-content: center;
 }
 
 img{
-  width: 80px
+  width: 40px
 }
 
 .App-logo {

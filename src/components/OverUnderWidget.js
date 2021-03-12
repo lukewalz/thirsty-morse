@@ -31,7 +31,7 @@ export const OverUnderWidget = (props) => {
                             height: 10,
                         }} onClick={g => { g.stopPropagation(); props.handleWagerClick(e) }} key={i} /></div>
                 : []) : []}
-            <b style={{ fontSize: '20px' }}>{props.overUnder}</b>
+            <b>{props.overUnder}</b>
         </div>
 
     )
