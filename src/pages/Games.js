@@ -13,7 +13,7 @@ import { Pagination } from '@material-ui/lab';
 import moment from 'moment';
 
 function Games({ loadGames, games, loadUpdatedWagers }) {
-    const [day, setDay] = useState();
+    const [day, setDay] = useState(moment());
 
     var { sport } = useParams();
     const [loading, setLoading] = useState(true);
