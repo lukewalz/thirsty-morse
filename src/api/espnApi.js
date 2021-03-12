@@ -1,6 +1,20 @@
+import { current } from "immer";
+
+function yyyymmdd() {
+    var x = new Date();
+    var y = x.getFullYear().toString();
+    var m = (x.getMonth() + 1).toString();
+    var d = x.getDate().toString();
+    (d.length == 1) && (d = '0' + d);
+    (m.length == 1) && (m = '0' + m);
+    var yyyymmdd = y + m + d;
+    return yyyymmdd;
+}
 
 export async function getGames(league) {
-    var apiPath = 'https://secure.espn.com/core/' + league + '/schedule?year=2020&xhr=1';
+    const currentDate = yyyymmdd();
+    console.log(currentDate)
+    var apiPath = 'https://secure.espn.com/core/' + league + '/schedule/_/date/' + currentDate + '?xhr=1';
     var response = await fetch(apiPath).then(e => e.json()).then(r => r.content.schedule);
     var size = Object.keys(response).length
 
