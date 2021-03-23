@@ -14,7 +14,7 @@ const path = require('path');
 const cors = require('cors');
 
 
-const connectionString = 'mongodb+srv://luke_walz:ukKMvIfGUBZxGUBO@cluster0.3x57e.mongodb.net/walzsportsdb?retryWrites=true&w=majority';
+const connectionString = process.env.MONGO_ENDPOINT;
 
 
 if (!process.env.API_KEY) {
