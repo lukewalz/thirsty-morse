@@ -42,18 +42,15 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
                 onChange={(e, i) => handleChange(e, i)}
             />
             {!loading ?
-                games.slice().sort((a, b) => a.date > b.date ? 1 : -1)
-                    .map(
-                        (item) => {
-                            if (item.status.type.state !== 'post') {
-                                return <Paper elevation={10} key={item.id}><Matchup sport={sport} game={item} /></Paper>
+                games.length > 0 ?
+                    games.slice().sort((a, b) => a.date > b.date ? 1 : -1)
+                        .map(
+                            (item) => {
+                                if (item.status.type.state !== 'post') {
+                                    return <Paper elevation={10} key={item.id}><Matchup sport={sport} game={item} /></Paper>
+                                }
                             }
-                            else {
-                                return []
-                            }
-
-                        }
-                    ) : <div style={{ marginTop: 70 }}><CircularProgress size={80} /></div>}
+                        ) : <Paper>No Games Available Today</Paper> : <div style={{ marginTop: 70 }}><CircularProgress size={80} /></div>}
         </div>
     )
 }
