@@ -76,6 +76,9 @@ function HomePage({ user, }) {
                 <Link to="/games/mens-college-basketball">
                     <Widget image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/NCAA_logo.svg/220px-NCAA_logo.svg.png" />
                 </Link>
+                {/*<Link to="/games/nhl">
+                    <Widget image="https://a.espncdn.com/combiner/i?img=/i/teamlogos/leagues/500/nhl.png?transparent=true" />
+    </Link>*/}
             </Grid>
             <Grid container item justify='space-evenly' direction='column' style={{ marginTop: '30px' }} >
                 {currentWagers?.length > 0 ? <>

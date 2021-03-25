@@ -30,6 +30,7 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
     }, [sport, day]);
 
     const handleChange = (event, value) => {
+        setLoading(true);
         var newDay = moment().add(value - 1, 'days').format('YYYYMMDD');
         setDay(newDay)
     };
@@ -46,6 +47,7 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
                     games.slice().sort((a, b) => a.date > b.date ? 1 : -1)
                         .map(
                             (item) => {
+                                console.log(item);
                                 if (item.status.type.state !== 'post') {
                                     return <Paper elevation={10} key={item.id}><Matchup sport={sport} game={item} /></Paper>
                                 }
