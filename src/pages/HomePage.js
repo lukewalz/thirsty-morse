@@ -73,7 +73,7 @@ function HomePage({ user, }) {
                     <Widget image="https://pngimg.com/uploads/fifa/fifa_PNG1.png" />
                 </Link>
 
-                <Link to="/games/mens-college-basketball">
+                <Link to="/games/college-football">
                     <Widget image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/NCAA_logo.svg/220px-NCAA_logo.svg.png" />
                 </Link>
                 {/*<Link to="/games/nhl">
