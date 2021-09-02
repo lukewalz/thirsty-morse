@@ -65,17 +65,24 @@ function HomePage({ user, }) {
             className='App'>
 
             <Grid container item justify='space-evenly'>
-                <Link to="/games/nba">
+                {/* <Link to="/games/nba">
                     <Widget image="https://www.pngkit.com/png/full/89-893116_nba-logo-transparent-png-new-nba-finals-logo.png" />
-                </Link>
+                </Link> */}
 
+                <Link to="/games/nfl">
+                    <Widget image="https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/National_Football_League_logo.svg/188px-National_Football_League_logo.svg.png" />
+                </Link>
                 <Link to="/games/soccer">
                     <Widget image="https://pngimg.com/uploads/fifa/fifa_PNG1.png" />
                 </Link>
 
                 <Link to="/games/college-football">
-                    <Widget image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/NCAA_logo.svg/220px-NCAA_logo.svg.png" />
+                    <Widget image="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NCAA_football_icon_logo.svg/1200px-NCAA_football_icon_logo.svg.png" />
                 </Link>
+
+                {/* <Link to="/games/college-basketball">
+                    <Widget image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/NCAA_logo.svg/220px-NCAA_logo.svg.png" />
+                </Link> */}
                 {/*<Link to="/games/nhl">
                     <Widget image="https://a.espncdn.com/combiner/i?img=/i/teamlogos/leagues/500/nhl.png?transparent=true" />
     </Link>*/}

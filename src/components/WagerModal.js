@@ -85,9 +85,10 @@ function WagerModal({ placeWager, ...props }) {
                             <MenuItem value="">
                                 Make a selection
                             </MenuItem>
-                            <MenuItem value="sp">Spread</MenuItem>
-                            <MenuItem value="ou">Over Under</MenuItem>
-                            <MenuItem value="ml">Moneyline</MenuItem>
+
+                            {props.line.spread && <MenuItem value="sp">Spread</MenuItem>}
+                            {props.line.overUnder && <MenuItem value="ou">Over Under</MenuItem>}
+                            {props.line.homeTeamOdds.moneyLine && <MenuItem value="ml">Moneyline</MenuItem>}
                         </Select>
 
                     </div>
@@ -146,9 +147,10 @@ function WagerModal({ placeWager, ...props }) {
                         <MenuItem value="">
                             Make a selection
                     </MenuItem>
-                        <MenuItem value="sp">Spread</MenuItem>
-                        <MenuItem value="ou">Over Under</MenuItem>
-                        <MenuItem value="ml">Moneyline</MenuItem>
+
+                        {props.line.spread && <MenuItem value="sp">Spread</MenuItem>}
+                        {props.line.overUnder && <MenuItem value="ou">Over Under</MenuItem>}
+                        {props.line.homeTeamOdds.moneyLine && <MenuItem value="ml">Moneyline</MenuItem>}
 
                     </Select>
 
