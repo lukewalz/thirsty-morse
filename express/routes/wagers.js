@@ -28,7 +28,7 @@ router.get('/admin', async (req, res) => {
                 }
 
 
-            })).then(e => { console.log(e); res.status(201).send(`${count} wagers updated`) }).catch(err => console.log(err))
+            })).then(e => { res.status(201).send(`${count} wagers updated`) }).catch(err => console.log(err))
 
         } else {
 

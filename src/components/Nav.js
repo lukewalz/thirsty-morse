@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AppBar, Toolbar, Button, Typography, Badge } from "@material-ui/core";
+import { AppBar, Toolbar, Button, Typography, Badge, Box } from "@material-ui/core";
 import { connect } from "react-redux";
 import { logout, loadUpdatedWagers } from "../redux/actions/userActions";
 import subscribePush from '../subscriptions';
+
+import { AttachMoney, WatchLater } from '@material-ui/icons/';
+
 
 
 
@@ -60,8 +63,14 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
                 <Typography variant="h6">TMSB</Typography>
                 <div style={{ marginLeft: "auto" }}>
                     {user.isAuthUser ? (
-                        <div>
-                            <Badge>{balance}</Badge>
+                        <Box flexDirection='column'>
+                            <Badge anchorOrigin={{ vertical: 'bottom', horizontal: 'left', }} badgeContent={`$${balance}`} max={1000} showZero color="error">
+                                <AttachMoney />
+                            </Badge>
+                            <Badge anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }} badgeContent={`${user.user.balance}`} max={1000} showZero color="error">
+                                <WatchLater />
+                            </Badge>
+
                             <Link to="/home">
                                 <Button>Dashboard</Button>
                             </Link>
@@ -71,20 +80,21 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
                             <Button onClick={logout}>
                                 Logout
                             </Button>
-                        </div>
+
+                        </Box>
                     ) : (
-                            <div>
-                                <Link to="/login">
-                                    <Button>Login</Button>
-                                </Link>
-                                <Link to="/register">
-                                    <Button>Register</Button>
-                                </Link>
-                            </div>
-                        )}
+                        <Box>
+                            <Link to="/login">
+                                <Button>Login</Button>
+                            </Link>
+                            <Link to="/register">
+                                <Button>Register</Button>
+                            </Link>
+                        </Box>
+                    )}
                 </div>
             </Toolbar>
-        </AppBar>
+        </AppBar >
     );
 }
 

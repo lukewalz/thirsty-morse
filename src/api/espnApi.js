@@ -12,7 +12,6 @@ export async function getGames(league, date) {
         var response = await fetch(apiPath).then(e => e.json()).then(r => r.sports[0].leagues[0].events);
         var dto = [];
         response.map(g => {
-            console.log(g)
             if (g.odds) {
                 var game = {
                     competitors: Array.from(g.competitors).map(c => ({ team: c })),

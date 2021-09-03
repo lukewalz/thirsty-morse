@@ -265,7 +265,6 @@ async function validateWager(wager) {
         }
     }
     catch (er) {
-        console.log(er);
         return false;
     }
 }

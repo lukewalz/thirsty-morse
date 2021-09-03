@@ -6,10 +6,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { Chip } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { loadUpdatedWagers } from "../redux/actions/userActions"
 import { loadGames } from "../redux/actions/gameActions"
 import React, { useEffect } from 'react';
+import { Typography } from '@material-ui/core';
 
 
 
@@ -26,11 +28,30 @@ function MyAccount({ loadUpdatedWagers, user }) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const getBalance = () => {
+        let balance = 0;
+        user.wagers && user.wagers.length > 0 && user.wagers.filter(e => e.status === 'final').map(w => {
+            return balance += parseInt(w.result);
+        })
+
+        return 0;
+    }
+
+    const pending = user.user.balance;
+    const wallet = getBalance();
+    const max = 1000;
+
+    const balance = (max - (pending + wallet));
     return (
         <div className="App">
 
             <Container>
-                <h3>{user.username}</h3>
+                <Chip variant='outlined' color='primary' label={user.user.username} />
+                <Typography>{`Max: $${max}`}</Typography>
+                <Typography>{`Pending: $${pending}`}</Typography>
+                <Typography>{`Wallet: $${wallet}`}</Typography>
+                <Typography>{`Balance: $${balance}`}</Typography>
+
                 <TableContainer component={Paper}>
                     <Table aria-label="simple table">
                         <TableHead>
