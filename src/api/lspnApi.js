@@ -61,7 +61,7 @@ export async function register(username, password, firstName, lastName) {
             const cookies = new Cookies();
             cookies.set('userSession', user.token);
 
-            var u = _.pick(user, ['_id', 'username', 'firstName', 'lastName'])
+            var u = _.pick(user, ['_id', 'username', 'firstName', 'lastName', 'balance'])
             return u;
         })
     return userData;
@@ -72,12 +72,13 @@ export async function placeWager(wager) {
     const token = cookies.get('userSession');
     const _id = JSON.parse(localStorage.getItem('user'))._id;
     const { game_id, wager_type, selection, status, outcome, amount, game_date, sport, matchup, boost } = wager;
+    const parsedAmount = parseFloat(amount);
     const path = process.env.NODE_ENV === 'development' ? 'http://localhost:9000/.netlify/functions/server/wagers' : '/.netlify/functions/server/wagers'
     return fetch(path, {
         method: 'POST', headers: {
             'Content-Type': 'application/json',
             'x-auth-token': token
-        }, body: JSON.stringify({ _id: _id, wagers: { game_id, wager_type, selection, status, outcome, amount, game_date, sport, matchup, boost } })
+        }, body: JSON.stringify({ _id: _id, wagers: { game_id, wager_type, selection, status, outcome, amount: parsedAmount, game_date, sport, matchup, boost } })
     })
 
         .then(response => {

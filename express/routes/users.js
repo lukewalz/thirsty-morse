@@ -61,7 +61,7 @@ router.post('/', async (req, res) => {
             await user.save();
             const token = jwt.sign({ _id: user._id }, process.env.API_KEY);
             user.token = token;
-            res.send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token']));
+            res.send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token', 'balance']));
 
         }
         catch (er) {
@@ -79,7 +79,7 @@ router.get('/', async (req, res) => {
             const user = await User.findOne({ username: req.query.username });
             if (user) {
                 if (user._id == tokenId) {
-                    res.status(200).send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token', 'wagers']))
+                    res.status(200).send(_.pick(user, ['_id', 'username', 'firstName', 'lastName', 'token', 'wagers', 'balance']))
                 } else {
                     res.status(401).send('Incorrect credentials')
                 }

@@ -33,7 +33,10 @@ const Schema = Joi.object({
             auth: Joi.string(),
             p256dh: Joi.string()
         })
-    }
+    },
+
+    balance: Joi.number()
+        .integer(),
 })
     .with('username', 'birth_year')
     .xor('password', 'access_token')

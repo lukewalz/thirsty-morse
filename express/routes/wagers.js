@@ -53,21 +53,6 @@ router.post('/', async (req, res) => {
             if (user._id == tokenId) {
                 const wagerIsValid = await common.validateWager(req.body.wagers);
                 if (wagerIsValid) {
-
-                    // const retrievedUser = await User.findOne(
-                    //     { _id: user._id },
-                    // );
-
-                    // const balance = retrievedUser.wagers && retrievedUser.wagers.length > 0 && retrievedUser.wagers.map(w => parseFloat(w.amount)).reduce((a, b) => a + b, 0);
-
-                    // const max = 1000;
-
-                    // if (balance > 1000) {
-                    //     res.status(400).send(`Cannot wager over ${max}`);
-                    // } else{
-
-                    // }
-
                     const updatedUser = await User.findByIdAndUpdate(
                         { _id: user._id },
                         { $push: { wagers: req.body.wagers } },
