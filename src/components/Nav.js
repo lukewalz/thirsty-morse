@@ -64,12 +64,6 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
                 <div style={{ marginLeft: "auto" }}>
                     {user.isAuthUser ? (
                         <Box flexDirection='column'>
-                            <Badge anchorOrigin={{ vertical: 'bottom', horizontal: 'left', }} badgeContent={`$${balance}`} max={1000} showZero color="error">
-                                <AttachMoney />
-                            </Badge>
-                            <Badge anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }} badgeContent={`${user.user.balance}`} max={1000} showZero color="error">
-                                <WatchLater />
-                            </Badge>
 
                             <Link to="/home">
                                 <Button>Dashboard</Button>

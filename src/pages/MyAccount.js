@@ -28,28 +28,16 @@ function MyAccount({ loadUpdatedWagers, user }) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getBalance = () => {
-        let balance = 0;
-        user.wagers && user.wagers.length > 0 && user.wagers.filter(e => e.status === 'final').map(w => {
-            return balance += parseInt(w.result);
-        })
-
-        return 0;
-    }
 
     const pending = user.user.balance;
-    const wallet = getBalance();
     const max = 1000;
 
-    const balance = (max - (pending + wallet));
+    const balance = max - pending;
     return (
         <div className="App">
 
             <Container>
-                <Chip variant='outlined' color='primary' label={user.user.username} />
                 <Typography>{`Max: $${max}`}</Typography>
-                <Typography>{`Pending: $${pending}`}</Typography>
-                <Typography>{`Wallet: $${wallet}`}</Typography>
                 <Typography>{`Balance: $${balance}`}</Typography>
 
                 <TableContainer component={Paper}>
