@@ -29,7 +29,7 @@ function MyAccount({ loadUpdatedWagers, user }) {
     }, []);
 
 
-    const pending = user.user.balance;
+    const pending = user.user.amount_pending;
     const max = 1000;
 
     const balance = max - pending;
@@ -39,6 +39,8 @@ function MyAccount({ loadUpdatedWagers, user }) {
             <Container>
                 <Typography>{`Max: $${max}`}</Typography>
                 <Typography>{`Balance: $${balance}`}</Typography>
+                <Typography>{`Pending: $${pending}`}</Typography>
+
 
                 <TableContainer component={Paper}>
                     <Table aria-label="simple table">

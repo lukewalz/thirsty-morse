@@ -5,9 +5,6 @@ import { connect } from "react-redux";
 import { logout, loadUpdatedWagers } from "../redux/actions/userActions";
 import subscribePush from '../subscriptions';
 
-import { AttachMoney, WatchLater } from '@material-ui/icons/';
-
-
 
 
 function NavBar({ logout, user, loadUpdatedWagers }) {

@@ -25,7 +25,7 @@ const INITIAL_STATE = {
 export const user = produce((draft, action) => {
     switch (action.type) {
         case types.LOGIN_SUCCESS: {
-            const userObject = _.pick(action.payload, ['_id', 'username', 'firstName', 'lastName', 'balance']);
+            const userObject = _.pick(action.payload, ['_id', 'username', 'firstName', 'lastName', 'amount_pending']);
             const wagersObject = _.pick(action.payload, ['wagers']).wagers;
             localStorage.setItem("user", JSON.stringify(userObject));
             draft.user = userObject;

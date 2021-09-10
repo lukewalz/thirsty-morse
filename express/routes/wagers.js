@@ -48,15 +48,31 @@ router.post('/', async (req, res) => {
         const tokenId = jwt.decode(req.headers['x-auth-token'], token)._id;
 
         const user = await User.findOne({ _id: req.body._id });
+
+        let amountPending = 0;
+        user.wagers && user.wagers.map(w => {
+            if (w.status === 'pending') {
+                console.log(w.amount);
+                amountPending = amountPending + w.amount;
+            }
+        });
+
+
         req.body.wagers.wager_date = Date.now();
         if (user) {
             if (user._id == tokenId) {
                 const wagerIsValid = await common.validateWager(req.body.wagers);
                 if (wagerIsValid) {
-                    const updatedUser = await User.findByIdAndUpdate(
+                    await User.findByIdAndUpdate(
                         { _id: user._id },
                         { $push: { wagers: req.body.wagers } },
-                        { new: true }
+                        { new: false }
+                    );
+
+                    const updatedUser = await User.findByIdAndUpdate(
+                        { _id: user._id },
+                        { amount_pending: amountPending + req.body.wagers.amount },
+                        { new: false }
                     );
 
                     if (updatedUser.wagers > 0) {

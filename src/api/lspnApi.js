@@ -61,7 +61,7 @@ export async function register(username, password, firstName, lastName) {
             const cookies = new Cookies();
             cookies.set('userSession', user.token);
 
-            var u = _.pick(user, ['_id', 'username', 'firstName', 'lastName', 'balance'])
+            var u = _.pick(user, ['_id', 'username', 'firstName', 'lastName'])
             return u;
         })
     return userData;

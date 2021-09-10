@@ -35,7 +35,7 @@ const Schema = Joi.object({
         })
     },
 
-    balance: Joi.number()
+    amount_pending: Joi.number()
         .integer(),
 })
     .with('username', 'birth_year')
