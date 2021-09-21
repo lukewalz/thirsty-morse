@@ -88,18 +88,18 @@ function HomePage({ user, }) {
     </Link>*/}
             </Grid>
             <Grid container item justify='space-evenly' direction='column' style={{ marginTop: '30px' }} >
-                {currentWagers?.length > 0 ? <>
+                {currentWagers?.length > 0 && <>
                     <List subheader={<b>In Progress</b>} style={{ 'background': 'white', width: 'inherit' }}>
                         {currentWagers.map(wager =>
                             <ListItem divider style={{ 'display': 'flex', 'justifyContent': 'space-between' }} key={`${wager.game_id}_${wager.wager_date}`} >
-                                <Avatar src={wager.logo1 ? wager.logo1 : ''} >
-                                    {wager.ouIcon ? wager.ouIcon : ''}
+                                <Avatar src={wager.logo1 && wager.logo1} >
+                                    {wager.ouIcon && wager.ouIcon}
                                 </Avatar>
                                 <div>{wager.selection}</div>
                                 <div>{wager.status}</div>
                                 <div>{`${wager.score.home} - ${wager.score.away} ${wager.score.leading_team}`}</div>
                             </ListItem>)}
-                    </List></> : ''}
+                    </List></>}
             </Grid>
 
         </Grid >
