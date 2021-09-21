@@ -1,0 +1,8 @@
+{
+    "name": "DataLake0",
+    "type": "datalake",
+    "config": {
+        "dataLakeName": "DataLake0"
+    },
+    "version": 1
+}
