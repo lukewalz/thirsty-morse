@@ -76,7 +76,7 @@ function HomePage({ user, }) {
                     <Widget image="https://pngimg.com/uploads/fifa/fifa_PNG1.png" />
                 </Link>
 
-                <Link to="/games/college-football">
+                <Link to="/games/college-basketball">
                     <Widget image="https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/NCAA_football_icon_logo.svg/1200px-NCAA_football_icon_logo.svg.png" />
                 </Link>
 
