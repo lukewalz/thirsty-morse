@@ -29,7 +29,7 @@ function Matchup({ placeWager, user, ...props }) {
   const [secondTeamScore] = useState(parseInt(props.game.competitors[1].score));
   const [actualOvers] = useState(
     Number(props.game.competitors[0].score) +
-      Number(props.game.competitors[1].score)
+    Number(props.game.competitors[1].score)
   );
   const [openModal, setOpenModal] = useState(false);
   const [team1Abbreviation] = useState(props.game.competitors[0].abbreviation);
@@ -65,6 +65,7 @@ function Matchup({ placeWager, user, ...props }) {
         game_id={props.game.id}
         game_date={props.game.date}
         sport={props.sport}
+        league={props.league}
       />
       <Alert color="danger" isOpen={alertVisible} toggle={onDismiss}>
         Game is finished or in progress
@@ -89,24 +90,24 @@ function Matchup({ placeWager, user, ...props }) {
               <div style={{ display: "flex", justifyContent: "space-evenly" }}>
                 {wagers.length > 0
                   ? wagers.map((e, i) =>
-                      e.selection.split("@")[0] === team1Abbreviation ? (
-                        <Chip
-                          style={{
-                            backgroundColor: "#8bc34a",
-                            borderRadius: "50%",
-                            width: 10,
-                            height: 10,
-                          }}
-                          key={i}
-                          onClick={(g) => {
-                            g.stopPropagation();
-                            handleWagerClick(e);
-                          }}
-                        />
-                      ) : (
-                        ""
-                      )
+                    e.selection.split("@")[0] === team1Abbreviation ? (
+                      <Chip
+                        style={{
+                          backgroundColor: "#8bc34a",
+                          borderRadius: "50%",
+                          width: 10,
+                          height: 10,
+                        }}
+                        key={i}
+                        onClick={(g) => {
+                          g.stopPropagation();
+                          handleWagerClick(e);
+                        }}
+                      />
+                    ) : (
+                      ""
                     )
+                  )
                   : ""}
               </div>
               <div>
@@ -169,24 +170,24 @@ function Matchup({ placeWager, user, ...props }) {
               <div style={{ display: "flex", justifyContent: "space-evenly" }}>
                 {wagers.length > 0
                   ? wagers.map((e, i) =>
-                      e.selection.split("@")[0] === team2Abbreviation ? (
-                        <Chip
-                          style={{
-                            backgroundColor: "#8bc34a",
-                            borderRadius: "50%",
-                            width: 10,
-                            height: 10,
-                          }}
-                          key={i}
-                          onClick={(g) => {
-                            g.stopPropagation();
-                            handleWagerClick(e);
-                          }}
-                        />
-                      ) : (
-                        ""
-                      )
+                    e.selection.split("@")[0] === team2Abbreviation ? (
+                      <Chip
+                        style={{
+                          backgroundColor: "#8bc34a",
+                          borderRadius: "50%",
+                          width: 10,
+                          height: 10,
+                        }}
+                        key={i}
+                        onClick={(g) => {
+                          g.stopPropagation();
+                          handleWagerClick(e);
+                        }}
+                      />
+                    ) : (
+                      ""
                     )
+                  )
                   : ""}
               </div>
               <div>
@@ -300,21 +301,21 @@ function Matchup({ placeWager, user, ...props }) {
             </TableHead>
             <TableBody>
               {props.game.boxScore &&
-              props.game.boxScore[0].statistics &&
-              props.game.status !== "pre"
+                props.game.boxScore[0].statistics &&
+                props.game.status !== "pre"
                 ? props.game.boxScore[0].statistics.map((e, i) => {
-                    return (
-                      <TableRow key={i}>
-                        <TableCell align="left">{e.label}</TableCell>
-                        <TableCell align="left">
-                          {props.game.boxScore[1].statistics[i]
-                            ? props.game.boxScore[1].statistics[i].displayValue
-                            : "fuck"}
-                        </TableCell>
-                        <TableCell align="left">{e.displayValue}</TableCell>
-                      </TableRow>
-                    );
-                  })
+                  return (
+                    <TableRow key={i}>
+                      <TableCell align="left">{e.label}</TableCell>
+                      <TableCell align="left">
+                        {props.game.boxScore[1].statistics[i]
+                          ? props.game.boxScore[1].statistics[i].displayValue
+                          : "fuck"}
+                      </TableCell>
+                      <TableCell align="left">{e.displayValue}</TableCell>
+                    </TableRow>
+                  );
+                })
                 : []}
             </TableBody>
           </Table>

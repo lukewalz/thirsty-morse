@@ -44,7 +44,7 @@ function WagerModal({ placeWager, ...props }) {
             return <RadioGroup aria-label="selection" row name="selection" value={selection ? selection : ''} onChange={val => {
                 setSelection(val.target.value);
                 var boostSelected = () => {
-                    var selectedTeam = props.teams.filter(t => t.team.abbreviation === val.target.value.split('@')[0]);
+                    var selectedTeam = props.teams.filter(t => t.abbreviation === val.target.value.split('@')[0]);
                     if (selectedTeam[0].homeAway === 'home') {
                         setBoost(props.line.homeTeamOdds.spreadOdds)
                     }
@@ -55,8 +55,8 @@ function WagerModal({ placeWager, ...props }) {
 
                 boostSelected();
             }}>
-                <FormControlLabel value={props.teams[0].team.abbreviation + '@' + props.line.spread} control={<Radio color='primary' />} label={props.teams[0].team.abbreviation + '@' + props.line.spread} />
-                <FormControlLabel value={props.teams[1].team.abbreviation + '@' + -props.line.spread} control={<Radio color='primary' />} label={props.teams[1].team.abbreviation + '@' + -props.line.spread} />
+                <FormControlLabel value={props.teams[0].abbreviation + '@' + props.line.spread} control={<Radio color='primary' />} label={props.teams[0].abbreviation + '@' + props.line.spread} />
+                <FormControlLabel value={props.teams[1].abbreviation + '@' + -props.line.spread} control={<Radio color='primary' />} label={props.teams[1].abbreviation + '@' + -props.line.spread} />
             </RadioGroup>
         }
         else {
@@ -65,8 +65,8 @@ function WagerModal({ placeWager, ...props }) {
                 setBoost(val.target.value.split('@')[1])
             }
             }>
-                <FormControlLabel value={props.teams[0].team.abbreviation + '@' + props.line.homeTeamOdds.moneyLine} control={<Radio color='primary' />} label={props.teams[0].team.abbreviation + '@' + props.line.homeTeamOdds.moneyLine} />
-                <FormControlLabel value={props.teams[1].team.abbreviation + '@' + props.line.awayTeamOdds.moneyLine} control={<Radio color='primary' />} label={props.teams[1].team.abbreviation + '@' + props.line.awayTeamOdds.moneyLine} />
+                <FormControlLabel value={props.teams[0].abbreviation + '@' + props.line.homeTeamOdds.moneyLine} control={<Radio color='primary' />} label={props.teams[0].abbreviation + '@' + props.line.homeTeamOdds.moneyLine} />
+                <FormControlLabel value={props.teams[1].abbreviation + '@' + props.line.awayTeamOdds.moneyLine} control={<Radio color='primary' />} label={props.teams[1].abbreviation + '@' + props.line.awayTeamOdds.moneyLine} />
             </RadioGroup>
         }
 
@@ -146,7 +146,7 @@ function WagerModal({ placeWager, ...props }) {
                     <Select labelId="label" disabled={true} id="select" value={wagerType} >
                         <MenuItem value="">
                             Make a selection
-                    </MenuItem>
+                        </MenuItem>
 
                         {props.line.spread && <MenuItem value="sp">Spread</MenuItem>}
                         {props.line.overUnder && <MenuItem value="ou">Over Under</MenuItem>}
@@ -182,7 +182,7 @@ function WagerModal({ placeWager, ...props }) {
                     size="large"
                     onClick={props.handleClose} >
                     Close
-            </Button>
+                </Button>
             </DialogActions>
         </Dialog>)
     }
@@ -197,6 +197,7 @@ function WagerModal({ placeWager, ...props }) {
 
 
         var game_date_ms = new Date(props.game_date).getTime();
+        console.log(props);
         const wager = {
             game_id: props.game_id,
             wager_type: wagerType,
@@ -205,8 +206,8 @@ function WagerModal({ placeWager, ...props }) {
             outcome: 'tbd',
             amount,
             game_date: game_date_ms,
-            sport: props.sport,
-            matchup: props.teams.map(t => t.team.abbreviation).join(' vs '),
+            sport: props.league,
+            matchup: props.teams.map(t => t.abbreviation).join(' vs '),
             boost: boost
         }
 

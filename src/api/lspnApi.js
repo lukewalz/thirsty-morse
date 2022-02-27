@@ -68,6 +68,7 @@ export async function register(username, password, firstName, lastName) {
 }
 
 export async function placeWager(wager) {
+    console.log(wager);
     const cookies = new Cookies();
     const token = cookies.get('userSession');
     const _id = JSON.parse(localStorage.getItem('user'))._id;

@@ -61,6 +61,7 @@ router.post('/', async (req, res) => {
         req.body.wagers.wager_date = Date.now();
         if (user) {
             if (user._id == tokenId) {
+                console.log(req.body.wager);
                 const wagerIsValid = await common.validateWager(req.body.wagers);
                 if (wagerIsValid) {
                     await User.findByIdAndUpdate(

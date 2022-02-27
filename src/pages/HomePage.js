@@ -32,8 +32,8 @@ function HomePage({ user }) {
                 away: r.competitors[1].score,
                 leading_team:
                   r.competitors[0].score > r.competitors[1].score
-                    ? r.competitors[0].team.abbreviation
-                    : r.competitors[1].team.abbreviation,
+                    ? r.competitors[0].abbreviation
+                    : r.competitors[1].abbreviation,
               },
               amount: element.amount,
               wager_date: element.wager_date,
@@ -53,9 +53,9 @@ function HomePage({ user }) {
               logo1:
                 element.wager_type !== "ou"
                   ? r.competitors.find(
-                      (e) =>
-                        e.team.abbreviation === element.selection.split("@")[0]
-                    ).team.logos[0].href
+                    (e) =>
+                      e.team.abbreviation === element.selection.split("@")[0]
+                  ).team.logos[0].href
                   : "",
             };
           }

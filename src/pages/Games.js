@@ -44,7 +44,7 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
             if (item.status !== "post") {
               return (
                 <Paper elevation={10} key={item.id}>
-                  <Matchup sport={sport} game={item} />
+                  <Matchup sport={sport} league={league} game={item} />
                 </Paper>
               );
             }
