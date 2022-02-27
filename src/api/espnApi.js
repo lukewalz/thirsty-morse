@@ -1,7 +1,7 @@
 // import { current } from "immer";
 
 export async function getGames(league, sport, date) {
-  var apiPath = `https://site.web.api.espn.com/apis/v2/scoreboard/header?sport=${sport}&league=${league}&region=us&lang=en&dates=${date}`;
+  var apiPath = `https://site.web.api.espn.com/apis/v2/scoreboard/header?sport=${sport}&league=${league}&region=us&lang=en&dates=${date}&v=${Date.now()}`;
   console.log(apiPath);
   var response = await fetch(apiPath)
     .then((e) => e.json())
