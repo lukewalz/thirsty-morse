@@ -21,25 +21,28 @@ function HomePage({ user }) {
 
     function populateWagers() {
       var wagerList = user.wagers.filter((e) => e.status === "pending");
+
       var newWagerList = Promise.all(
         wagerList.map(async (element) => {
           const r = await getGameById(element.sport, element.game_id);
-          if (r.status === "in") {
+          console.log(r.header.competitions[0].competitors[0]);
+          if (r.header.competitions[0].status.type.state === "in") {
             return {
-              status: r.status,
+              status: r.header.competitions[0].status.type.state,
               score: {
-                home: r.competitors[0].score,
-                away: r.competitors[1].score,
+                home: r.header.competitions[0].competitors[0].score,
+                away: r.header.competitions[0].competitors[1].score,
                 leading_team:
-                  r.competitors[0].score > r.competitors[1].score
-                    ? r.competitors[0].abbreviation
-                    : r.competitors[1].abbreviation,
+                  r.header.competitions[0].competitors[0].score >
+                  r.header.competitions[0].competitors[1].score
+                    ? r.header.competitions[0].competitors[0].team.abbreviation
+                    : r.header.competitions[0].competitors[1].team.abbreviation,
               },
               amount: element.amount,
               wager_date: element.wager_date,
               selection: element.selection,
               game_id: element.game_id,
-              date: r.date,
+              date: r.header.competitions[0].date,
               ouIcon:
                 element.wager_type === "ou" ? (
                   element.selection.split("@")[0] === "u" ? (
@@ -52,10 +55,10 @@ function HomePage({ user }) {
                 ),
               logo1:
                 element.wager_type !== "ou"
-                  ? r.competitors.find(
-                    (e) =>
-                      e.team.abbreviation === element.selection.split("@")[0]
-                  ).team.logos[0].href
+                  ? r.header.competitions[0].competitors.find(
+                      (e) =>
+                        e.team.abbreviation === element.selection.split("@")[0]
+                    ).team.logos[0].href
                   : "",
             };
           }

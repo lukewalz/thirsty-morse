@@ -5,9 +5,9 @@ export function loadGamesSuccess(games) {
   return { type: types.GET_GAMES_SUCCESS, payload: games };
 }
 
-export function loadGames(league, date, sport) {
+export function loadGames(league, sport, date) {
   return async function (dispatch) {
-    return espnApi.getGames(league, date, sport).then((games) => {
+    return espnApi.getGames(league, sport, date).then((games) => {
       return dispatch(loadGamesSuccess(games));
     });
   };
