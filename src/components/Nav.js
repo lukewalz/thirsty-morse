@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AppBar, Toolbar, Button, Typography, Badge, Box } from "@material-ui/core";
+import { AppBar, Toolbar, Button, Typography, Badge, Box, Chip, Paper } from "@material-ui/core";
 import { connect } from "react-redux";
 import { logout, loadUpdatedWagers } from "../redux/actions/userActions";
 import subscribePush from '../subscriptions';
@@ -8,14 +8,17 @@ import subscribePush from '../subscriptions';
 
 
 function NavBar({ logout, user, loadUpdatedWagers }) {
+    const [balance, setBalance] = useState(0);
+    const [pending, setPending] = useState(0);
 
     useEffect(() => {
+        console.log('here agaaaain')
         askUserPermission().then((e) => {
 
             if (e === 'granted' && user.isAuthUser) {
                 subscribePush()
                     .then(() => loadUpdatedWagers()
-                        .then(getBalance()))
+                        .then(() => { getBalance(); getPending() }))
             }
         })
 
@@ -27,9 +30,18 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
             setBalance(balance);
         }
 
+        function getPending() {
+            var pending = 0;
+            user.wagers && user.wagers.length > 0 ? user.wagers.filter(e => e.status !== 'final').map(w => {
+                return pending += parseInt(w.amount);
+            }) : setBalance(0);
+            setPending(pending);
+        }
+
+        loadUpdatedWagers();
+
     }, [user.wagers.length]);
 
-    const [balance, setBalance] = useState();
 
     function isPushNotificationSupported() {
         if ('serviceWorker' in navigator) {
@@ -85,6 +97,11 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
                     )}
                 </div>
             </Toolbar>
+            <Box padding={.5} alignSelf='flex-end'>
+                <Chip color='secondary' label={`Account Balance: ${balance}`} />
+                <Chip color='secondary' label={`Max: 1000`} />
+                <Chip color='secondary' label={`Pending: ${pending}`} />
+            </Box>
         </AppBar >
     );
 }

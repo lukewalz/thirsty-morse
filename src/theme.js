@@ -11,6 +11,11 @@ const theme = createMuiTheme({
             main: '#f6f6f6',
             contrastText: '#8bc34a',
         },
+        info: {
+            main: '#ffa726',
+            contrastText: '#8bc34a',
+        },
+
     },
 
     props: {

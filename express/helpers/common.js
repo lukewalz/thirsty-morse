@@ -9,7 +9,6 @@ async function determineResults(wager, user) {
 
   if (status.type.completed === false) {
     if (status.type.state === "in") {
-      console.log(newWager);
       newWager.status = "pending";
       newWager.outcome = "tbd";
       addResultObject(newWager, user);

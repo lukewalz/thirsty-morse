@@ -34,8 +34,8 @@ function HomePage({ user }) {
                 leading_team:
                   r.header.competitions[0].competitors[0].score >
                     r.header.competitions[0].competitors[1].score
-                    ? r.header.competitions[0].competitors[0].team.abbreviation
-                    : r.header.competitions[0].competitors[1].team.abbreviation,
+                    ? r.header.competitions[0].competitors[1].team.abbreviation
+                    : r.header.competitions[0].competitors[0].team.abbreviation,
               },
               amount: element.amount,
               wager_date: element.wager_date,
@@ -87,9 +87,9 @@ function HomePage({ user }) {
         <Link to="/games/basketball/mens-college-basketball">
           <Widget image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/NCAA_logo.svg/220px-NCAA_logo.svg.png" />
         </Link>
-        <Link to="/games/hockey/nhl">
+        {/* <Link to="/games/hockey/nhl">
           <Widget image="https://a.espncdn.com/combiner/i?img=/i/teamlogos/leagues/500/nhl.png?transparent=true" />
-        </Link>
+        </Link> */}
       </Grid>
       <Grid
         container
