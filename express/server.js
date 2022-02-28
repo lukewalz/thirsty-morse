@@ -16,8 +16,8 @@ const cors = require('cors');
 
 const connectionString = process.env.MONGO_ENDPOINT;
 
-
 if (!process.env.API_KEY) {
+    console.log(process.env)
     console.error('FATAL ERROR: PrivateKey is not defined.');
     process.exit(1);
 }

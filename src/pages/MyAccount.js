@@ -50,21 +50,21 @@ function MyAccount({ loadUpdatedWagers, user }) {
             <TableBody>
               {user.wagers.length > 0
                 ? user.wagers.map((row) => (
-                    <TableRow key={row.wager_date}>
-                      <TableCell component="th" scope="row">
-                        {formatDate(row.wager_date)}
-                      </TableCell>
-                      <TableCell align="right">
-                        {row.sport.toUpperCase()}
-                      </TableCell>
-                      <TableCell align="right">{row.matchup}</TableCell>
-                      <TableCell align="right">{row.selection}</TableCell>
-                      <TableCell align="right">{row.amount}</TableCell>
-                      <TableCell align="right">
-                        {row.result ? Math.round(row.result) : row.result}
-                      </TableCell>
-                    </TableRow>
-                  ))
+                  <TableRow key={row.wager_date}>
+                    <TableCell component="th" scope="row">
+                      {formatDate(row.wager_date)}
+                    </TableCell>
+                    <TableCell align="right">
+                      {row.sport.toUpperCase()}
+                    </TableCell>
+                    <TableCell align="right">{row.matchup}</TableCell>
+                    <TableCell align="right">{row.selection}</TableCell>
+                    <TableCell align="right">{row.amount}</TableCell>
+                    <TableCell align="right">
+                      {row.result ? Math.round(row.result) : row.result}
+                    </TableCell>
+                  </TableRow>
+                ))
                 : []}
             </TableBody>
           </Table>

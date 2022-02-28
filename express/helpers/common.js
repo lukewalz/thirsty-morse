@@ -3,20 +3,22 @@ const fetch = require("node-fetch");
 const { User } = require("../models/user");
 
 async function determineResults(wager, user) {
-  var { gameStatus, home, away } = await getGameById(wager);
+  const game = await getGameById(wager);
+  const { competitors, status } = game.header.competitions[0];
 
   const newWager = Object.assign({}, wager);
 
-  if (gameStatus.completed === false) {
-    if (gameStatus.state === "in") {
+  if (status.type.completed === false) {
+    if (status.type.state === "in") {
+      console.log(newWager);
       newWager.status = "pending";
       newWager.outcome = "tbd";
       addResultObject(newWager, user);
       return;
-    } else if (gameStatus.state === "pre") {
+    } else if (status.type.state === "pre") {
       return;
     } else {
-      newWager.status = gameStatus.shortDetail.toLowerCase();
+      newWager.status = status.shortDetail.toLowerCase();
       newWager.outcome = "push";
       addResultObject(newWager, user);
       return;
@@ -25,12 +27,12 @@ async function determineResults(wager, user) {
     newWager.status = "final";
     if (newWager.wager_type === "sp") {
       const selection = newWager.selection.split("@");
-      if (selection[0] === home.team) {
-        var diff = parseFloat(home.score) + parseFloat(selection[1]);
-        if (diff > parseInt(away.score)) {
+      if (selection[0] === competitors[0].team) {
+        var diff = parseFloat(competitors[0].score) + parseFloat(selection[1]);
+        if (diff > parseInt(competitors[1].score)) {
           newWager.outcome = "win";
           addResultObject(newWager, user);
-        } else if (diff === parseInt(away.score)) {
+        } else if (diff === parseInt(competitors[1].score)) {
           newWager.outcome = "push";
           addResultObject(newWager, user);
         } else {
@@ -38,11 +40,11 @@ async function determineResults(wager, user) {
           addResultObject(newWager, user);
         }
       } else {
-        var diff = parseFloat(away.score) + parseFloat(selection[1]);
-        if (diff > parseInt(home.score)) {
+        var diff = parseFloat(competitors[0].score) + parseFloat(selection[1]);
+        if (diff > parseInt(competitors[1].score)) {
           newWager.outcome = "win";
           addResultObject(newWager, user);
-        } else if (diff === parseInt(home.score)) {
+        } else if (diff === parseInt(competitors[1].score)) {
           newWager.outcome = "push";
           addResultObject(newWager, user);
         } else {
@@ -55,13 +57,13 @@ async function determineResults(wager, user) {
       if (selection[0] === "o") {
         if (
           parseFloat(selection[1]) >
-          parseInt(home.score) + parseInt(away.score)
+          parseInt(competitors[0].score) + parseInt(competitors[1].score)
         ) {
           newWager.outcome = "loss";
           addResultObject(newWager, user);
         } else if (
           parseFloat(selection[1]) ===
-          parseInt(home.score) + parseInt(away.score)
+          parseInt(competitors[0].score) + parseInt(competitors[1].score)
         ) {
           newWager.outcome = "push";
           addResultObject(newWager, user);
@@ -73,13 +75,13 @@ async function determineResults(wager, user) {
       if (selection[0] === "u") {
         if (
           parseFloat(selection[1]) >
-          parseInt(home.score) + parseInt(away.score)
+          parseInt(competitors[0].score) + parseInt(competitors[1].score)
         ) {
           newWager.outcome = "win";
           addResultObject(newWager, user);
         } else if (
           parseFloat(selection[1]) ===
-          parseInt(home.score) + parseInt(away.score)
+          parseInt(competitors[0].score) + parseInt(competitors[1].score)
         ) {
           newWager.outcome = "push";
           addResultObject(newWager, user);
@@ -90,11 +92,11 @@ async function determineResults(wager, user) {
       }
     } else {
       const selection = wager.selection.split("@");
-      if (selection[0] === home.team) {
-        if (parseInt(home.score) > parseInt(away.score)) {
+      if (selection[0] === competitors[0].team) {
+        if (parseInt(competitors[0].score) > parseInt(away.score)) {
           newWager.outcome = "win";
           addResultObject(newWager, user);
-        } else if (parseInt(home.score) === parseInt(away.score)) {
+        } else if (parseInt(competitors[0].score) === parseInt(away.score)) {
           newWager.outcome = "push";
           addResultObject(newWager, user);
         } else {
@@ -102,10 +104,10 @@ async function determineResults(wager, user) {
           addResultObject(newWager, user);
         }
       } else {
-        if (parseInt(home.score) < parseInt(away.score)) {
+        if (parseInt(competitors[0].score) < parseInt(competitors[1].score)) {
           newWager.outcome = "win";
           addResultObject(newWager, user);
-        } else if (parseInt(home.score) === parseInt(away.score)) {
+        } else if (parseInt(competitors[0].score) === parseInt(competitors[1].score)) {
           newWager.outcome = "push";
           addResultObject(newWager, user);
         } else {
@@ -118,9 +120,7 @@ async function determineResults(wager, user) {
 }
 
 async function getGameById(wager) {
-  const apiPath = `https://www.espn.com/${wager.sport}/game?gameId=${
-    wager.game_id
-  }&xhr=1&v=${Date.now()}`;
+  const apiPath = `https://www.espn.com/${wager.sport}/game?gameId=${wager.game_id}&xhr=1&v=${Date.now()}`;
 
   const response = await fetch(apiPath)
     .then((e) => e.json())

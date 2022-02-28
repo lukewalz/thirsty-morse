@@ -21,10 +21,8 @@ router.get("/admin", async (req, res) => {
           if (u.wagers) {
             Promise.all(
               u.wagers.map((wag) => {
-                if (wag.status === "pending") {
-                  count++;
-                  common.determineResults(wag, u);
-                }
+                count++;
+                common.determineResults(wag, u);
               })
             );
           }
