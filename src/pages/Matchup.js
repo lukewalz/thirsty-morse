@@ -4,13 +4,6 @@ import { connect } from "react-redux";
 import { Row, Col, Progress, Button, Alert, Collapse } from "reactstrap";
 import WagerModal from "../components/WagerModal";
 import { OverUnderWidget } from "../components/OverUnderWidget";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 import Chip from "@material-ui/core/Chip";
 import { placeWager } from "../redux/actions/userActions";
 
@@ -29,7 +22,7 @@ function Matchup({ placeWager, user, ...props }) {
   const [secondTeamScore] = useState(parseInt(props.game.competitors[1].score));
   const [actualOvers] = useState(
     Number(props.game.competitors[0].score) +
-      Number(props.game.competitors[1].score)
+    Number(props.game.competitors[1].score)
   );
   const [openModal, setOpenModal] = useState(false);
   const [team1Abbreviation] = useState(props.game.competitors[0].abbreviation);
@@ -52,7 +45,7 @@ function Matchup({ placeWager, user, ...props }) {
   }
 
   return (
-    <div>
+    <div>{props.game.odds && props.game.odds > 0 &&
       <WagerModal
         teams={props.game.competitors}
         open={openModal}
@@ -65,7 +58,7 @@ function Matchup({ placeWager, user, ...props }) {
         game_date={props.game.date}
         sport={props.sport}
         league={props.league}
-      />
+      />}
       <Alert color="danger" isOpen={alertVisible} toggle={onDismiss}>
         Game is finished or in progress
       </Alert>
@@ -89,24 +82,24 @@ function Matchup({ placeWager, user, ...props }) {
               <div style={{ display: "flex", justifyContent: "space-evenly" }}>
                 {wagers.length > 0
                   ? wagers.map((e, i) =>
-                      e.selection.split("@")[0] === team1Abbreviation ? (
-                        <Chip
-                          style={{
-                            backgroundColor: "#8bc34a",
-                            borderRadius: "50%",
-                            width: 10,
-                            height: 10,
-                          }}
-                          key={i}
-                          onClick={(g) => {
-                            g.stopPropagation();
-                            handleWagerClick(e);
-                          }}
-                        />
-                      ) : (
-                        ""
-                      )
+                    e.selection.split("@")[0] === team1Abbreviation ? (
+                      <Chip
+                        style={{
+                          backgroundColor: "#8bc34a",
+                          borderRadius: "50%",
+                          width: 10,
+                          height: 10,
+                        }}
+                        key={i}
+                        onClick={(g) => {
+                          g.stopPropagation();
+                          handleWagerClick(e);
+                        }}
+                      />
+                    ) : (
+                      ""
                     )
+                  )
                   : ""}
               </div>
               <div>
@@ -143,16 +136,17 @@ function Matchup({ placeWager, user, ...props }) {
                   {props.game.competitors[0].displayName}
                 </div>
               </div>
-              <div>{props.game.odds?.homeTeamOdds.moneyLine}</div>
+              {props.game.odds ? <>
+                <div>{props.game.odds?.homeTeamOdds.moneyLine}</div>
 
-              <div>
-                {(props.game.odds?.spread !== 0
-                  ? props.game.odds?.spread
-                  : "PICK") +
-                  " (" +
-                  props.game.odds?.homeTeamOdds.spreadOdds +
-                  ")"}
-              </div>
+                <div>
+                  {props.game.odds?.spread !== 0
+                    ? props.game.odds?.spread
+                    : "PICK" +
+                    " (" +
+                    props.game.odds?.homeTeamOdds.spreadOdds +
+                    ")"}
+                </div></> : 'TBD'}
               {props.game.fullStatus?.type.name !== "STATUS_SCHEDULED" ? (
                 <div xs="7">
                   <Progress
@@ -169,24 +163,24 @@ function Matchup({ placeWager, user, ...props }) {
               <div style={{ display: "flex", justifyContent: "space-evenly" }}>
                 {wagers.length > 0
                   ? wagers.map((e, i) =>
-                      e.selection.split("@")[0] === team2Abbreviation ? (
-                        <Chip
-                          style={{
-                            backgroundColor: "#8bc34a",
-                            borderRadius: "50%",
-                            width: 10,
-                            height: 10,
-                          }}
-                          key={i}
-                          onClick={(g) => {
-                            g.stopPropagation();
-                            handleWagerClick(e);
-                          }}
-                        />
-                      ) : (
-                        ""
-                      )
+                    e.selection.split("@")[0] === team2Abbreviation ? (
+                      <Chip
+                        style={{
+                          backgroundColor: "#8bc34a",
+                          borderRadius: "50%",
+                          width: 10,
+                          height: 10,
+                        }}
+                        key={i}
+                        onClick={(g) => {
+                          g.stopPropagation();
+                          handleWagerClick(e);
+                        }}
+                      />
+                    ) : (
+                      ""
                     )
+                  )
                   : ""}
               </div>
               <div>
@@ -223,16 +217,19 @@ function Matchup({ placeWager, user, ...props }) {
                   {props.game.competitors[1].displayName}
                 </div>
               </div>
-              <div>{props.game.odds?.awayTeamOdds.moneyLine}</div>
-              <div>
-                {" "}
-                {(props.game.odds?.spread !== 0
-                  ? -props.game.odds?.spread
-                  : "PICK") +
-                  " (" +
-                  props.game.odds?.awayTeamOdds.spreadOdds +
-                  ")"}
-              </div>
+              {props.game.odds ?
+                <>
+                  <div>{props.game.odds.awayTeamOdds.moneyLine}</div>
+                  <div>
+                    {props.game.odds && props.game.odds !== 0
+                      ? -props.game.odds.spread
+                      : "PICK" +
+                      " (" +
+                      props.game.odds.awayTeamOdds.spreadOdds +
+                      ")"}
+                  </div>
+                </> : 'TBD'
+              }
               {props.game.fullStatus?.type.name !== "STATUS_SCHEDULED" ? (
                 <div xs="7">
                   <Progress
@@ -271,53 +268,12 @@ function Matchup({ placeWager, user, ...props }) {
                 : "0/" + props.game.odds?.overUnder}
             </Progress>
           </Col>
-          {/* {props.game.status !== "pre" && (
-            <Col xs="2">
-              <Button
-                style={{ fontSize: "xx-small" }}
-                onClick={() => setCollapse(!collapse)}
-              >
-                {!collapse ? "+" : "-"}
-              </Button>
-            </Col>
-          )} */}
         </Row>
       }
       {props.game.status === "in" && (
         <div className="gameAlert">{props.game.situation?.lastPlay?.text}</div>
       )}
-      {/* <Collapse isOpen={collapse}>
-        <TableContainer component={Paper}>
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell />
-                <TableCell>{props.game.competitors[0].abbreviation}</TableCell>
-                <TableCell>{props.game.competitors[1].abbreviation}</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {props.game.boxScore &&
-              props.game.boxScore[0].statistics &&
-              props.game.status !== "pre"
-                ? props.game.boxScore[0].statistics.map((e, i) => {
-                    return (
-                      <TableRow key={i}>
-                        <TableCell align="left">{e.label}</TableCell>
-                        <TableCell align="left">
-                          {props.game.boxScore[1].statistics[i]
-                            ? props.game.boxScore[1].statistics[i].displayValue
-                            : "fuck"}
-                        </TableCell>
-                        <TableCell align="left">{e.displayValue}</TableCell>
-                      </TableRow>
-                    );
-                  })
-                : []}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Collapse> */}
+
     </div>
   );
 }

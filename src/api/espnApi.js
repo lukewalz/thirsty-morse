@@ -1,9 +1,9 @@
 // import { current } from "immer";
 
 export async function getGames(league, sport, date) {
-  var apiPath = `https://site.web.api.espn.com/apis/v2/scoreboard/header?sport=${sport}&league=${league}&region=us&lang=en&dates=${date}&v=${Date.now()}`;
-  console.log(apiPath);
-  var response = await fetch(apiPath)
+  let apiPath = `https://site.web.api.espn.com/apis/v2/scoreboard/header?sport=${sport}&league=${league}&region=us&lang=en&dates=${date}&v=${Date.now()}`;
+  if (league.search('college') > -1) apiPath += '&groups=50';
+  const response = await fetch(apiPath)
     .then((e) => e.json())
     .then((r) => r.sports[0].leagues[0].events);
 

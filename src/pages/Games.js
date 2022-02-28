@@ -36,7 +36,7 @@ function Games({ loadGames, games, loadUpdatedWagers }) {
 
   return (
     <div className="App">
-      <Pagination count={7} onChange={(e, i) => handleChange(e, i)} />
+      <Pagination count={4} onChange={(e, i) => handleChange(e, i)} />
       {!loading ? (
         games ? (
           games
