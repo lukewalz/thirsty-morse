@@ -1,4 +1,3 @@
-const { current } = require("immer");
 const fetch = require("node-fetch");
 const { User } = require("../models/user");
 
@@ -28,7 +27,9 @@ async function determineResults(wager, user) {
     if (newWager.wager_type === "sp") {
       const selection = newWager.selection.split("@");
       if (selection[0] === competitors[0].team) {
-        var diff = parseFloat(competitors[0].score) + parseFloat(selection[1]);
+        const diff =
+          parseFloat(competitors[0].score) + parseFloat(selection[1]);
+        console.log("1", diff);
         if (diff > parseInt(competitors[1].score)) {
           newWager.outcome = "win";
           addResultObject(newWager, user);
@@ -40,7 +41,9 @@ async function determineResults(wager, user) {
           addResultObject(newWager, user);
         }
       } else {
-        var diff = parseFloat(competitors[0].score) + parseFloat(selection[1]);
+        const diff =
+          parseFloat(competitors[0].score) + parseFloat(selection[1]);
+        console.log("2", diff);
         if (diff > parseInt(competitors[1].score)) {
           newWager.outcome = "win";
           addResultObject(newWager, user);
@@ -107,7 +110,9 @@ async function determineResults(wager, user) {
         if (parseInt(competitors[0].score) < parseInt(competitors[1].score)) {
           newWager.outcome = "win";
           addResultObject(newWager, user);
-        } else if (parseInt(competitors[0].score) === parseInt(competitors[1].score)) {
+        } else if (
+          parseInt(competitors[0].score) === parseInt(competitors[1].score)
+        ) {
           newWager.outcome = "push";
           addResultObject(newWager, user);
         } else {
@@ -120,7 +125,9 @@ async function determineResults(wager, user) {
 }
 
 async function getGameById(wager) {
-  const apiPath = `https://www.espn.com/${wager.sport}/game?gameId=${wager.game_id}&xhr=1&v=${Date.now()}`;
+  const apiPath = `https://www.espn.com/${wager.sport}/game?gameId=${
+    wager.game_id
+  }&xhr=1&v=${Date.now()}`;
 
   const response = await fetch(apiPath)
     .then((e) => e.json())
