@@ -6,6 +6,7 @@ import WagerModal from "../components/WagerModal";
 import { OverUnderWidget } from "../components/OverUnderWidget";
 import Chip from "@material-ui/core/Chip";
 import { placeWager } from "../redux/actions/userActions";
+import { Typography } from "@material-ui/core";
 
 function Matchup({ placeWager, user, ...props }) {
   const [wagers, setWagers] = useState(user.wagers);
@@ -137,16 +138,16 @@ function Matchup({ placeWager, user, ...props }) {
                 </div>
               </div>
               {props.game.odds ? <>
-                <div>{props.game.odds?.homeTeamOdds.moneyLine}</div>
+                <Typography color='primary'>{props.game.odds?.homeTeamOdds.moneyLine}</Typography>
 
-                <div>
+                <Typography color='primary'>
                   {props.game.odds?.spread !== 0
                     ? props.game.odds?.spread
                     : "PICK" +
                     " (" +
                     props.game.odds?.homeTeamOdds.spreadOdds +
                     ")"}
-                </div></> : 'TBD'}
+                </Typography></> : 'TBD'}
               {props.game.fullStatus?.type.name !== "STATUS_SCHEDULED" ? (
                 <div xs="7">
                   <Progress
@@ -219,15 +220,15 @@ function Matchup({ placeWager, user, ...props }) {
               </div>
               {props.game.odds ?
                 <>
-                  <div>{props.game.odds.awayTeamOdds.moneyLine}</div>
-                  <div>
+                  <Typography color='primary'>{props.game.odds.awayTeamOdds.moneyLine}</Typography>
+                  <Typography color='primary'>
                     {props.game.odds && props.game.odds !== 0
                       ? -props.game.odds.spread
                       : "PICK" +
                       " (" +
                       props.game.odds.awayTeamOdds.spreadOdds +
                       ")"}
-                  </div>
+                  </Typography>
                 </> : 'TBD'
               }
               {props.game.fullStatus?.type.name !== "STATUS_SCHEDULED" ? (
