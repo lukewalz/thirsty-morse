@@ -25,36 +25,15 @@ async function determineResults(wager, user) {
   } else {
     newWager.status = "final";
     if (newWager.wager_type === "sp") {
-      const selection = newWager.selection.split("@");
-      if (selection[0] === competitors[0].team) {
-        const diff =
-          parseFloat(competitors[0].score) + parseFloat(selection[1]);
-        console.log("1", diff);
-        if (diff > parseInt(competitors[1].score)) {
-          newWager.outcome = "win";
-          addResultObject(newWager, user);
-        } else if (diff === parseInt(competitors[1].score)) {
-          newWager.outcome = "push";
-          addResultObject(newWager, user);
-        } else {
-          newWager.outcome = "loss";
-          addResultObject(newWager, user);
-        }
-      } else {
-        const diff =
-          parseFloat(competitors[0].score) + parseFloat(selection[1]);
-        console.log("2", diff);
-        if (diff > parseInt(competitors[1].score)) {
-          newWager.outcome = "win";
-          addResultObject(newWager, user);
-        } else if (diff === parseInt(competitors[1].score)) {
-          newWager.outcome = "push";
-          addResultObject(newWager, user);
-        } else {
-          newWager.outcome = "loss";
-          addResultObject(newWager, user);
-        }
-      }
+      const [selectedTeam, selectedAmount] = newWager.selection.split("@");
+      const adjustedSelectionScore = parseFloat(competitors.find(c => c.team.abbreviation === selectedTeam).score) + parseFloat(selectedAmount);
+      const notSelectionScore = parseFloat(competitors.find(c => c.team.abbreviation !== selectedTeam).score);
+
+      if (adjustedSelectionScore === notSelectionScore) { newWager.outcome = 'push' }
+      else if (adjustedSelectionScore > notSelectionScore) { newWager.outcome = 'win' }
+      else { newWager.outcome = 'loss' }
+      addResultObject(newWager, user);
+
     } else if (wager.wager_type === "ou") {
       const selection = wager.selection.split("@");
       if (selection[0] === "o") {
@@ -125,9 +104,8 @@ async function determineResults(wager, user) {
 }
 
 async function getGameById(wager) {
-  const apiPath = `https://www.espn.com/${wager.sport}/game?gameId=${
-    wager.game_id
-  }&xhr=1&v=${Date.now()}`;
+  const apiPath = `https://www.espn.com/${wager.sport}/game?gameId=${wager.game_id
+    }&xhr=1&v=${Date.now()}`;
 
   const response = await fetch(apiPath)
     .then((e) => e.json())
