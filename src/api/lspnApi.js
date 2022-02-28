@@ -85,7 +85,6 @@ export async function register(username, password, firstName, lastName) {
 }
 
 export async function placeWager(wager) {
-  console.log(wager);
   const cookies = new Cookies();
   const token = cookies.get("userSession");
   const _id = JSON.parse(localStorage.getItem("user"))._id;
@@ -134,7 +133,6 @@ export async function placeWager(wager) {
       } else if (response.status === 400) {
         throw new Error("Username already exists");
       } else {
-        console.log(response.statusText);
         throw new Error("User failed to add");
       }
     })
@@ -166,7 +164,7 @@ export async function getWagers() {
         throw new Error("Wagers could not be retrieved");
       }
     })
-    .catch((er) => {});
+    .catch((er) => { });
 }
 
 export async function addSubscription(e) {
@@ -186,6 +184,6 @@ export async function addSubscription(e) {
     },
     body: JSON.stringify({ _id, e }),
   })
-    .then((response) => {})
-    .catch((er) => {});
+    .then((response) => { })
+    .catch((er) => { });
 }

@@ -25,7 +25,6 @@ function HomePage({ user }) {
       var newWagerList = Promise.all(
         wagerList.map(async (element) => {
           const r = await getGameById(element.sport, element.game_id);
-          console.log(r.header.competitions[0].competitors[0]);
           if (r.header.competitions[0].status.type.state === "in") {
             return {
               status: r.header.competitions[0].status.type.state,
@@ -34,7 +33,7 @@ function HomePage({ user }) {
                 away: r.header.competitions[0].competitors[1].score,
                 leading_team:
                   r.header.competitions[0].competitors[0].score >
-                  r.header.competitions[0].competitors[1].score
+                    r.header.competitions[0].competitors[1].score
                     ? r.header.competitions[0].competitors[0].team.abbreviation
                     : r.header.competitions[0].competitors[1].team.abbreviation,
               },
@@ -56,9 +55,9 @@ function HomePage({ user }) {
               logo1:
                 element.wager_type !== "ou"
                   ? r.header.competitions[0].competitors.find(
-                      (e) =>
-                        e.team.abbreviation === element.selection.split("@")[0]
-                    ).team.logos[0].href
+                    (e) =>
+                      e.team.abbreviation === element.selection.split("@")[0]
+                  ).team.logos[0].href
                   : "",
             };
           }
