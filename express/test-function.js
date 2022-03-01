@@ -7,7 +7,7 @@ const handler = async function run() {
     url: "https://thirsty-morse-d0f09c.netlify.app/.netlify/functions/server/wagers/admin",
   });
 
-  return EJSON.stringify(response.body);
+  return EJSON.stringify(response);
 };
 
 module.exports.handler = schedule("@hourly", handler);
