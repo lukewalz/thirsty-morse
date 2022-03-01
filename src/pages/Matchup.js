@@ -46,7 +46,7 @@ function Matchup({ placeWager, user, ...props }) {
   }
 
   return (
-    <div>{props.game.odds && props.game.odds > 0 &&
+    <div>{!!props.game.odds &&
       <WagerModal
         teams={props.game.competitors}
         open={openModal}

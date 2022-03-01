@@ -10,7 +10,7 @@ export async function getGames(league, sport, date) {
   return response;
 }
 
-export async function getGameById(league, game_id) {
+export async function getGameById(league, game_id, includeLeague = false) {
   const apiPath = `https://www.espn.com/${league}/game?gameId=${game_id}&xhr=1&v=${Date.now()}`;
 
   const response = await fetch(apiPath)
@@ -19,5 +19,14 @@ export async function getGameById(league, game_id) {
     .then((r) => r)
     .catch((er) => new Error(er));
 
+  if (includeLeague) {
+    let sport;
+    if (league === 'nba') {
+      sport = 'basketball'
+    } else if (league === 'mens-college-basketball') {
+      sport = 'basketball'
+    } else if (league === 'nfl') { sport = 'football' }
+    return { ...response.gamepackageJSON, league, sport }
+  }
   return response.gamepackageJSON;
 }
