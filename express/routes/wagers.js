@@ -19,13 +19,10 @@ router.get("/admin", async (req, res) => {
       Promise.all(
         users.map(async (u) => {
           if (u.wagers) {
-            const r = await Promise.all(
-              u.wagers.map((wag) => {
-                count++;
-                common.determineResults(wag, u);
-              })
-            );
-            return r;
+            u.wagers.map(async (wag) => {
+              count++;
+              return await common.determineResults(wag, u);
+            });
           }
         })
       )
