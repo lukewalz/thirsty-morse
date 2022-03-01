@@ -82,10 +82,12 @@ async function determineResults(wager, user) {
     } else {
       const selection = wager.selection.split("@");
       if (selection[0] === competitors[0].team) {
-        if (parseInt(competitors[0].score) > parseInt(away.score)) {
+        if (parseInt(competitors[0].score) > parseInt(competitors[1].score)) {
           newWager.outcome = "win";
           addResultObject(newWager, user);
-        } else if (parseInt(competitors[0].score) === parseInt(away.score)) {
+        } else if (
+          parseInt(competitors[0].score) === parseInt(competitors[1].score)
+        ) {
           newWager.outcome = "push";
           addResultObject(newWager, user);
         } else {
