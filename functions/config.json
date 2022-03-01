@@ -1,6 +1,6 @@
 [
     {
-        "name": "Atlas_Triggers_update_wager_status_trigger_1631827674",
+        "name": "test-function",
         "private": false,
         "run_as_system": true
     }
