@@ -9,7 +9,7 @@ const handler = async function (event, context) {
     },
   });
 
-  return response.json();
+  return response;
 };
 
 module.exports.handler = schedule("@hourly", handler);
