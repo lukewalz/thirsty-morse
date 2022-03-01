@@ -12,7 +12,6 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
     const [pending, setPending] = useState(0);
 
     useEffect(() => {
-        console.log('here agaaaain')
         askUserPermission().then((e) => {
 
             if (e === 'granted' && user.isAuthUser) {

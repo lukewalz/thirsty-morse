@@ -24,9 +24,11 @@ function HomePage({ user }) {
 
       var newWagerList = Promise.all(
         wagerList.map(async (element) => {
-          const r = await getGameById(element.sport, element.game_id);
+          const r = await getGameById(element.sport, element.game_id, true);
           if (r.header.competitions[0].status.type.state === "in") {
             return {
+              league: r.league,
+              sport: r.sport,
               status: r.header.competitions[0].status.type.state,
               score: {
                 home: r.header.competitions[0].competitors[0].score,
@@ -34,8 +36,8 @@ function HomePage({ user }) {
                 leading_team:
                   r.header.competitions[0].competitors[0].score >
                     r.header.competitions[0].competitors[1].score
-                    ? r.header.competitions[0].competitors[1].team.abbreviation
-                    : r.header.competitions[0].competitors[0].team.abbreviation,
+                    ? r.header.competitions[0].competitors[0].team.abbreviation
+                    : r.header.competitions[0].competitors[1].team.abbreviation,
               },
               amount: element.amount,
               wager_date: element.wager_date,
@@ -73,6 +75,7 @@ function HomePage({ user }) {
     }
   }, [user]);
 
+
   return (
     <Grid container justify="space-evenly" className="App">
       <Grid container item justify="space-evenly">
@@ -80,12 +83,16 @@ function HomePage({ user }) {
           <Widget image="https://www.pngkit.com/png/full/89-893116_nba-logo-transparent-png-new-nba-finals-logo.png" />
         </Link>
 
-        <Link to="/games/football/nfl">
-          <Widget image="https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/National_Football_League_logo.svg/188px-National_Football_League_logo.svg.png" />
+        <Link to="/games/basketball/mens-college-basketball">
+          <Widget image="https://seeklogo.com/images/N/ncaa-basketball-logo-74BEA712B4-seeklogo.com.png" />
         </Link>
 
-        <Link to="/games/basketball/mens-college-basketball">
-          <Widget image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/NCAA_logo.svg/220px-NCAA_logo.svg.png" />
+        <Link to="/games/basketball/womens-college-basketball">
+          <Widget image="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/NCAA_Women%27s_Basketball_wordmark_color_stack.svg/1280px-NCAA_Women%27s_Basketball_wordmark_color_stack.svg.png" />
+        </Link>
+
+        <Link to="/games/football/nfl">
+          <Widget image="https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/National_Football_League_logo.svg/188px-National_Football_League_logo.svg.png" />
         </Link>
         {/* <Link to="/games/hockey/nhl">
           <Widget image="https://a.espncdn.com/combiner/i?img=/i/teamlogos/leagues/500/nhl.png?transparent=true" />
@@ -114,7 +121,9 @@ function HomePage({ user }) {
                     {wager.ouIcon && wager.ouIcon}
                   </Avatar>
                   <div>{wager.selection}</div>
-                  <div>{wager.status}</div>
+                  <Link to={`/games/${wager.sport}/${wager.league}`} >
+                    {'View Progress'}
+                  </Link>
                   <div>{`${wager.score.home} - ${wager.score.away} ${wager.score.leading_team}`}</div>
                 </ListItem>
               ))}

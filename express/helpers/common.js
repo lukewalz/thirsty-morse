@@ -103,8 +103,7 @@ async function determineResults(wager, user) {
 }
 
 async function getGameById(wager) {
-  const apiPath = `https://www.espn.com/${wager.sport}/game?gameId=${wager.game_id
-    }&xhr=1&v=${Date.now()}`;
+  let apiPath = `https://www.espn.com/${wager.sport}/game?gameId=${wager.game_id}&xhr=1&v=${Date.now()}`;
 
   const response = await fetch(apiPath)
     .then((e) => e.json())
@@ -112,6 +111,7 @@ async function getGameById(wager) {
     .then((r) => r)
     .catch((er) => new Error(er));
 
+  console.log(response);
   return response.gamepackageJSON;
 }
 
