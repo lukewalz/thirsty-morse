@@ -7,6 +7,7 @@ const common = require("../helpers/common");
 require("dotenv").config();
 
 router.get("/admin", async (req, res) => {
+
   const token = process.env.API_KEY;
   try {
     jwt.verify(req.headers["x-auth-token"], token);
@@ -53,7 +54,6 @@ router.post("/", async (req, res) => {
     if (user) {
       req.body.wagers.wager_date = Date.now();
 
-      console.log(user._id, tokenId);
       if (user._id.toString() === tokenId.toString()) {
         const wagerIsValid = await common.validateWager(req.body.wagers);
         if (wagerIsValid) {

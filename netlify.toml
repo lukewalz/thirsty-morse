@@ -7,3 +7,7 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+[dev]
+  targetPort = 3000 # The port for your application server, framework or site generator
+  port = 9000 # The port that the netlify dev will be accessible on

@@ -111,7 +111,6 @@ async function getGameById(wager) {
     .then((r) => r)
     .catch((er) => new Error(er));
 
-  console.log(response);
   return response.gamepackageJSON;
 }
 
