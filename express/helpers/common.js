@@ -96,7 +96,7 @@ async function determineResults(wager, user) {
       }
     }
   } else {
-    if (wager.status === 'in') {
+    if (status.type.state === 'in') {
       newWager.outcome = 'pending';
       addResultObject(newWager, user);
     }
