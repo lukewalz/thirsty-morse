@@ -1,32 +1,44 @@
 const { schedule } = require("@netlify/functions");
-const fetch = require("node-fetch");
-
-const API_ENDPOINT = 'https://thirsty-morse-d0f09c.netlify.app/.netlify/functions/server/wagers/admin';
+const jwt = require("jsonwebtoken");
+const { User } = require("./models/user");
+const common = require("./helpers/common");
 
 const handler = async function (event, context) {
-  let response
-  try {
-    response = await fetch(API_ENDPOINT, {
-      headers: {
-        'x-auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDRhOTI1NWU2ODg0MDAwMDkyYjhjYmUiLCJpYXQiOjE2MzA3MDA0MTh9.9WAk3qG_a7FdcOpUjVjCDgWFfjhFs2-j5ugBFcax45E'
-      }
-    })
-    // handle response
-  } catch (err) {
-    return {
-      statusCode: err.statusCode || 500,
-      body: JSON.stringify({
-        error: err.message
-      })
-    }
-  }
+  console.log(context);
+  console.log("Received event:", event);
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      data: response
-    })
+  const token = process.env.API_KEY;
+
+  try {
+    jwt.verify(context.req.headers["x-auth-token"], token);
+    const tokenId = jwt.decode(context.req.headers["x-auth-token"], token)._id;
+
+    const users = await User.find({});
+
+    if (tokenId === "604a9255e6884000092b8cbe") {
+      var count = 0;
+      Promise.all(
+        users.map(async (u) => {
+          if (u.wagers) {
+            u.wagers.map(async (wag) => {
+              count++;
+              return await common.determineResults(wag, u);
+            });
+          }
+        })
+      )
+        .then((e) => {
+          context.res.status(201).send(`${count} wagers updated`);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      context.res.status(401).send("Incorrect credentials");
+    }
+  } catch (er) {
+    context.res.status(401).send("Must use a valid token");
+
+    throw new Error(er);
   }
-}
+};
 
 module.exports.handler = schedule("@hourly", handler);

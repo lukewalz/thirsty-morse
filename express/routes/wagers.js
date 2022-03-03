@@ -6,41 +6,6 @@ const jwt = require("jsonwebtoken");
 const common = require("../helpers/common");
 require("dotenv").config();
 
-router.get("/admin", async (req, res) => {
-
-  const token = process.env.API_KEY;
-  try {
-    jwt.verify(req.headers["x-auth-token"], token);
-    const tokenId = jwt.decode(req.headers["x-auth-token"], token)._id;
-
-    const users = await User.find({});
-
-    if (tokenId === "604a9255e6884000092b8cbe") {
-      var count = 0;
-      Promise.all(
-        users.map(async (u) => {
-          if (u.wagers) {
-            u.wagers.map(async (wag) => {
-              count++;
-              return await common.determineResults(wag, u);
-            });
-          }
-        })
-      )
-        .then((e) => {
-          res.status(201).send(`${count} wagers updated`);
-        })
-        .catch((err) => console.log(err));
-    } else {
-      res.status(401).send("Incorrect credentials");
-    }
-  } catch (er) {
-    res.status(401).send("Must use a valid token");
-
-    throw new Error(er);
-  }
-});
-
 router.post("/", async (req, res) => {
   const token = process.env.API_KEY;
   try {
