@@ -30,7 +30,7 @@ const handler = async function (event, context) {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      data: `${count} wagers updated`,
+      data: { response, count },
     }),
   };
 };
