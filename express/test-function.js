@@ -9,12 +9,10 @@ const handler = async function (event, context) {
   try {
     const users = await User.find({});
 
-    var count = 0;
     const response = Promise.all(
       users.map(async (u) => {
         if (u.wagers) {
           u.wagers.map(async (wag) => {
-            count++;
             return await common.determineResults(wag, u);
           });
         }
