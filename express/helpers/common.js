@@ -95,13 +95,17 @@ async function determineResults(wager, user) {
         }
       }
     }
+  } else {
+    if (status.type.state === 'in') {
+      newWager.outcome = 'pending';
+      addResultObject(newWager, user);
+    }
   }
 }
 
 async function getGameById(wager) {
-  let apiPath = `https://www.espn.com/${wager.sport}/game?gameId=${
-    wager.game_id
-  }&xhr=1&v=${Date.now()}`;
+  let apiPath = `https://www.espn.com/${wager.sport}/game?gameId=${wager.game_id
+    }&xhr=1&v=${Date.now()}`;
 
   const response = await fetch(apiPath)
     .then((e) => e.json())
