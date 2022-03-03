@@ -1,7 +1,6 @@
 const { User } = require("../models/user");
 const express = require("express");
 const router = express.Router();
-const _ = require("lodash");
 const jwt = require("jsonwebtoken");
 const common = require("../helpers/common");
 require("dotenv").config();
