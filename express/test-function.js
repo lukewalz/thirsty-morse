@@ -1,17 +1,22 @@
 const { schedule } = require("@netlify/functions");
 const { User } = require("./models/user");
 const common = require("./helpers/common");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const connectionString = process.env.MONGO_ENDPOINT;
 
-mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
-  .catch(err => console.error('Something went wrong', err));
+mongoose
+  .connect(connectionString, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
+  .catch((err) => console.error("Something went wrong", err));
 
 const handler = async function (event, context) {
   let count = 0;
   const users = await User.find({});
-  const response = Promise.all(
+  const response = await Promise.all(
     users.map(async (u) => {
       if (u.wagers) {
         u.wagers.map(async (wag) => {
@@ -21,7 +26,6 @@ const handler = async function (event, context) {
       }
     })
   );
-
 
   return {
     statusCode: 200,
