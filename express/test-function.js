@@ -10,7 +10,7 @@ const handler = async function (event, context) {
     const users = await User.find({});
 
     var count = 0;
-    Promise.all(
+    const response = Promise.all(
       users.map(async (u) => {
         if (u.wagers) {
           u.wagers.map(async (wag) => {
@@ -19,15 +19,21 @@ const handler = async function (event, context) {
           });
         }
       })
-    )
-      .then((e) => {
-        context.res.status(201).send(`${count} wagers updated`);
-      })
-      .catch((err) => console.log(err));
-  } catch (er) {
-    context.res.status(401).send("Must use a valid token");
+    );
 
-    throw new Error(er);
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        data: response,
+      }),
+    };
+  } catch (err) {
+    return {
+      statusCode: err.statusCode || 500,
+      body: JSON.stringify({
+        error: err.message,
+      }),
+    };
   }
 };
 
