@@ -90,9 +90,9 @@ function HomePage({ user }) {
           <Widget image="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/NCAA_Women%27s_Basketball_wordmark_color_stack.svg/1280px-NCAA_Women%27s_Basketball_wordmark_color_stack.svg.png" />
         </Link> */}
 
-        <Link to="/games/football/nfl">
+        {/* <Link to="/games/football/nfl">
           <Widget image="https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/National_Football_League_logo.svg/188px-National_Football_League_logo.svg.png" />
-        </Link>
+        </Link> */}
         {/* <Link to="/games/hockey/nhl">
           <Widget image="https://a.espncdn.com/combiner/i?img=/i/teamlogos/leagues/500/nhl.png?transparent=true" />
         </Link> */}
