@@ -1,38 +1,34 @@
 const { schedule } = require("@netlify/functions");
 const { User } = require("./models/user");
 const common = require("./helpers/common");
+const mongoose = require('mongoose');
+
+const connectionString = process.env.MONGO_ENDPOINT;
+
+mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+  .catch(err => console.error('Something went wrong', err));
 
 const handler = async function (event, context) {
-  console.log(context);
-  console.log("Received event:", event);
+  let count = 0;
+  const users = await User.find({});
+  const response = Promise.all(
+    users.map(async (u) => {
+      if (u.wagers) {
+        u.wagers.map(async (wag) => {
+          await common.determineResults(wag, u);
+          count++;
+        });
+      }
+    })
+  );
 
-  try {
-    const users = await User.find({});
 
-    const response = Promise.all(
-      users.map(async (u) => {
-        if (u.wagers) {
-          u.wagers.map(async (wag) => {
-            return await common.determineResults(wag, u);
-          });
-        }
-      })
-    );
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        data: response,
-      }),
-    };
-  } catch (err) {
-    return {
-      statusCode: err.statusCode || 500,
-      body: JSON.stringify({
-        error: err.message,
-      }),
-    };
-  }
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      data: `${count} wagers updated`,
+    }),
+  };
 };
 
 module.exports.handler = schedule("@hourly", handler);
