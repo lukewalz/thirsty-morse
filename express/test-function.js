@@ -1,4 +1,4 @@
-const { schedule } = require('@netlify/functions');
+const { schedule } = require("@netlify/functions");
 const fetch = require("node-fetch");
 
 const API_ENDPOINT = 'https://thirsty-morse-d0f09c.netlify.app/.netlify/functions/server/wagers/admin';

@@ -18,14 +18,12 @@ router.get("/admin", async (req, res) => {
     if (tokenId === "604a9255e6884000092b8cbe") {
       var count = 0;
       Promise.all(
-        users.map((u) => {
+        users.map(async (u) => {
           if (u.wagers) {
-            Promise.all(
-              u.wagers.map((wag) => {
-                count++;
-                common.determineResults(wag, u);
-              })
-            );
+            u.wagers.map(async (wag) => {
+              count++;
+              return await common.determineResults(wag, u);
+            });
           }
         })
       )
