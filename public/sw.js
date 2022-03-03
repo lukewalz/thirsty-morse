@@ -16,7 +16,6 @@ self.addEventListener("push", event => {
 
 var CACHE_NAME = 'thirsty-cache';
 var urlsToCache = [
-  '/'
 ];
 
 self.addEventListener('install', function (event) {
