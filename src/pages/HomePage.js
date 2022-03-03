@@ -35,7 +35,7 @@ function HomePage({ user }) {
                 away: r.header.competitions[0].competitors[1].score,
                 leading_team:
                   r.header.competitions[0].competitors[0].score >
-                    r.header.competitions[0].competitors[1].score
+                  r.header.competitions[0].competitors[1].score
                     ? r.header.competitions[0].competitors[0].team.abbreviation
                     : r.header.competitions[0].competitors[1].team.abbreviation,
               },
@@ -57,9 +57,9 @@ function HomePage({ user }) {
               logo1:
                 element.wager_type !== "ou"
                   ? r.header.competitions[0].competitors.find(
-                    (e) =>
-                      e.team.abbreviation === element.selection.split("@")[0]
-                  ).team.logos[0].href
+                      (e) =>
+                        e.team.abbreviation === element.selection.split("@")[0]
+                    ).team.logos[0].href
                   : "",
             };
           }
@@ -75,7 +75,6 @@ function HomePage({ user }) {
     }
   }, [user]);
 
-
   return (
     <Grid container justify="space-evenly" className="App">
       <Grid container item justify="space-evenly">
@@ -87,9 +86,9 @@ function HomePage({ user }) {
           <Widget image="https://seeklogo.com/images/N/ncaa-basketball-logo-74BEA712B4-seeklogo.com.png" />
         </Link>
 
-        <Link to="/games/basketball/womens-college-basketball">
+        {/* <Link to="/games/basketball/womens-college-basketball">
           <Widget image="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/NCAA_Women%27s_Basketball_wordmark_color_stack.svg/1280px-NCAA_Women%27s_Basketball_wordmark_color_stack.svg.png" />
-        </Link>
+        </Link> */}
 
         <Link to="/games/football/nfl">
           <Widget image="https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/National_Football_League_logo.svg/188px-National_Football_League_logo.svg.png" />
@@ -121,8 +120,8 @@ function HomePage({ user }) {
                     {wager.ouIcon && wager.ouIcon}
                   </Avatar>
                   <div>{wager.selection}</div>
-                  <Link to={`/games/${wager.sport}/${wager.league}`} >
-                    {'View Progress'}
+                  <Link to={`/games/${wager.sport}/${wager.league}`}>
+                    {"View Progress"}
                   </Link>
                   <div>{`${wager.score.home} - ${wager.score.away} ${wager.score.leading_team}`}</div>
                 </ListItem>
