@@ -7,21 +7,7 @@ async function determineResults(wager, user) {
 
   const newWager = Object.assign({}, wager);
 
-  if (status.type.completed === false) {
-    if (status.type.state === "in") {
-      newWager.status = "pending";
-      newWager.outcome = "tbd";
-      addResultObject(newWager, user);
-      return;
-    } else if (status.type.state === "pre") {
-      return;
-    } else {
-      newWager.status = status.shortDetail.toLowerCase();
-      newWager.outcome = "push";
-      addResultObject(newWager, user);
-      return;
-    }
-  } else {
+  if (status.type.completed !== false) {
     newWager.status = "final";
     if (newWager.wager_type === "sp") {
       const [selectedTeam, selectedAmount] = newWager.selection.split("@");
@@ -32,7 +18,6 @@ async function determineResults(wager, user) {
       else if (adjustedSelectionScore > notSelectionScore) { newWager.outcome = 'win' }
       else { newWager.outcome = 'loss' }
       addResultObject(newWager, user);
-
     } else if (wager.wager_type === "ou") {
       const selection = wager.selection.split("@");
       if (selection[0] === "o") {
