@@ -144,7 +144,7 @@ export async function placeWager(wager) {
 export async function getWagers() {
   const cookies = new Cookies();
   const token = cookies.get("userSession");
-  const _id = JSON.parse(localStorage.getItem("user"))._id;
+  const _id = JSON.parse(localStorage.getItem("user"))?._id;
 
   const path =
     process.env.NODE_ENV === "development"
@@ -164,7 +164,7 @@ export async function getWagers() {
         throw new Error("Wagers could not be retrieved");
       }
     })
-    .catch((er) => { });
+    .catch((er) => {});
 }
 
 export async function addSubscription(e) {
@@ -184,6 +184,6 @@ export async function addSubscription(e) {
     },
     body: JSON.stringify({ _id, e }),
   })
-    .then((response) => { })
-    .catch((er) => { });
+    .then((response) => {})
+    .catch((er) => {});
 }

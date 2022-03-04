@@ -18,6 +18,7 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
 
   useEffect(() => {
     // askUserPermission().then((e) => {
+    console.log(user);
     if (user.isAuthUser) {
       //   subscribePush().then(() =>
       loadUpdatedWagers().then(() => {
@@ -51,9 +52,7 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
         : setBalance(0);
       setPending(pending);
     }
-
-    loadUpdatedWagers();
-  }, [loadUpdatedWagers, user.isAuthUser, user.wagers, user.wagers.length]);
+  }, [user.isAuthUser]);
 
   // function isPushNotificationSupported() {
   //     if ('serviceWorker' in navigator) {
