@@ -19,17 +19,13 @@ router.post("/", async (req, res) => {
       if (user._id.toString() === tokenId.toString()) {
         const wagerIsValid = await common.validateWager(req.body.wagers);
         if (wagerIsValid) {
-          await User.findByIdAndUpdate(
+          const newUser = await User.findByIdAndUpdate(
             { _id: user._id },
             { $push: { wagers: req.body.wagers } },
-            { new: false }
+            { new: true }
           );
 
-          if (user.wagers > 0) {
-            res.status(200).send(user.wagers[0]);
-          } else {
-            res.status(200).send(user.wagers[user.wagers.length - 1]);
-          }
+          res.status(200).send(newUser.wagers[newUser.wagers.length - 1]);
         } else {
           res.status(400).send("Line has changed");
         }

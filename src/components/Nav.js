@@ -43,16 +43,16 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
 
     function getPending() {
       var pending = 0;
-      user.wagers && user.wagers.length > 0
+      user.wagers.length > 0
         ? user.wagers
-            .filter((e) => e.status !== "final")
+            .filter((e) => e.status === "pending")
             .map((w) => {
-              return (pending += parseInt(w.amount));
+              return (pending += parseInt(w.amount || 0));
             })
         : setBalance(0);
       setPending(pending);
     }
-  }, [user.isAuthUser]);
+  }, [user.wagers.length]);
 
   // function isPushNotificationSupported() {
   //     if ('serviceWorker' in navigator) {
