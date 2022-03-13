@@ -1,5 +1,4 @@
 const { schedule } = require("@netlify/functions");
-// const { User } = require("./models/user");
 const common = require("./helpers/common");
 const mongoose = require("mongoose");
 
@@ -19,8 +18,6 @@ const connectToDatabase = async (uri) => {
 
 const handler = async function (db) {
   const users = await db.models.Users.find({});
-
-  console.log(users.length);
   const response = await Promise.all(
     users.map(async (u) => {
       u.wagers.map(async (wag) => {
@@ -28,8 +25,6 @@ const handler = async function (db) {
       });
     })
   );
-
-  console.log(response);
 
   return {
     statusCode: 200,
