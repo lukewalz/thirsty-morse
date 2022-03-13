@@ -24,7 +24,6 @@ const handler = async function (db) {
   const response = await Promise.all(
     users.map(async (u) => {
       u.wagers.map(async (wag) => {
-        wag.game_id === '401403473' && console.log(wag);
         wag.status === 'pending' && await common.determineResults(wag, u);
       });
     })
