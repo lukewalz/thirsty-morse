@@ -18,16 +18,15 @@ const connectToDatabase = async (uri) => {
 };
 
 const handler = async function (db) {
-  console.log(db.models.Users);
   const users = await db.models.Users.find({});
 
+  console.log(users.length);
   const response = await Promise.all(
     users.map(async (u) => {
-      if (u.wagers) {
-        u.wagers.map(async (wag) => {
-          await common.determineResults(wag, u);
-        });
-      }
+      u.wagers.map(async (wag) => {
+        wag.game_id === '401403473' && console.log(wag);
+        wag.status === 'pending' && await common.determineResults(wag, u);
+      });
     })
   );
 
@@ -35,6 +34,9 @@ const handler = async function (db) {
 
   return {
     statusCode: 200,
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(response?.length),
   };
 };
