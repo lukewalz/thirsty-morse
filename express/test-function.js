@@ -18,31 +18,26 @@ const connectToDatabase = async (uri) => {
 };
 
 const handler = async function (db) {
-  let count = 0;
-  const users = await db.find({}).toArray();
+  console.log(db.models.Users);
+  const users = await db.models.Users.find({});
 
   const response = await Promise.all(
     users.map(async (u) => {
-      console.log(u);
       if (u.wagers) {
         u.wagers.map(async (wag) => {
           await common.determineResults(wag, u);
-          count++;
         });
       }
     })
   );
 
+  console.log(response);
+
   return {
     statusCode: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(response, count),
+    body: JSON.stringify(response?.length),
   };
 };
-
-module.exports.handler = schedule("@hourly", handler);
 
 module.exports.handler = async (event, context) => {
   // otherwise the connection will never complete, since
