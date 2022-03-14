@@ -17,17 +17,12 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
   const [pending, setPending] = useState(0);
 
   useEffect(() => {
-    // askUserPermission().then((e) => {
-    console.log(user);
     if (user.isAuthUser) {
-      //   subscribePush().then(() =>
       loadUpdatedWagers().then(() => {
         getBalance();
         getPending();
       });
-      //   );
     }
-    // });
 
     function getBalance() {
       var balance = 0;
@@ -52,29 +47,7 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
         : setBalance(0);
       setPending(pending);
     }
-  }, [user.wagers?.length]);
-
-  // function isPushNotificationSupported() {
-  //     if ('serviceWorker' in navigator) {
-  //         window.addEventListener('load', () => {
-  //             navigator.serviceWorker.register('/sw.js')
-  //                 .then(reg => {
-
-  //                 })
-  //                 .catch(err => {
-
-  //                 })
-  //         })
-  //     }
-  // }
-
-  //   async function askUserPermission() {
-  //     if (typeof Notification !== "undefined") {
-  //       return await Notification.requestPermission();
-  //     }
-  //   }
-
-  //   isPushNotificationSupported();
+  }, [loadUpdatedWagers, user, user.wagers.length]);
 
   return (
     <AppBar position="sticky">

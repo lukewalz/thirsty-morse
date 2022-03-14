@@ -49,7 +49,7 @@ router.get("/", async (req, res) => {
     const tokenId = jwt.decode(req.headers["x-auth-token"], token)._id;
     const user = await User.findOne({ _id: req.query.id });
     if (user) {
-      if (user._id === tokenId) {
+      if (user._id.toString() === tokenId.toString()) {
         if (user.wagers) {
           res.status(200).send(user.wagers);
         } else {
