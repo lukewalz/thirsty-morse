@@ -2,7 +2,6 @@ const fetch = require("node-fetch");
 const { User } = require("../models/user");
 
 async function determineResults(wager, user) {
-  console.log(wager);
   const game = await getGameById(wager);
   const { competitors, status } = game.header.competitions[0];
 
