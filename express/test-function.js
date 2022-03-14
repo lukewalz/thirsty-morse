@@ -1,6 +1,6 @@
 const { schedule } = require("@netlify/functions");
 const common = require("./helpers/common");
-const { Users } = require("./models/user");
+const User = require("./models/user");
 const mongoose = require("mongoose");
 
 const connectionString = process.env.MONGO_ENDPOINT;
@@ -17,28 +17,22 @@ const connectToDatabase = async () => {
 };
 
 const handler = async function (event, context) {
+  context.callbackWaitsForEmptyEventLoop = false;
+
+  const db = await connectToDatabase();
+  console.log(db);
+
   let body = JSON.parse(event.body);
   console.log(body);
 
-  const users = await Users.find({});
+  const users = await db.models.Users.find();
   console.log(users);
   const response = await Promise.all(
     users.map(async (user) => user.wagers.filter(wager => wager.status === 'pending')?.map(async wag => await common.determineResults(wag, user))))
 
   return {
     statusCode: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(response?.length),
   };
 };
 
-module.exports.handler = async (event, context) => {
-  // otherwise the connection will never complete, since
-  // we keep the DB connection alive
-  context.callbackWaitsForEmptyEventLoop = false;
-
-  await connectToDatabase();
-  return schedule("@hourly", handler);
-};
+module.exports.handler = schedule("@hourly", handler);
