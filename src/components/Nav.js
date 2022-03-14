@@ -52,7 +52,7 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
         : setBalance(0);
       setPending(pending);
     }
-  }, [user.wagers.length]);
+  }, [user.wagers?.length]);
 
   // function isPushNotificationSupported() {
   //     if ('serviceWorker' in navigator) {
