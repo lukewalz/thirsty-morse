@@ -42,8 +42,6 @@ const handler = async function (db) {
   };
 };
 
-module.exports.handler = schedule("@hourly", handler);
-
 module.exports.handler = async (event, context) => {
   // otherwise the connection will never complete, since
   // we keep the DB connection alive
