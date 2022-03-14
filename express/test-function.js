@@ -26,13 +26,12 @@ const handler = async function (event, context) {
   console.log(body);
 
   const users = await db.models.Users.find();
-  console.log(users);
   const response = await Promise.all(
     users.map(async (user) => user.wagers.filter(wager => wager.status === 'pending')?.map(async wag => await common.determineResults(wag, user))))
-
+  console.log(response);
   return {
     statusCode: 200,
   };
 };
 
-module.exports.handler = schedule("* * * * *", handler);
+module.exports.handler = schedule("15 * * * *", handler);
