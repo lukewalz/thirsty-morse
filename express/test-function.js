@@ -17,7 +17,7 @@ const connectToDatabase = async () => {
 };
 
 const handler = async function (event, context) {
-  context.callbackWaitsForEmptyEventLoop = false;
+  // context.callbackWaitsForEmptyEventLoop = false;
 
   const db = await connectToDatabase();
 
