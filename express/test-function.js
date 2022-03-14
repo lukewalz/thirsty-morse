@@ -19,19 +19,14 @@ const connectToDatabase = async (uri) => {
 const handler = async function (db) {
   const users = await db.models.Users.find({});
   const response = await Promise.all(
-    users.map(async (u) => {
-      u.wagers.map(async (wag) => {
-        wag.status === 'pending' && await common.determineResults(wag, u);
-      });
-    })
-  );
+    users.map(async (user) => user.wagers.filter(wager => wager.status === 'pending')?.map(async wag => await common.determineResults(wag, user))))
 
   return {
     statusCode: 200,
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(response?.length),
+    body: JSON.stringify(`${response?.length} records updated for ${users.length} users`),
   };
 };
 
