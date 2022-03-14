@@ -1,11 +1,11 @@
 const { schedule } = require("@netlify/functions");
-// const { User } = require("./models/user");
 const common = require("./helpers/common");
+const User = require("./models/user");
 const mongoose = require("mongoose");
 
 const connectionString = process.env.MONGO_ENDPOINT;
 
-const connectToDatabase = async (uri) => {
+const connectToDatabase = async () => {
   const client = await mongoose
     .connect(connectionString, {
       useNewUrlParser: true,
@@ -13,40 +13,29 @@ const connectToDatabase = async (uri) => {
       useFindAndModify: false,
     })
     .catch((err) => console.error("Something went wrong", err));
-
   return client;
 };
 
-const handler = async function (db) {
-  let count = 0;
-  const users = await db.find({}).toArray();
+const handler = async function (event, context) {
+  // context.callbackWaitsForEmptyEventLoop = false;
 
+  const db = await connectToDatabase();
+
+  let body = JSON.parse(event.body);
+  console.log(body);
+
+  const users = await db.models.Users.find();
   const response = await Promise.all(
-    users.map(async (u) => {
-      console.log(u);
-      if (u.wagers) {
-        u.wagers.map(async (wag) => {
-          await common.determineResults(wag, u);
-          count++;
-        });
-      }
-    })
+    users.map(async (user) =>
+      user.wagers
+        .filter((wager) => wager.status === "pending")
+        ?.map(async (wag) => await common.determineResults(wag, user))
+    )
   );
-
+  console.log(response);
   return {
     statusCode: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(response, count),
   };
 };
 
-module.exports.handler = async (event, context) => {
-  // otherwise the connection will never complete, since
-  // we keep the DB connection alive
-  context.callbackWaitsForEmptyEventLoop = false;
-
-  const db = await connectToDatabase(connectionString);
-  return schedule("@hourly", handler(db));
-};
+module.exports.handler = schedule("@hourly", handler);

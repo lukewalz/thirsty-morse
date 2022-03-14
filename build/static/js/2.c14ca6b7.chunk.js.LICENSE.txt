@@ -5,15 +5,6 @@ object-assign
 */
 
 /*!
-   Transformation Matrix v2.0
-   (c) Epistemex 2014-2015
-   www.epistemex.com
-   By Ken Fyrstenberg
-   Contributions by leeoniya.
-   License: MIT, header required.
-   */
-
-/*!
   Copyright (c) 2017 Jed Watson.
   Licensed under the MIT License (MIT), see
   http://jedwatson.github.io/classnames
@@ -112,4 +103,4 @@ PERFORMANCE OF THIS SOFTWARE.
  * LICENSE file in the root directory of this source tree.
  */
 
-//! goToAndStop must be relative to the start of the current segment
+//! moment.js
