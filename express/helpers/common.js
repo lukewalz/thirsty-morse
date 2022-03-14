@@ -7,6 +7,7 @@ async function determineResults(wager, user) {
 
   const newWager = Object.assign({}, wager);
 
+  let response;
   if (status.type.completed !== false) {
     newWager.status = "final";
     if (newWager.wager_type === "sp") {
@@ -26,7 +27,7 @@ async function determineResults(wager, user) {
       } else {
         newWager.outcome = "loss";
       }
-      addResultObject(newWager, user);
+      response = addResultObject(newWager, user);
     } else if (wager.wager_type === "ou") {
       const selection = wager.selection.split("@");
       if (selection[0] === "o") {
@@ -35,16 +36,16 @@ async function determineResults(wager, user) {
           parseInt(competitors[0].score) + parseInt(competitors[1].score)
         ) {
           newWager.outcome = "loss";
-          addResultObject(newWager, user);
+          response = addResultObject(newWager, user);
         } else if (
           parseFloat(selection[1]) ===
           parseInt(competitors[0].score) + parseInt(competitors[1].score)
         ) {
           newWager.outcome = "push";
-          addResultObject(newWager, user);
+          response = addResultObject(newWager, user);
         } else {
           newWager.outcome = "win";
-          addResultObject(newWager, user);
+          response = addResultObject(newWager, user);
         }
       }
       if (selection[0] === "u") {
@@ -53,16 +54,16 @@ async function determineResults(wager, user) {
           parseInt(competitors[0].score) + parseInt(competitors[1].score)
         ) {
           newWager.outcome = "win";
-          addResultObject(newWager, user);
+          response = addResultObject(newWager, user);
         } else if (
           parseFloat(selection[1]) ===
           parseInt(competitors[0].score) + parseInt(competitors[1].score)
         ) {
           newWager.outcome = "push";
-          addResultObject(newWager, user);
+          response = addResultObject(newWager, user);
         } else {
           newWager.outcome = "loss";
-          addResultObject(newWager, user);
+          response = addResultObject(newWager, user);
         }
       }
     } else {
@@ -70,35 +71,35 @@ async function determineResults(wager, user) {
       if (selection[0] === competitors[0].team) {
         if (parseInt(competitors[0].score) > parseInt(competitors[1].score)) {
           newWager.outcome = "win";
-          addResultObject(newWager, user);
+          response = addResultObject(newWager, user);
         } else if (
           parseInt(competitors[0].score) === parseInt(competitors[1].score)
         ) {
           newWager.outcome = "push";
-          addResultObject(newWager, user);
+          response = addResultObject(newWager, user);
         } else {
           newWager.outcome = "loss";
-          addResultObject(newWager, user);
+          response = addResultObject(newWager, user);
         }
       } else {
         if (parseInt(competitors[0].score) < parseInt(competitors[1].score)) {
           newWager.outcome = "win";
-          addResultObject(newWager, user);
+          response = addResultObject(newWager, user);
         } else if (
           parseInt(competitors[0].score) === parseInt(competitors[1].score)
         ) {
           newWager.outcome = "push";
-          addResultObject(newWager, user);
+          response = addResultObject(newWager, user);
         } else {
           newWager.outcome = "loss";
-          addResultObject(newWager, user);
+          response = addResultObject(newWager, user);
         }
       }
     }
   } else {
     if (status.type.state === 'in') {
       newWager.outcome = 'pending';
-      addResultObject(newWager, user);
+      response = addResultObject(newWager, user);
     }
   }
 }
@@ -125,8 +126,10 @@ async function addResultObject(newWager, user) {
   newWager.result = amount;
   var res = await User.findOneAndUpdate(
     { _id: user._id, "wagers.wager_date": newWager.wager_date },
-    { "wagers.$": newWager }
+    { "wagers.$": newWager },
+    { returnNewDocument: true }
   );
+  return res;
 }
 
 async function calculatePayout(boost, amountBet, result) {
