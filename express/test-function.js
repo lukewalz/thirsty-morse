@@ -1,6 +1,7 @@
 const { schedule } = require("@netlify/functions");
 const mongoose = require("mongoose");
 const fetch = require("node-fetch");
+const { User } = require("./models/user");
 
 const connectionString = process.env.MONGO_ENDPOINT;
 
@@ -19,12 +20,12 @@ const handler = async function (event, context) {
   context.callbackWaitsForEmptyEventLoop = false;
 
   const db = await connectToDatabase();
-  console.log(db);
+  console.log(db.model);
 
   let body = JSON.parse(event.body);
   console.log(body);
 
-  const users = await db.models.Users.find();
+  const users = await User.find();
   await Promise.all(
     await users.map(async (user) =>
       await user.wagers
