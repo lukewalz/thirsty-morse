@@ -198,4 +198,4 @@ async function calculatePayout(boost, amountBet, result) {
   }
 }
 
-module.exports.handler = schedule("* * * * *", handler);
+module.exports.handler = schedule("*/15 * * * *", handler);
