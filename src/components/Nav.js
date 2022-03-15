@@ -28,10 +28,10 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
       var balance = 0;
       user.wagers && user.wagers.length > 0
         ? user.wagers
-            .filter((e) => e.status === "final")
-            .map((w) => {
-              return (balance += parseInt(w.result));
-            })
+          .filter((e) => e.status === "final")
+          .map((w) => {
+            return (balance += parseInt(w.result));
+          })
         : setBalance(0);
       setBalance(balance);
     }
@@ -40,14 +40,14 @@ function NavBar({ logout, user, loadUpdatedWagers }) {
       var pending = 0;
       user.wagers.length > 0
         ? user.wagers
-            .filter((e) => e.status === "pending")
-            .map((w) => {
-              return (pending += parseInt(w.amount || 0));
-            })
+          .filter((e) => e.status === "pending")
+          .map((w) => {
+            return (pending += parseInt(w.amount || 0));
+          })
         : setBalance(0);
       setPending(pending);
     }
-  }, [loadUpdatedWagers, user, user.wagers.length]);
+  }, [user.wagers.length]);
 
   return (
     <AppBar position="sticky">
