@@ -1,6 +1,7 @@
 [build]
   # functions build directory
   functions = "express"
+  node_bundler = "esbuild"
 
 [[redirects]]
   from = "/*"

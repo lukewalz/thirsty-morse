@@ -1,6 +1,5 @@
 const { schedule } = require("@netlify/functions");
 const common = require("./helpers/common");
-const User = require("./models/user");
 const mongoose = require("mongoose");
 
 const connectionString = process.env.MONGO_ENDPOINT;
@@ -39,4 +38,4 @@ const handler = async function (event, context) {
   };
 };
 
-module.exports.handler = schedule("@hourly", handler);
+module.exports.handler = schedule("*/15 * * * *", handler);
