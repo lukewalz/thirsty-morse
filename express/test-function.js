@@ -41,6 +41,7 @@ const handler = async function (event, context) {
 
 async function determineResults(wager, user) {
   const game = await getGameById(wager);
+  console.log(game);
   const { competitors, status } = game.header.competitions[0];
 
   const newWager = Object.assign({}, wager);
