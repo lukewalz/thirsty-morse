@@ -19,8 +19,7 @@ const connectToDatabase = async () => {
 const handler = async function (event, context) {
   context.callbackWaitsForEmptyEventLoop = false;
 
-  const db = await connectToDatabase();
-  console.log(db.model);
+  await connectToDatabase();
 
   let body = JSON.parse(event.body);
   console.log(body);
