@@ -17,22 +17,23 @@ const connectToDatabase = async () => {
 };
 
 const handler = async function (event, context) {
-  // context.callbackWaitsForEmptyEventLoop = false;
+  context.callbackWaitsForEmptyEventLoop = false;
 
   const db = await connectToDatabase();
+  console.log(db);
 
   let body = JSON.parse(event.body);
   console.log(body);
 
   const users = await db.models.Users.find();
-  const response = await Promise.all(
-    users.map(async (user) =>
-      user.wagers
+  await Promise.all(
+    await users.map(async (user) =>
+      await user.wagers
         .filter((wager) => wager.status === "pending")
         ?.map(async (wag) => await common.determineResults(wag, user))
     )
   );
-  console.log(response);
+
   return {
     statusCode: 200,
   };
