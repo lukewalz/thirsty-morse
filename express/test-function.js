@@ -40,7 +40,6 @@ const handler = async function (event, context) {
 
 async function determineResults(wager, user) {
   const game = await getGameById(wager);
-  console.log(game);
   const { competitors, status } = game.header.competitions[0];
 
   const newWager = Object.assign({}, wager);
@@ -140,6 +139,7 @@ async function determineResults(wager, user) {
       response = addResultObject(newWager, user);
     }
   }
+  console.log(response);
 }
 
 async function getGameById(wager) {
@@ -148,9 +148,9 @@ async function getGameById(wager) {
 
   const response = await fetch(apiPath)
     .then((e) => e.json())
-    .catch((er) => er)
+    .catch((er) => console.log(er))
     .then((r) => r)
-    .catch((er) => new Error(er));
+    .catch((err) => console.log(err));
 
   return response.gamepackageJSON;
 }
