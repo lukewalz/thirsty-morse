@@ -139,7 +139,8 @@ async function determineResults(wager, user) {
       response = addResultObject(newWager, user);
     }
   }
-  console.log(response);
+  console.log('determine', response);
+  return response;
 }
 
 async function getGameById(wager) {
@@ -148,9 +149,9 @@ async function getGameById(wager) {
 
   const response = await fetch(apiPath)
     .then((e) => e.json())
-    .catch((er) => console.log(er))
+    .catch((er) => console.log('er1', er))
     .then((r) => r)
-    .catch((err) => console.log(err));
+    .catch((err) => console.log('er2', err));
 
   return response.gamepackageJSON;
 }
@@ -162,6 +163,8 @@ async function addResultObject(newWager, user) {
     newWager.outcome
   );
   newWager.result = amount;
+
+  console.log('newWager', newWager);
   var res = await User.findOneAndUpdate(
     { _id: user._id, "wagers.wager_date": newWager.wager_date },
     { "wagers.$": newWager },
