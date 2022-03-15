@@ -2,7 +2,7 @@
   # functions build directory
   functions = "express"
   node_bundler = "esbuild"
-  external_node_modules = ["joi","joigoose","mongoose"]
+  external_node_modules = ["joi","joigoose","mongoose", "node-fetch"]
   included_files = ["files/*.md"]
 
 [[redirects]]
