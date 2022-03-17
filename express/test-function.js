@@ -202,4 +202,4 @@ async function calculatePayout(boost, amountBet, result) {
   }
 }
 
-module.exports.handler = schedule("*/15 * * * *", handler);
+module.exports.handler = schedule("@hourly", handler);
