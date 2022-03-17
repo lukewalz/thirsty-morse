@@ -45,7 +45,7 @@ async function determineResults(wager, user) {
 
   const newWager = Object.assign({}, wager);
 
-  let response;
+  let response = "und";
   if (status.type.completed !== false) {
     newWager.status = "final";
     if (newWager.wager_type === "sp") {
@@ -137,7 +137,7 @@ async function determineResults(wager, user) {
   } else {
     if (status.type.state === "in") {
       newWager.outcome = "pending";
-      response = addResultObject(newWager, user);
+      response = await addResultObject(newWager, user);
     }
   }
   console.log("determine", response);
