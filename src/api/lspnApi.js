@@ -131,6 +131,7 @@ export async function placeWager(wager) {
       if (response.ok) {
         return response.json();
       } else if (response.status === 400) {
+        console.log(response);
         throw new Error("Username already exists");
       } else {
         throw new Error("User failed to add");

@@ -1,6 +1,19 @@
 const fetch = require("node-fetch");
 const { User } = require("../models/user");
 
+async function getGameById(wager) {
+  let apiPath = `https://www.espn.com/${wager.sport}/game?gameId=${
+    wager.game_id
+  }&xhr=1&v=${Date.now()}`;
+
+  const response = await fetch(apiPath)
+    .then((e) => e.json())
+    .catch((er) => console.log("er1", er))
+    .then((r) => r)
+    .catch((err) => console.log("er2", err));
+
+  return response.gamepackageJSON;
+}
 async function validateWager(wager) {
   try {
     let isValid = false;

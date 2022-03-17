@@ -26,10 +26,11 @@ const handler = async function (event, context) {
 
   const users = await User.find();
   await Promise.all(
-    await users.map(async (user) =>
-      await user.wagers
-        .filter((wager) => wager.status === "pending")
-        ?.map(async (wag) => await determineResults(wag, user))
+    await users.map(
+      async (user) =>
+        await user.wagers
+          .filter((wager) => wager.status === "pending")
+          ?.map(async (wag) => await determineResults(wag, user))
     )
   );
 
@@ -134,24 +135,25 @@ async function determineResults(wager, user) {
       }
     }
   } else {
-    if (status.type.state === 'in') {
-      newWager.outcome = 'pending';
+    if (status.type.state === "in") {
+      newWager.outcome = "pending";
       response = addResultObject(newWager, user);
     }
   }
-  console.log('determine', response);
+  console.log("determine", response);
   return response;
 }
 
 async function getGameById(wager) {
-  let apiPath = `https://www.espn.com/${wager.sport}/game?gameId=${wager.game_id
-    }&xhr=1&v=${Date.now()}`;
+  let apiPath = `https://www.espn.com/${wager.sport}/game?gameId=${
+    wager.game_id
+  }&xhr=1&v=${Date.now()}`;
 
   const response = await fetch(apiPath)
     .then((e) => e.json())
-    .catch((er) => console.log('er1', er))
+    .catch((er) => console.log("er1", er))
     .then((r) => r)
-    .catch((err) => console.log('er2', err));
+    .catch((err) => console.log("er2", err));
 
   return response.gamepackageJSON;
 }
@@ -164,7 +166,7 @@ async function addResultObject(newWager, user) {
   );
   newWager.result = amount;
 
-  console.log('newWager', newWager);
+  console.log("newWager", newWager);
   var res = await User.findOneAndUpdate(
     { _id: user._id, "wagers.wager_date": newWager.wager_date },
     { "wagers.$": newWager },
