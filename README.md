@@ -1,8 +1,33 @@
-## Thirsty Morse Sportsbook
-This repository includes a MERN web application for casual sports wagering and scores.
-https://thirsty-morse-d0f09c.netlify.app/
+# thirsty.morse
 
-![Screenshot 2021-03-23 132856](https://user-images.githubusercontent.com/25109068/112199141-d99d5e80-8bdb-11eb-9003-6b44c7c94481.png)
-![Screenshot 2021-03-23 132837](https://user-images.githubusercontent.com/25109068/112199142-da35f500-8bdb-11eb-8e05-53447121fe00.png)
-![Screenshot 2021-03-23 132815](https://user-images.githubusercontent.com/25109068/112199143-dace8b80-8bdb-11eb-9bd7-99f66aad633d.png)
-![Screenshot 2021-03-23 132927](https://user-images.githubusercontent.com/25109068/112199144-dace8b80-8bdb-11eb-9e7d-f7bf2a492646.png)
+A clean point-spread + over/under tracker that watches your picks live against ESPN's public APIs. No accounts, no real money, no backend — just localStorage, fast polling, and an honest scoreboard.
+
+Originally a 2022 MERN project. Rewritten in 2026 as a static SPA on Cloudflare Pages.
+
+## Stack
+
+- **Vite + React 19 + TypeScript** — fresh build, no webpack legacy
+- **Tailwind v4** — clean light theme, single accent, Inter + JetBrains Mono
+- **TanStack Query** — handles ESPN polling, caching, and refetch intervals natively (replaces the old `setInterval` loop and its crash bug)
+- **Zustand + persist** — wager state in localStorage; no Redux, no auth
+- **React Router v7** — `/`, `/games/:league`, `/games/:league/:gameId`, `/history`
+
+## Running locally
+
+```bash
+npm install
+npm run dev
+```
+
+ESPN's public scoreboard and game endpoints support CORS for browsers, so no proxy is needed.
+
+## Deploy
+
+Cloudflare Pages, framework preset "Vite". Build command `npm run build`, output `dist`. SPA rewrites are wired via `public/_redirects`.
+
+## What changed from the original
+
+- ❌ MongoDB + Mongoose models, JWT auth, bcrypt, Netlify Functions backend
+- ❌ Material UI v4, React 16, react-scripts 4, Redux + Redux-Saga
+- ❌ Hardcoded Sentry DSN, client-side cookie token storage
+- ✅ Stateless SPA, ~70% less code, deploys to a CDN edge
