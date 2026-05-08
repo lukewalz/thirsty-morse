@@ -77,6 +77,9 @@ export interface ESPNOdds {
   details?: string;
   overUnder?: number;
   spread?: number;
+  provider?: { name: string };
+  awayTeamOdds?: { favorite?: boolean; teamId?: string; moneyLine?: number };
+  homeTeamOdds?: { favorite?: boolean; teamId?: string; moneyLine?: number };
 }
 
 export interface ESPNDetailCompetition {
@@ -89,6 +92,8 @@ export interface ESPNDetailCompetition {
 
 export interface ESPNGameDetail {
   header: { competitions: ESPNDetailCompetition[] };
+  pickcenter?: ESPNOdds[];
+  odds?: ESPNOdds[];
   league: SportSlug;
   sport: Sport;
 }

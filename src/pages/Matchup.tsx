@@ -37,18 +37,25 @@ export default function Matchup() {
   const comp = data?.header.competitions[0];
   const home = comp?.competitors.find((c) => c.homeAway === "home");
   const away = comp?.competitors.find((c) => c.homeAway === "away");
-  const odds = comp?.odds?.[0];
+  /* Lines live in `pickcenter` on the summary endpoint. ESPN also
+     duplicates them at top-level `odds`; `competitions[0].odds` is
+     usually null. Use the first provider (DraftKings is priority 1). */
+  const odds = data?.pickcenter?.[0] ?? data?.odds?.[0];
 
   const spread = odds?.spread;
   const overUnder = odds?.overUnder;
+  const awayIsFavorite = odds?.awayTeamOdds?.favorite === true;
 
   const spreadOptions = useMemo(() => {
-    if (!home || !away || spread == null) return [];
+    if (!home || !away || spread == null || spread === 0) return [];
+    const mag = Math.abs(spread);
+    const fav = awayIsFavorite ? away : home;
+    const dog = awayIsFavorite ? home : away;
     return [
-      { value: `${away.team.abbreviation}@${spread > 0 ? `+${spread}` : spread}`, label: `${away.team.abbreviation} ${spread > 0 ? `+${spread}` : spread}` },
-      { value: `${home.team.abbreviation}@${spread > 0 ? `-${spread}` : Math.abs(spread)}`, label: `${home.team.abbreviation} ${spread > 0 ? `-${spread}` : `+${Math.abs(spread)}`}` },
+      { value: `${fav.team.abbreviation}@-${mag}`, label: `${fav.team.abbreviation} -${mag}` },
+      { value: `${dog.team.abbreviation}@+${mag}`, label: `${dog.team.abbreviation} +${mag}` },
     ];
-  }, [home, away, spread]);
+  }, [home, away, spread, awayIsFavorite]);
 
   const ouOptions = useMemo(() => {
     if (overUnder == null) return [];
