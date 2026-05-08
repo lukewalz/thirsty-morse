@@ -100,10 +100,17 @@ export interface ESPNDetailCompetition {
   odds?: ESPNOdds[];
 }
 
+export interface ESPNWinProbabilityPoint {
+  playId: string;
+  homeWinPercentage: number;
+  tiePercentage: number;
+}
+
 export interface ESPNGameDetail {
   header: { competitions: ESPNDetailCompetition[] };
   pickcenter?: ESPNOdds[];
   odds?: ESPNOdds[];
+  winprobability?: ESPNWinProbabilityPoint[];
   league: SportSlug;
   sport: Sport;
 }

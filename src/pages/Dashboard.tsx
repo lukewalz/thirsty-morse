@@ -1,10 +1,19 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useQueries } from "@tanstack/react-query";
 import { getGameById, LEAGUE_LABEL, LEAGUE_TAG } from "@/lib/espn";
 import { formatScore } from "@/lib/format";
+import { coverDifferential, settleWager } from "@/lib/settle";
 import { useWagers } from "@/store/wagers";
 import StateBadge from "@/components/StateBadge";
-import type { ESPNDetailCompetitor, SportSlug } from "@/lib/types";
+import CoverMeter from "@/components/CoverMeter";
+import WinProbChart from "@/components/WinProbChart";
+import ScoreFlash from "@/components/ScoreFlash";
+import type {
+  ESPNGameDetail,
+  SportSlug,
+  Wager,
+} from "@/lib/types";
 
 const SPORTS: SportSlug[] = [
   "nba",
@@ -17,6 +26,7 @@ const SPORTS: SportSlug[] = [
 
 export default function Dashboard() {
   const wagers = useWagers((s) => s.wagers);
+  const settle = useWagers((s) => s.settle);
   const pending = wagers.filter((w) => w.status === "pending");
 
   const liveGames = useQueries({
@@ -27,6 +37,18 @@ export default function Dashboard() {
       staleTime: 5_000,
     })),
   });
+
+  /* Auto-settle: when a pending wager's game goes final, compute the
+     outcome and persist it. The wager then drops out of `pending` on
+     the next render, so this can't loop. */
+  useEffect(() => {
+    pending.forEach((w, i) => {
+      const detail = liveGames[i]?.data;
+      const comp = detail?.header.competitions[0];
+      const outcome = settleWager(w, comp);
+      if (outcome) settle(w.id, outcome.status, outcome.result);
+    });
+  }, [pending, liveGames, settle]);
 
   return (
     <div className="space-y-12">
@@ -69,29 +91,9 @@ export default function Dashboard() {
           </p>
         ) : (
           <div className="mt-6 grid gap-3">
-            {pending.map((w, i) => {
-              const detail = liveGames[i]?.data;
-              const comp = detail?.header.competitions[0];
-              return (
-                <LiveWagerCard
-                  key={w.id}
-                  league={w.league}
-                  gameId={w.game_id}
-                  selection={w.selection}
-                  amount={w.amount}
-                  wagerType={w.wager_type}
-                  isLiveBet={w.live === true}
-                  placedAtDetail={
-                    w.placed_at
-                      ? `${w.placed_at.away_score}-${w.placed_at.home_score} · ${w.placed_at.detail}`
-                      : undefined
-                  }
-                  state={comp?.status.type.state ?? "pre"}
-                  detail={comp?.status.type.detail ?? "Loading…"}
-                  competitors={comp?.competitors}
-                />
-              );
-            })}
+            {pending.map((w, i) => (
+              <LiveWagerCard key={w.id} wager={w} game={liveGames[i]?.data} />
+            ))}
           </div>
         )}
       </section>
@@ -100,58 +102,60 @@ export default function Dashboard() {
 }
 
 function LiveWagerCard({
-  league,
-  gameId,
-  selection,
-  amount,
-  wagerType,
-  isLiveBet,
-  placedAtDetail,
-  state,
-  detail,
-  competitors,
+  wager,
+  game,
 }: {
-  league: SportSlug;
-  gameId: string;
-  selection: string;
-  amount: number;
-  wagerType: "spread" | "ou";
-  isLiveBet: boolean;
-  placedAtDetail?: string;
-  state: "pre" | "in" | "post";
-  detail: string;
-  competitors?: ESPNDetailCompetitor[];
+  wager: Wager;
+  game?: ESPNGameDetail;
 }) {
-  const home = competitors?.find((c) => c.homeAway === "home");
-  const away = competitors?.find((c) => c.homeAway === "away");
+  const comp = game?.header.competitions[0];
+  const home = comp?.competitors.find((c) => c.homeAway === "home");
+  const away = comp?.competitors.find((c) => c.homeAway === "away");
+  const state = comp?.status.type.state ?? "pre";
+  const detail = comp?.status.type.shortDetail ?? "Loading…";
+
+  const cover = coverDifferential(wager, comp);
+  const wp = game?.winprobability ?? [];
+
+  const placedAtDetail = wager.placed_at
+    ? `${wager.placed_at.away_score}-${wager.placed_at.home_score} · ${wager.placed_at.detail}`
+    : undefined;
 
   return (
     <Link
-      to={`/games/${league}/${gameId}`}
-      className="group block rounded-lg border border-line bg-surface px-5 py-4 transition-colors hover:border-line-strong"
+      to={`/games/${wager.league}/${wager.game_id}`}
+      className="group block rounded-lg border border-line bg-surface p-5 transition-colors hover:border-line-strong"
     >
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <StateBadge state={state}>{state === "in" ? "Live" : state === "post" ? "Final" : "Soon"}</StateBadge>
+          <StateBadge state={state}>
+            {state === "in" ? "Live" : state === "post" ? "Final" : "Soon"}
+          </StateBadge>
           <div className="font-mono text-sm tabular-nums">
-            {away ? `${away.team.abbreviation} ${formatScore(away.score)}` : "—"}
+            <span className="text-ink-dim">
+              {away ? `${away.team.abbreviation} ` : "— "}
+            </span>
+            <ScoreFlash value={away ? formatScore(away.score) : "—"} />
             <span className="px-2 text-ink-dim">@</span>
-            {home ? `${home.team.abbreviation} ${formatScore(home.score)}` : "—"}
+            <span className="text-ink-dim">
+              {home ? `${home.team.abbreviation} ` : "— "}
+            </span>
+            <ScoreFlash value={home ? formatScore(home.score) : "—"} />
           </div>
-          <div className="text-xs text-ink-muted">{detail}</div>
+          <div className="font-mono text-xs text-ink-muted">{detail}</div>
         </div>
-        <div className="flex items-center gap-4 text-right">
+        <div className="flex items-center gap-5 text-right">
           <div>
             <div className="flex items-center justify-end gap-1.5 font-mono text-[11px] uppercase tracking-wider text-ink-dim">
-              {wagerType === "spread" ? "Spread" : "Total"}
-              {isLiveBet && (
+              {wager.wager_type === "spread" ? "Spread" : "Total"}
+              {wager.live && (
                 <span className="rounded-sm bg-accent/15 px-1 font-mono text-[10px] text-accent">
                   LIVE
                 </span>
               )}
             </div>
             <div className="font-mono text-sm font-medium tabular-nums">
-              {selection}
+              {wager.selection}
             </div>
             {placedAtDetail && (
               <div className="font-mono text-[10px] text-ink-dim tabular-nums">
@@ -164,13 +168,66 @@ function LiveWagerCard({
               Stake
             </div>
             <div className="font-mono text-sm font-medium tabular-nums">
-              ${amount}
+              ${wager.amount}
             </div>
           </div>
           <span className="text-ink-dim group-hover:text-ink">→</span>
         </div>
       </div>
+
+      {state === "in" && (cover || wp.length > 0) && (
+        <div className="mt-4 grid gap-4 border-t border-line pt-4 sm:grid-cols-[1fr_auto] sm:items-center">
+          {cover ? (
+            <div>
+              <div className="mb-2 flex items-baseline justify-between font-mono text-[11px] uppercase tracking-wider text-ink-dim">
+                <span>Cover</span>
+                <span>{cover.label}</span>
+              </div>
+              <CoverMeter value={cover.value} />
+            </div>
+          ) : (
+            <span />
+          )}
+          {wp.length > 0 && (
+            <WinProbBlock
+              points={wp}
+              homeAbbr={home?.team.abbreviation ?? "HOME"}
+              awayAbbr={away?.team.abbreviation ?? "AWAY"}
+            />
+          )}
+        </div>
+      )}
     </Link>
+  );
+}
+
+function WinProbBlock({
+  points,
+  homeAbbr,
+  awayAbbr,
+}: {
+  points: { homeWinPercentage: number; tiePercentage: number; playId: string }[];
+  homeAbbr: string;
+  awayAbbr: string;
+}) {
+  const last = points[points.length - 1];
+  const homePct = Math.round(last.homeWinPercentage * 100);
+  const awayPct = 100 - homePct;
+  return (
+    <div className="flex items-center gap-3">
+      <WinProbChart points={points} side="home" />
+      <div className="text-right font-mono">
+        <div className="text-[10px] uppercase tracking-wider text-ink-dim">
+          Win prob
+        </div>
+        <div className="text-sm font-semibold tabular-nums">
+          {homeAbbr} {homePct}%
+        </div>
+        <div className="text-[10px] tabular-nums text-ink-muted">
+          {awayAbbr} {awayPct}%
+        </div>
+      </div>
+    </div>
   );
 }
 
