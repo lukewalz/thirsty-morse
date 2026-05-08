@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import type { ESPNGame, ESPNGameDetail, SportSlug } from "./types";
+import type { ESPNGameDetail, ESPNScoreboardEvent, SportSlug } from "./types";
 
 const SPORT_BY_LEAGUE: Record<SportSlug, "basketball"> = {
   nba: "basketball",
@@ -19,7 +19,10 @@ export function dateKey(date: Date): string {
   return format(date, "yyyyMMdd");
 }
 
-export async function getGames(league: SportSlug, date: Date): Promise<ESPNGame[]> {
+export async function getGames(
+  league: SportSlug,
+  date: Date,
+): Promise<ESPNScoreboardEvent[]> {
   const sport = sportFor(league);
   const params = new URLSearchParams({
     sport,

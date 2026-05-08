@@ -5,7 +5,7 @@ import { useGame } from "@/hooks/useGames";
 import { useWagers } from "@/store/wagers";
 import { LEAGUE_LABEL, sportFor } from "@/lib/espn";
 import StateBadge from "@/components/StateBadge";
-import type { ESPNCompetitor, SportSlug, WagerType } from "@/lib/types";
+import type { ESPNDetailCompetitor, SportSlug, WagerType } from "@/lib/types";
 
 const VALID_LEAGUES: SportSlug[] = ["nba", "mens-college-basketball"];
 
@@ -161,7 +161,7 @@ export default function Matchup() {
   );
 }
 
-function ScoreLine({ team }: { team: ESPNCompetitor }) {
+function ScoreLine({ team }: { team: ESPNDetailCompetitor }) {
   const logo = team.team.logo ?? team.team.logos?.[0]?.href;
   return (
     <div className="flex items-center gap-4">

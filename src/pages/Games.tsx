@@ -4,7 +4,7 @@ import { addDays, format } from "date-fns";
 import { useGames } from "@/hooks/useGames";
 import { LEAGUE_LABEL } from "@/lib/espn";
 import StateBadge from "@/components/StateBadge";
-import type { SportSlug } from "@/lib/types";
+import type { ESPNScoreboardCompetitor, SportSlug } from "@/lib/types";
 
 const VALID_LEAGUES: SportSlug[] = ["nba", "mens-college-basketball"];
 
@@ -23,6 +23,10 @@ export default function Games() {
   const date = addDays(new Date(), offset);
   const { data: games, isLoading, isError } = useGames(league, date);
 
+  const sorted = games
+    ? [...games].sort((a, b) => (a.date > b.date ? 1 : -1))
+    : [];
+
   return (
     <div className="space-y-6">
       <header className="flex items-end justify-between gap-4 border-b border-line pb-4">
@@ -39,16 +43,16 @@ export default function Games() {
 
       {isLoading && <p className="text-ink-muted">Loading games…</p>}
       {isError && <p className="text-negative">Couldn't reach ESPN. Try again.</p>}
-      {games && games.length === 0 && (
+      {!isLoading && sorted.length === 0 && (
         <p className="text-ink-muted">No games scheduled.</p>
       )}
 
       <div className="grid gap-3">
-        {games?.map((g) => {
-          const comp = g.competitions[0];
-          const home = comp.competitors.find((c) => c.homeAway === "home");
-          const away = comp.competitors.find((c) => c.homeAway === "away");
-          const state = g.status.type.state;
+        {sorted.map((g) => {
+          const home = g.competitors?.find((c) => c.homeAway === "home");
+          const away = g.competitors?.find((c) => c.homeAway === "away");
+          const state = g.status;
+          const detail = g.fullStatus?.type?.shortDetail ?? "";
 
           return (
             <Link
@@ -56,22 +60,22 @@ export default function Games() {
               to={`/games/${league}/${g.id}`}
               className="group flex items-center justify-between gap-4 rounded-lg border border-line bg-surface px-5 py-4 hover:border-line-strong"
             >
-              <div className="flex items-center gap-4">
+              <div className="flex flex-1 items-center gap-4">
                 <StateBadge state={state}>
-                  {state === "in" ? "Live" : state === "post" ? "Final" : format(new Date(g.date), "h:mm a")}
+                  {state === "in"
+                    ? "Live"
+                    : state === "post"
+                      ? "Final"
+                      : format(new Date(g.date), "h:mm a")}
                 </StateBadge>
-                <div className="font-mono text-sm tabular-nums">
-                  <div className="flex items-center gap-2">
-                    <TeamLine team={away} />
-                  </div>
-                  <div className="mt-1 flex items-center gap-2">
-                    <TeamLine team={home} />
-                  </div>
+                <div className="flex-1 font-mono text-sm">
+                  <TeamRow comp={away} />
+                  <TeamRow comp={home} />
                 </div>
               </div>
               <div className="flex items-center gap-4 text-right">
-                <div className="font-mono text-xs text-ink-muted">
-                  {g.status.type.detail}
+                <div className="hidden font-mono text-xs text-ink-muted sm:block">
+                  {state === "pre" ? "" : detail}
                 </div>
                 <span className="text-ink-dim group-hover:text-ink">→</span>
               </div>
@@ -83,26 +87,20 @@ export default function Games() {
   );
 }
 
-function TeamLine({
-  team,
-}: {
-  team:
-    | {
-        score: string;
-        team: { abbreviation: string; shortDisplayName: string };
-      }
-    | undefined;
-}) {
-  if (!team) return <span className="text-ink-dim">—</span>;
-  const score = parseInt(team.score || "0", 10);
+function TeamRow({ comp }: { comp: ESPNScoreboardCompetitor | undefined }) {
+  if (!comp) return null;
+  const score = parseInt(comp.score || "0", 10);
   return (
-    <>
-      <span className="inline-block w-12 text-ink-dim">{team.team.abbreviation}</span>
-      <span className="font-medium">{team.team.shortDisplayName}</span>
-      <span className="ml-auto pl-4 text-right tabular-nums">
-        {score > 0 ? score : "—"}
-      </span>
-    </>
+    <div className="flex items-center gap-3 py-0.5">
+      {comp.logo ? (
+        <img src={comp.logo} alt="" className="h-5 w-5 shrink-0" />
+      ) : (
+        <span className="inline-block h-5 w-5" />
+      )}
+      <span className="w-12 shrink-0 text-ink-dim">{comp.abbreviation}</span>
+      <span className="flex-1 font-medium">{comp.displayName}</span>
+      <span className="tabular-nums">{score > 0 ? score : "—"}</span>
+    </div>
   );
 }
 

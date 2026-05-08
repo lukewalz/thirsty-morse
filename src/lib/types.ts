@@ -17,7 +17,41 @@ export interface Wager {
   result?: number;
 }
 
-export interface ESPNCompetitor {
+/* Scoreboard list (`getGames`) — fields are flat on each event/competitor */
+export interface ESPNScoreboardCompetitor {
+  id: string;
+  homeAway: "home" | "away";
+  displayName: string;
+  abbreviation: string;
+  score: string;
+  logo?: string;
+  logoDark?: string;
+}
+
+export interface ESPNFullStatus {
+  type: {
+    state: "pre" | "in" | "post";
+    completed: boolean;
+    description: string;
+    detail: string;
+    shortDetail: string;
+  };
+  displayClock?: string;
+  period?: number;
+}
+
+export interface ESPNScoreboardEvent {
+  id: string;
+  date: string;
+  name: string;
+  shortName: string;
+  status: "pre" | "in" | "post";
+  fullStatus: ESPNFullStatus;
+  competitors: ESPNScoreboardCompetitor[];
+}
+
+/* Game detail (`getGameById`) — nested under header.competitions[0] */
+export interface ESPNDetailCompetitor {
   id: string;
   homeAway: "home" | "away";
   score: string;
@@ -31,36 +65,22 @@ export interface ESPNCompetitor {
   };
 }
 
-export interface ESPNStatus {
-  type: { state: "pre" | "in" | "post"; completed: boolean; description: string; detail: string };
-  displayClock?: string;
-  period?: number;
-}
-
 export interface ESPNOdds {
   details?: string;
   overUnder?: number;
   spread?: number;
 }
 
-export interface ESPNCompetition {
+export interface ESPNDetailCompetition {
   id: string;
   date: string;
-  status: ESPNStatus;
-  competitors: ESPNCompetitor[];
+  status: ESPNFullStatus;
+  competitors: ESPNDetailCompetitor[];
   odds?: ESPNOdds[];
 }
 
-export interface ESPNGame {
-  id: string;
-  date: string;
-  shortName: string;
-  status: ESPNStatus;
-  competitions: ESPNCompetition[];
-}
-
 export interface ESPNGameDetail {
-  header: { competitions: ESPNCompetition[] };
+  header: { competitions: ESPNDetailCompetition[] };
   league: SportSlug;
   sport: "basketball";
 }

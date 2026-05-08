@@ -3,7 +3,7 @@ import { useQueries } from "@tanstack/react-query";
 import { getGameById, LEAGUE_LABEL } from "@/lib/espn";
 import { useWagers } from "@/store/wagers";
 import StateBadge from "@/components/StateBadge";
-import type { ESPNCompetitor, SportSlug } from "@/lib/types";
+import type { ESPNDetailCompetitor, SportSlug } from "@/lib/types";
 
 const SPORTS: { league: SportSlug; tag: string }[] = [
   { league: "nba", tag: "NBA" },
@@ -105,7 +105,7 @@ function LiveWagerCard({
   wagerType: "spread" | "ou";
   state: "pre" | "in" | "post";
   detail: string;
-  competitors?: ESPNCompetitor[];
+  competitors?: ESPNDetailCompetitor[];
 }) {
   const home = competitors?.find((c) => c.homeAway === "home");
   const away = competitors?.find((c) => c.homeAway === "away");
