@@ -19,20 +19,31 @@ export interface PlacedAt {
   detail: string;
 }
 
-export interface Wager {
+export interface WagerLeg {
   id: string;
   league: SportSlug;
   sport: Sport;
   game_id: string;
+  game_label: string;
   wager_type: WagerType;
   selection: string;
-  amount: number;
-  wager_date: string;
-  status: WagerStatus;
-  result?: number;
-  /** Set if the wager was placed during a live game. */
+  /** Whether this leg was placed during a live game. */
   live?: boolean;
   placed_at?: PlacedAt;
+  /** Per-leg settlement, set as games finish. */
+  status: WagerStatus;
+}
+
+export interface Wager {
+  id: string;
+  legs: WagerLeg[];
+  amount: number;
+  wager_date: string;
+  /** Aggregate status. For parlays: pending while any leg pending; lost
+   *  if any leg lost; push if all legs settled and at least one push and
+   *  no losses; otherwise won. */
+  status: WagerStatus;
+  result?: number;
 }
 
 /* Scoreboard list (`getGames`) — fields are flat on each event/competitor */

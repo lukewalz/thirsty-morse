@@ -83,7 +83,6 @@ export default function History() {
               <tr>
                 <th className="px-4 py-3 font-medium">Placed</th>
                 <th className="px-4 py-3 font-medium">League</th>
-                <th className="px-4 py-3 font-medium">Type</th>
                 <th className="px-4 py-3 font-medium">Selection</th>
                 <th className="px-4 py-3 text-right font-medium">Stake</th>
                 <th className="px-4 py-3 text-right font-medium">Status</th>
@@ -103,32 +102,58 @@ export default function History() {
 }
 
 function Row({ wager, onRemove }: { wager: Wager; onRemove: () => void }) {
+  const isParlay = wager.legs.length > 1;
+  const firstLeg = wager.legs[0];
   return (
-    <tr className="border-b border-line last:border-b-0">
+    <tr className="border-b border-line last:border-b-0 align-top">
       <td className="px-4 py-3 font-mono text-xs text-ink-muted tabular-nums">
         {format(new Date(wager.wager_date), "MMM d, h:mm a")}
       </td>
       <td className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-ink-muted">
-        {LEAGUE_LABEL[wager.league]}
+        {isParlay ? `Parlay (${wager.legs.length})` : LEAGUE_LABEL[firstLeg.league]}
       </td>
-      <td className="px-4 py-3 capitalize">
-        <span className="inline-flex items-center gap-1.5">
-          {wager.wager_type === "ou" ? "Over/Under" : "Spread"}
-          {wager.live && (
-            <span className="rounded-sm bg-accent/15 px-1 font-mono text-[10px] uppercase text-accent">
-              Live
+      <td className="px-4 py-3">
+        {isParlay ? (
+          <ul className="space-y-1">
+            {wager.legs.map((leg) => (
+              <li key={leg.id} className="flex items-center gap-2">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-ink-dim">
+                  {leg.wager_type === "ou" ? "Total" : "Spread"}
+                </span>
+                <StateBadge state={leg.status}>{leg.status}</StateBadge>
+                <span className="font-mono text-sm tabular-nums">{leg.selection}</span>
+                <span className="text-xs text-ink-muted">{leg.game_label}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <span className="inline-flex items-center gap-1.5">
+            <span className="capitalize">
+              {firstLeg.wager_type === "ou" ? "Over/Under" : "Spread"}
             </span>
-          )}
-        </span>
-      </td>
-      <td className="px-4 py-3 font-mono text-sm tabular-nums">
-        {wager.selection}
+            {firstLeg.live && (
+              <span className="rounded-sm bg-accent/15 px-1 font-mono text-[10px] uppercase text-accent">
+                Live
+              </span>
+            )}
+            <span className="font-mono text-sm tabular-nums">{firstLeg.selection}</span>
+          </span>
+        )}
       </td>
       <td className="px-4 py-3 text-right font-mono text-sm tabular-nums">
         ${wager.amount}
       </td>
       <td className="px-4 py-3 text-right">
         <StateBadge state={wager.status}>{wager.status}</StateBadge>
+        {wager.result != null && wager.result !== 0 && (
+          <div
+            className={`mt-1 font-mono text-xs tabular-nums ${
+              wager.result > 0 ? "text-positive" : "text-negative"
+            }`}
+          >
+            {wager.result > 0 ? "+" : ""}${wager.result.toFixed(2)}
+          </div>
+        )}
       </td>
       <td className="px-4 py-3 text-right">
         <button

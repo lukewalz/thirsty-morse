@@ -1,96 +1,87 @@
 import type {
   ESPNDetailCompetition,
-  Wager,
+  WagerLeg,
   WagerStatus,
 } from "./types";
 
-interface Outcome {
-  status: WagerStatus;
-  result: number;
-}
-
-/** Determine if a finished game settles a wager won/lost/push.
+/** Determine if a finished game settles a single leg won/lost/push.
  *  Returns null if the game isn't final or scores aren't readable. */
-export function settleWager(
-  wager: Wager,
+export function settleLeg(
+  leg: WagerLeg,
   comp: ESPNDetailCompetition | undefined,
-): Outcome | null {
+): WagerStatus | null {
   if (!comp || comp.status.type.state !== "post") return null;
-  const home = comp.competitors.find((c) => c.homeAway === "home");
-  const away = comp.competitors.find((c) => c.homeAway === "away");
-  if (!home || !away) return null;
-  const homeScore = numScore(home.score);
-  const awayScore = numScore(away.score);
-  if (homeScore == null || awayScore == null) return null;
+  const ctx = readContext(leg, comp);
+  if (!ctx) return null;
+  const { side, line, total, teamMargin } = ctx;
 
-  const [side, lineStr] = wager.selection.split("@");
-  const line = parseFloat(lineStr);
-  if (!Number.isFinite(line)) return null;
-
-  if (wager.wager_type === "ou") {
-    const total = homeScore + awayScore;
-    if (total === line) return push(wager);
+  if (leg.wager_type === "ou") {
+    if (total === line) return "push";
     if ((side === "o" && total > line) || (side === "u" && total < line)) {
-      return won(wager);
+      return "won";
     }
-    return lost(wager);
+    return "lost";
   }
 
-  /* Spread. `selection` is like "TEX@-1.5" or "NYY@+1.5". `line` is signed
-     relative to the picked team. Adjusted margin = teamScore - oppScore + line. */
-  const isHome = home.team.abbreviation === side;
-  const isAway = away.team.abbreviation === side;
-  if (!isHome && !isAway) return null;
-  const teamScore = isHome ? homeScore : awayScore;
-  const oppScore = isHome ? awayScore : homeScore;
-  const adjusted = teamScore - oppScore + line;
-  if (adjusted === 0) return push(wager);
-  return adjusted > 0 ? won(wager) : lost(wager);
+  /* Spread. teamMargin already includes the line. */
+  if (teamMargin === 0) return "push";
+  return teamMargin > 0 ? "won" : "lost";
 }
 
-/** Live cover differential — same math as final settlement but works pre-final. */
+/** Live cover differential — same math but works pre-final. */
 export function coverDifferential(
-  wager: Wager,
+  leg: WagerLeg,
   comp: ESPNDetailCompetition | undefined,
 ): { value: number; label: string } | null {
   if (!comp) return null;
-  const home = comp.competitors.find((c) => c.homeAway === "home");
-  const away = comp.competitors.find((c) => c.homeAway === "away");
-  if (!home || !away) return null;
-  const homeScore = numScore(home.score);
-  const awayScore = numScore(away.score);
-  if (homeScore == null || awayScore == null) return null;
+  const ctx = readContext(leg, comp);
+  if (!ctx) return null;
+  const { side, line, total, teamMargin } = ctx;
 
-  const [side, lineStr] = wager.selection.split("@");
-  const line = parseFloat(lineStr);
-  if (!Number.isFinite(line)) return null;
-
-  if (wager.wager_type === "ou") {
-    const total = homeScore + awayScore;
+  if (leg.wager_type === "ou") {
     const diff = side === "o" ? total - line : line - total;
     return {
       value: diff,
       label: `Total ${total} / ${side === "o" ? "O" : "U"} ${line}`,
     };
   }
-
-  const isHome = home.team.abbreviation === side;
-  const isAway = away.team.abbreviation === side;
-  if (!isHome && !isAway) return null;
-  const teamScore = isHome ? homeScore : awayScore;
-  const oppScore = isHome ? awayScore : homeScore;
-  const adjusted = teamScore - oppScore + line;
-  return { value: adjusted, label: `${side} ${signed(line)}` };
+  return { value: teamMargin, label: `${side} ${signed(line)}` };
 }
 
-function won(w: Wager): Outcome {
-  return { status: "won", result: w.amount };
+interface Context {
+  side: string;
+  line: number;
+  total: number;
+  /** teamScore - oppScore + line. Positive = covering. */
+  teamMargin: number;
 }
-function lost(w: Wager): Outcome {
-  return { status: "lost", result: -w.amount };
-}
-function push(_w: Wager): Outcome {
-  return { status: "push", result: 0 };
+
+function readContext(
+  leg: WagerLeg,
+  comp: ESPNDetailCompetition,
+): Context | null {
+  const home = comp.competitors.find((c) => c.homeAway === "home");
+  const away = comp.competitors.find((c) => c.homeAway === "away");
+  if (!home || !away) return null;
+  const homeScore = numScore(home.score);
+  const awayScore = numScore(away.score);
+  if (homeScore == null || awayScore == null) return null;
+
+  const [side, lineStr] = leg.selection.split("@");
+  const line = parseFloat(lineStr);
+  if (!Number.isFinite(line)) return null;
+
+  const total = homeScore + awayScore;
+  let teamMargin = 0;
+  if (leg.wager_type === "spread") {
+    const isHome = home.team.abbreviation === side;
+    const isAway = away.team.abbreviation === side;
+    if (!isHome && !isAway) return null;
+    const teamScore = isHome ? homeScore : awayScore;
+    const oppScore = isHome ? awayScore : homeScore;
+    teamMargin = teamScore - oppScore + line;
+  }
+  return { side, line, total, teamMargin };
 }
 
 function numScore(s: string | number | null | undefined): number | null {

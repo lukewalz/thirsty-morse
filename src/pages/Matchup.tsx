@@ -24,7 +24,9 @@ function isValidLeague(s: string | undefined): s is SportSlug {
 export default function Matchup() {
   const { league, gameId } = useParams();
   const navigate = useNavigate();
-  const add = useWagers((s) => s.add);
+  const placeStraight = useWagers((s) => s.placeStraight);
+  const addToSlip = useWagers((s) => s.addToSlip);
+  const slip = useWagers((s) => s.slip);
 
   const [wagerType, setWagerType] = useState<WagerType>("spread");
   const [selection, setSelection] = useState<string>("");
@@ -78,16 +80,14 @@ export default function Matchup() {
   const isLive = state === "in";
   const canPlace = state !== "post" && Boolean(selection) && Number(amount) > 0;
 
-  function placeWager() {
-    const numAmount = Number(amount);
-    if (!canPlace || !Number.isFinite(numAmount) || numAmount <= 0) return;
-    add({
+  function buildLeg() {
+    return {
       league: league as SportSlug,
       sport: sportFor(league as SportSlug),
       game_id: gameId!,
+      game_label: `${away!.team.abbreviation} @ ${home!.team.abbreviation}`,
       wager_type: wagerType,
       selection,
-      amount: numAmount,
       live: isLive,
       placed_at: isLive
         ? {
@@ -96,9 +96,24 @@ export default function Matchup() {
             detail: comp!.status.type.shortDetail ?? comp!.status.type.detail,
           }
         : undefined,
-    });
+    };
+  }
+
+  function placeWager() {
+    const numAmount = Number(amount);
+    if (!canPlace || !Number.isFinite(numAmount) || numAmount <= 0) return;
+    placeStraight(buildLeg(), numAmount);
     navigate("/");
   }
+
+  function addToParlay() {
+    if (!selection) return;
+    addToSlip(buildLeg());
+  }
+
+  const inSlip = slip.some(
+    (l) => l.game_id === gameId && l.wager_type === wagerType,
+  );
 
   return (
     <div className="space-y-8">
@@ -171,14 +186,24 @@ export default function Matchup() {
               />
             </Field>
 
-            <button
-              type="button"
-              disabled={!canPlace}
-              onClick={placeWager}
-              className="rounded-md bg-ink px-5 py-2.5 text-sm font-medium text-surface transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:bg-surface-3 disabled:text-ink-dim"
-            >
-              {isLive ? "Place live wager →" : "Place wager →"}
-            </button>
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                disabled={!canPlace}
+                onClick={placeWager}
+                className="rounded-md bg-ink px-5 py-2.5 text-sm font-medium text-surface transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:bg-surface-3 disabled:text-ink-dim"
+              >
+                {isLive ? "Place live wager →" : "Place wager →"}
+              </button>
+              <button
+                type="button"
+                disabled={!selection}
+                onClick={addToParlay}
+                className="rounded-md border border-line bg-surface px-5 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-accent hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {inSlip ? "✓ In parlay slip" : "+ Add to parlay"}
+              </button>
+            </div>
           </div>
         </section>
       ) : (
