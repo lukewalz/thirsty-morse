@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useQueries } from "@tanstack/react-query";
 import { getGameById, LEAGUE_LABEL, LEAGUE_TAG } from "@/lib/espn";
+import { formatScore } from "@/lib/format";
 import { useWagers } from "@/store/wagers";
 import StateBadge from "@/components/StateBadge";
 import type { ESPNDetailCompetitor, SportSlug } from "@/lib/types";
@@ -133,9 +134,9 @@ function LiveWagerCard({
         <div className="flex items-center gap-4">
           <StateBadge state={state}>{state === "in" ? "Live" : state === "post" ? "Final" : "Soon"}</StateBadge>
           <div className="font-mono text-sm tabular-nums">
-            {away ? `${away.team.abbreviation} ${away.score}` : "—"}
+            {away ? `${away.team.abbreviation} ${formatScore(away.score)}` : "—"}
             <span className="px-2 text-ink-dim">@</span>
-            {home ? `${home.team.abbreviation} ${home.score}` : "—"}
+            {home ? `${home.team.abbreviation} ${formatScore(home.score)}` : "—"}
           </div>
           <div className="text-xs text-ink-muted">{detail}</div>
         </div>

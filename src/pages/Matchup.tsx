@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { useGame } from "@/hooks/useGames";
 import { useWagers } from "@/store/wagers";
 import { LEAGUE_LABEL, sportFor } from "@/lib/espn";
+import { formatScore } from "@/lib/format";
 import StateBadge from "@/components/StateBadge";
 import type { ESPNDetailCompetitor, SportSlug, WagerType } from "@/lib/types";
 
@@ -207,7 +208,7 @@ function ScoreLine({ team }: { team: ESPNDetailCompetitor }) {
         <div className="font-semibold">{team.team.displayName}</div>
       </div>
       <div className="font-mono text-3xl font-bold tabular-nums">
-        {parseInt(String(team.score ?? "0"), 10) || "—"}
+        {formatScore(team.score)}
       </div>
     </div>
   );

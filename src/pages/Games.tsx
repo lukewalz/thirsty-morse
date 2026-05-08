@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { addDays, format } from "date-fns";
 import { useGames } from "@/hooks/useGames";
 import { LEAGUE_LABEL } from "@/lib/espn";
+import { formatScore } from "@/lib/format";
 import StateBadge from "@/components/StateBadge";
 import type { ESPNScoreboardCompetitor, SportSlug } from "@/lib/types";
 
@@ -96,7 +97,6 @@ export default function Games() {
 
 function TeamRow({ comp }: { comp: ESPNScoreboardCompetitor | undefined }) {
   if (!comp) return null;
-  const score = parseInt(comp.score || "0", 10);
   return (
     <div className="flex items-center gap-3 py-0.5">
       {comp.logo ? (
@@ -106,7 +106,7 @@ function TeamRow({ comp }: { comp: ESPNScoreboardCompetitor | undefined }) {
       )}
       <span className="w-12 shrink-0 text-ink-dim">{comp.abbreviation}</span>
       <span className="flex-1 font-medium">{comp.displayName}</span>
-      <span className="tabular-nums">{score > 0 ? score : "—"}</span>
+      <span className="tabular-nums">{formatScore(comp.score)}</span>
     </div>
   );
 }
