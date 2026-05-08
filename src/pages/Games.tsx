@@ -6,7 +6,12 @@ import { LEAGUE_LABEL } from "@/lib/espn";
 import StateBadge from "@/components/StateBadge";
 import type { ESPNScoreboardCompetitor, SportSlug } from "@/lib/types";
 
-const VALID_LEAGUES: SportSlug[] = ["nba", "mens-college-basketball"];
+const VALID_LEAGUES: SportSlug[] = [
+  "nba",
+  "mens-college-basketball",
+  "mlb",
+  "college-baseball",
+];
 
 function isValidLeague(s: string | undefined): s is SportSlug {
   return Boolean(s && (VALID_LEAGUES as string[]).includes(s));

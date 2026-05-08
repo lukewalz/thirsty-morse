@@ -1,4 +1,10 @@
-export type SportSlug = "nba" | "mens-college-basketball";
+export type SportSlug =
+  | "nba"
+  | "mens-college-basketball"
+  | "mlb"
+  | "college-baseball";
+
+export type Sport = "basketball" | "baseball";
 
 export type WagerType = "spread" | "ou";
 
@@ -7,7 +13,7 @@ export type WagerStatus = "pending" | "won" | "lost" | "push";
 export interface Wager {
   id: string;
   league: SportSlug;
-  sport: "basketball";
+  sport: Sport;
   game_id: string;
   wager_type: WagerType;
   selection: string;
@@ -82,5 +88,5 @@ export interface ESPNDetailCompetition {
 export interface ESPNGameDetail {
   header: { competitions: ESPNDetailCompetition[] };
   league: SportSlug;
-  sport: "basketball";
+  sport: Sport;
 }

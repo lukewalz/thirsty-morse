@@ -16,10 +16,12 @@ export default function Nav() {
           </span>
         </NavLink>
 
-        <nav className="flex items-center gap-1 text-sm">
+        <nav className="flex flex-wrap items-center gap-1 text-sm">
           <NavItem to="/">Live</NavItem>
           <NavItem to="/games/nba">NBA</NavItem>
           <NavItem to="/games/mens-college-basketball">NCAAM</NavItem>
+          <NavItem to="/games/mlb">MLB</NavItem>
+          <NavItem to="/games/college-baseball">NCAAB</NavItem>
           <NavItem to="/history">
             History
             {pending > 0 && (

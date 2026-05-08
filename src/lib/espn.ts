@@ -1,17 +1,33 @@
 import { format } from "date-fns";
-import type { ESPNGameDetail, ESPNScoreboardEvent, SportSlug } from "./types";
+import type {
+  ESPNGameDetail,
+  ESPNScoreboardEvent,
+  Sport,
+  SportSlug,
+} from "./types";
 
-const SPORT_BY_LEAGUE: Record<SportSlug, "basketball"> = {
+const SPORT_BY_LEAGUE: Record<SportSlug, Sport> = {
   nba: "basketball",
   "mens-college-basketball": "basketball",
+  mlb: "baseball",
+  "college-baseball": "baseball",
 };
 
 export const LEAGUE_LABEL: Record<SportSlug, string> = {
   nba: "NBA",
   "mens-college-basketball": "Men's College Basketball",
+  mlb: "MLB",
+  "college-baseball": "College Baseball",
 };
 
-export function sportFor(league: SportSlug): "basketball" {
+export const LEAGUE_TAG: Record<SportSlug, string> = {
+  nba: "NBA",
+  "mens-college-basketball": "NCAAM",
+  mlb: "MLB",
+  "college-baseball": "NCAAB",
+};
+
+export function sportFor(league: SportSlug): Sport {
   return SPORT_BY_LEAGUE[league];
 }
 

@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 import { useQueries } from "@tanstack/react-query";
-import { getGameById, LEAGUE_LABEL } from "@/lib/espn";
+import { getGameById, LEAGUE_LABEL, LEAGUE_TAG } from "@/lib/espn";
 import { useWagers } from "@/store/wagers";
 import StateBadge from "@/components/StateBadge";
 import type { ESPNDetailCompetitor, SportSlug } from "@/lib/types";
 
-const SPORTS: { league: SportSlug; tag: string }[] = [
-  { league: "nba", tag: "NBA" },
-  { league: "mens-college-basketball", tag: "NCAAM" },
+const SPORTS: SportSlug[] = [
+  "nba",
+  "mens-college-basketball",
+  "mlb",
+  "college-baseball",
 ];
 
 export default function Dashboard() {
@@ -35,16 +37,16 @@ export default function Dashboard() {
           live as the game plays out. No accounts. No real money.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
-          {SPORTS.map((s) => (
+          {SPORTS.map((league) => (
             <Link
-              key={s.league}
-              to={`/games/${s.league}`}
+              key={league}
+              to={`/games/${league}`}
               className="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-4 py-2.5 text-sm font-medium hover:border-line-strong hover:bg-surface-3"
             >
               <span className="font-mono text-[11px] uppercase tracking-wider text-ink-dim">
-                {s.tag}
+                {LEAGUE_TAG[league]}
               </span>
-              <span>{LEAGUE_LABEL[s.league]}</span>
+              <span>{LEAGUE_LABEL[league]}</span>
               <span className="text-ink-dim">→</span>
             </Link>
           ))}
