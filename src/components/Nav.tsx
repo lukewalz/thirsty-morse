@@ -22,6 +22,8 @@ export default function Nav() {
           <NavItem to="/games/mens-college-basketball">NCAAM</NavItem>
           <NavItem to="/games/mlb">MLB</NavItem>
           <NavItem to="/games/college-baseball">NCAAB</NavItem>
+          <NavItem to="/games/nhl">NHL</NavItem>
+          <NavItem to="/games/mens-college-hockey">NCAAH</NavItem>
           <NavItem to="/history">
             History
             {pending > 0 && (

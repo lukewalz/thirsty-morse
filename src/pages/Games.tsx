@@ -11,6 +11,8 @@ const VALID_LEAGUES: SportSlug[] = [
   "mens-college-basketball",
   "mlb",
   "college-baseball",
+  "nhl",
+  "mens-college-hockey",
 ];
 
 function isValidLeague(s: string | undefined): s is SportSlug {

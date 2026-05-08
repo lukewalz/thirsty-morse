@@ -10,6 +10,8 @@ const SPORTS: SportSlug[] = [
   "mens-college-basketball",
   "mlb",
   "college-baseball",
+  "nhl",
+  "mens-college-hockey",
 ];
 
 export default function Dashboard() {

@@ -11,6 +11,8 @@ const SPORT_BY_LEAGUE: Record<SportSlug, Sport> = {
   "mens-college-basketball": "basketball",
   mlb: "baseball",
   "college-baseball": "baseball",
+  nhl: "hockey",
+  "mens-college-hockey": "hockey",
 };
 
 export const LEAGUE_LABEL: Record<SportSlug, string> = {
@@ -18,6 +20,8 @@ export const LEAGUE_LABEL: Record<SportSlug, string> = {
   "mens-college-basketball": "Men's College Basketball",
   mlb: "MLB",
   "college-baseball": "College Baseball",
+  nhl: "NHL",
+  "mens-college-hockey": "College Hockey",
 };
 
 export const LEAGUE_TAG: Record<SportSlug, string> = {
@@ -25,7 +29,17 @@ export const LEAGUE_TAG: Record<SportSlug, string> = {
   "mens-college-basketball": "NCAAM",
   mlb: "MLB",
   "college-baseball": "NCAAB",
+  nhl: "NHL",
+  "mens-college-hockey": "NCAAH",
 };
+
+/* Leagues whose scoreboard needs `groups=50` to return the full D1 slate.
+   Other leagues either don't use groups (pro leagues) or break with it
+   (college hockey returns 0 events with groups=50). */
+const NEEDS_D1_FILTER = new Set<SportSlug>([
+  "mens-college-basketball",
+  "college-baseball",
+]);
 
 export function sportFor(league: SportSlug): Sport {
   return SPORT_BY_LEAGUE[league];
@@ -47,7 +61,7 @@ export async function getGames(
     lang: "en",
     dates: dateKey(date),
   });
-  if (league.includes("college")) params.set("groups", "50");
+  if (NEEDS_D1_FILTER.has(league)) params.set("groups", "50");
 
   const url = `https://site.web.api.espn.com/apis/v2/scoreboard/header?${params.toString()}`;
   const res = await fetch(url);
@@ -56,12 +70,19 @@ export async function getGames(
   return json?.sports?.[0]?.leagues?.[0]?.events ?? [];
 }
 
-export async function getGameById(league: SportSlug, gameId: string): Promise<ESPNGameDetail> {
-  const url = `https://www.espn.com/${league}/game?gameId=${gameId}&xhr=1`;
+export async function getGameById(
+  league: SportSlug,
+  gameId: string,
+): Promise<ESPNGameDetail> {
+  const sport = sportFor(league);
+  /* The CORS-friendly summary endpoint. The legacy
+     www.espn.com/.../game?xhr=1 endpoint returns 200 but no
+     Access-Control-Allow-Origin header, so browser fetches were
+     blocked. */
+  const url = `https://site.web.api.espn.com/apis/site/v2/sports/${sport}/${league}/summary?event=${gameId}`;
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`ESPN game ${res.status}`);
+  if (!res.ok) throw new Error(`ESPN summary ${res.status}`);
   const json = await res.json();
-  const pkg = json?.gamepackageJSON;
-  if (!pkg) throw new Error("ESPN game payload missing");
-  return { ...pkg, league, sport: sportFor(league) };
+  if (!json?.header) throw new Error("ESPN summary payload missing header");
+  return { ...json, league, sport };
 }

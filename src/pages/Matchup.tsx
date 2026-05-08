@@ -12,6 +12,8 @@ const VALID_LEAGUES: SportSlug[] = [
   "mens-college-basketball",
   "mlb",
   "college-baseball",
+  "nhl",
+  "mens-college-hockey",
 ];
 
 function isValidLeague(s: string | undefined): s is SportSlug {
@@ -184,7 +186,7 @@ function ScoreLine({ team }: { team: ESPNDetailCompetitor }) {
         <div className="font-semibold">{team.team.displayName}</div>
       </div>
       <div className="font-mono text-3xl font-bold tabular-nums">
-        {parseInt(team.score || "0", 10) || "—"}
+        {parseInt(String(team.score ?? "0"), 10) || "—"}
       </div>
     </div>
   );

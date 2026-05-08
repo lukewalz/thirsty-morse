@@ -2,9 +2,11 @@ export type SportSlug =
   | "nba"
   | "mens-college-basketball"
   | "mlb"
-  | "college-baseball";
+  | "college-baseball"
+  | "nhl"
+  | "mens-college-hockey";
 
-export type Sport = "basketball" | "baseball";
+export type Sport = "basketball" | "baseball" | "hockey";
 
 export type WagerType = "spread" | "ou";
 
@@ -60,12 +62,12 @@ export interface ESPNScoreboardEvent {
 export interface ESPNDetailCompetitor {
   id: string;
   homeAway: "home" | "away";
-  score: string;
+  score: string | number | null;
   team: {
     id: string;
     abbreviation: string;
     displayName: string;
-    shortDisplayName: string;
+    shortDisplayName?: string;
     logo?: string;
     logos?: { href: string }[];
   };
