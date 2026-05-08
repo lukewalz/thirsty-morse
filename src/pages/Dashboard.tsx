@@ -79,6 +79,12 @@ export default function Dashboard() {
                   selection={w.selection}
                   amount={w.amount}
                   wagerType={w.wager_type}
+                  isLiveBet={w.live === true}
+                  placedAtDetail={
+                    w.placed_at
+                      ? `${w.placed_at.away_score}-${w.placed_at.home_score} · ${w.placed_at.detail}`
+                      : undefined
+                  }
                   state={comp?.status.type.state ?? "pre"}
                   detail={comp?.status.type.detail ?? "Loading…"}
                   competitors={comp?.competitors}
@@ -98,6 +104,8 @@ function LiveWagerCard({
   selection,
   amount,
   wagerType,
+  isLiveBet,
+  placedAtDetail,
   state,
   detail,
   competitors,
@@ -107,6 +115,8 @@ function LiveWagerCard({
   selection: string;
   amount: number;
   wagerType: "spread" | "ou";
+  isLiveBet: boolean;
+  placedAtDetail?: string;
   state: "pre" | "in" | "post";
   detail: string;
   competitors?: ESPNDetailCompetitor[];
@@ -131,12 +141,22 @@ function LiveWagerCard({
         </div>
         <div className="flex items-center gap-4 text-right">
           <div>
-            <div className="font-mono text-[11px] uppercase tracking-wider text-ink-dim">
+            <div className="flex items-center justify-end gap-1.5 font-mono text-[11px] uppercase tracking-wider text-ink-dim">
               {wagerType === "spread" ? "Spread" : "Total"}
+              {isLiveBet && (
+                <span className="rounded-sm bg-accent/15 px-1 font-mono text-[10px] text-accent">
+                  LIVE
+                </span>
+              )}
             </div>
             <div className="font-mono text-sm font-medium tabular-nums">
               {selection}
             </div>
+            {placedAtDetail && (
+              <div className="font-mono text-[10px] text-ink-dim tabular-nums">
+                @ {placedAtDetail}
+              </div>
+            )}
           </div>
           <div>
             <div className="font-mono text-[11px] uppercase tracking-wider text-ink-dim">

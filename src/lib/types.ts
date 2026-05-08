@@ -12,6 +12,13 @@ export type WagerType = "spread" | "ou";
 
 export type WagerStatus = "pending" | "won" | "lost" | "push";
 
+export interface PlacedAt {
+  /** Score and clock at the moment of placement. Only populated for live bets. */
+  home_score: number;
+  away_score: number;
+  detail: string;
+}
+
 export interface Wager {
   id: string;
   league: SportSlug;
@@ -23,6 +30,9 @@ export interface Wager {
   wager_date: string;
   status: WagerStatus;
   result?: number;
+  /** Set if the wager was placed during a live game. */
+  live?: boolean;
+  placed_at?: PlacedAt;
 }
 
 /* Scoreboard list (`getGames`) — fields are flat on each event/competitor */

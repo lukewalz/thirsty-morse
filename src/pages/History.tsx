@@ -88,7 +88,14 @@ function Row({ wager, onRemove }: { wager: Wager; onRemove: () => void }) {
         {LEAGUE_LABEL[wager.league]}
       </td>
       <td className="px-4 py-3 capitalize">
-        {wager.wager_type === "ou" ? "Over/Under" : "Spread"}
+        <span className="inline-flex items-center gap-1.5">
+          {wager.wager_type === "ou" ? "Over/Under" : "Spread"}
+          {wager.live && (
+            <span className="rounded-sm bg-accent/15 px-1 font-mono text-[10px] uppercase text-accent">
+              Live
+            </span>
+          )}
+        </span>
       </td>
       <td className="px-4 py-3 font-mono text-sm tabular-nums">
         {wager.selection}

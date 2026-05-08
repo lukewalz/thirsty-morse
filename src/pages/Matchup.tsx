@@ -74,7 +74,8 @@ export default function Matchup() {
   }
 
   const state = comp.status.type.state;
-  const canPlace = state === "pre" && selection && Number(amount) > 0;
+  const isLive = state === "in";
+  const canPlace = state !== "post" && Boolean(selection) && Number(amount) > 0;
 
   function placeWager() {
     const numAmount = Number(amount);
@@ -86,6 +87,14 @@ export default function Matchup() {
       wager_type: wagerType,
       selection,
       amount: numAmount,
+      live: isLive,
+      placed_at: isLive
+        ? {
+            home_score: parseInt(String(home!.score ?? "0"), 10) || 0,
+            away_score: parseInt(String(away!.score ?? "0"), 10) || 0,
+            detail: comp!.status.type.shortDetail ?? comp!.status.type.detail,
+          }
+        : undefined,
     });
     navigate("/");
   }
@@ -112,14 +121,21 @@ export default function Matchup() {
         <ScoreLine team={home} />
       </section>
 
-      {state === "pre" ? (
+      {state !== "post" ? (
         <section className="rounded-lg border border-line bg-surface p-6">
-          <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-dim">
-            Place a wager
+          <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-dim">
+            <span>{isLive ? "Place a live wager" : "Place a wager"}</span>
+            {isLive && <StateBadge state="in">Live</StateBadge>}
           </div>
           <h2 className="mt-1 text-xl font-semibold tracking-tight">
             {odds ? odds.details ?? "Lines available" : "No line posted yet"}
           </h2>
+          {isLive && (
+            <p className="mt-2 text-xs text-ink-muted">
+              Live placement against the closing line. Score and game state at
+              placement will be recorded with your wager.
+            </p>
+          )}
 
           <div className="mt-6 space-y-6">
             <Field label="Type">
@@ -160,15 +176,13 @@ export default function Matchup() {
               onClick={placeWager}
               className="rounded-md bg-ink px-5 py-2.5 text-sm font-medium text-surface transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:bg-surface-3 disabled:text-ink-dim"
             >
-              Place wager →
+              {isLive ? "Place live wager →" : "Place wager →"}
             </button>
           </div>
         </section>
       ) : (
         <section className="rounded-lg border border-line bg-surface p-6 text-ink-muted">
-          {state === "in"
-            ? "Game is in progress — new wagers are locked."
-            : "Game is final — no new wagers."}
+          Game is final — no new wagers.
         </section>
       )}
     </div>
