@@ -117,11 +117,18 @@ export interface ESPNWinProbabilityPoint {
   tiePercentage: number;
 }
 
+export interface ESPNPredictor {
+  header?: string;
+  homeTeam: { id: string; gameProjection: string };
+  awayTeam: { id: string; gameProjection: string };
+}
+
 export interface ESPNGameDetail {
   header: { competitions: ESPNDetailCompetition[] };
   pickcenter?: ESPNOdds[];
   odds?: ESPNOdds[];
   winprobability?: ESPNWinProbabilityPoint[];
+  predictor?: ESPNPredictor;
   league: SportSlug;
   sport: Sport;
 }

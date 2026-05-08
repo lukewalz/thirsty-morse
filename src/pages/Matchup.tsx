@@ -6,6 +6,7 @@ import { useWagers } from "@/store/wagers";
 import { LEAGUE_LABEL, sportFor } from "@/lib/espn";
 import { formatScore } from "@/lib/format";
 import StateBadge from "@/components/StateBadge";
+import MatchupPredictor from "@/components/MatchupPredictor";
 import type { ESPNDetailCompetitor, SportSlug, WagerType } from "@/lib/types";
 
 const VALID_LEAGUES: SportSlug[] = [
@@ -136,6 +137,14 @@ export default function Matchup() {
         <ScoreLine team={away} />
         <ScoreLine team={home} />
       </section>
+
+      {data?.predictor && state === "pre" && (
+        <MatchupPredictor
+          predictor={data.predictor}
+          awayAbbr={away.team.abbreviation}
+          homeAbbr={home.team.abbreviation}
+        />
+      )}
 
       {state !== "post" ? (
         <section className="rounded-lg border border-line bg-surface p-6">
