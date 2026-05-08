@@ -1,7 +1,10 @@
 import { format } from "date-fns";
 import { useWagers } from "@/store/wagers";
 import StateBadge from "@/components/StateBadge";
+import StreakBadge from "@/components/StreakBadge";
+import PLChart from "@/components/PLChart";
 import { LEAGUE_LABEL } from "@/lib/espn";
+import { computePLSeries, computeStreak } from "@/lib/stats";
 import type { Wager } from "@/lib/types";
 
 export default function History() {
@@ -20,15 +23,20 @@ export default function History() {
     },
     { won: 0, lost: 0, pending: 0, staked: 0, pl: 0 },
   );
+  const streak = computeStreak(wagers);
+  const plSeries = computePLSeries(wagers);
 
   return (
     <div className="space-y-8">
       <header className="flex items-end justify-between gap-4 border-b border-line pb-4">
-        <div>
-          <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-dim">
-            Your record
+        <div className="flex items-end gap-4">
+          <div>
+            <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-dim">
+              Your record
+            </div>
+            <h1 className="mt-1 text-3xl font-bold tracking-tight">History</h1>
           </div>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight">History</h1>
+          <StreakBadge streak={streak} className="mb-1" />
         </div>
         {wagers.length > 0 && (
           <button
@@ -49,6 +57,22 @@ export default function History() {
         <Stat label="Lost" value={totals.lost} />
         <Stat label="P/L" value={`$${totals.pl}`} accent={totals.pl >= 0 ? "positive" : "negative"} />
       </div>
+
+      {plSeries.length >= 2 && (
+        <div className="rounded-lg border border-line bg-surface p-5">
+          <div className="flex items-baseline justify-between">
+            <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-dim">
+              P/L over time
+            </div>
+            <div className="font-mono text-[11px] tabular-nums text-ink-dim">
+              {plSeries.length} settled
+            </div>
+          </div>
+          <div className="mt-2 text-ink-muted">
+            <PLChart points={plSeries} />
+          </div>
+        </div>
+      )}
 
       {wagers.length === 0 ? (
         <p className="text-ink-muted">No wagers yet.</p>

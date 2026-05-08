@@ -6,9 +6,11 @@ import { formatScore } from "@/lib/format";
 import { coverDifferential, settleWager } from "@/lib/settle";
 import { useWagers } from "@/store/wagers";
 import StateBadge from "@/components/StateBadge";
+import StreakBadge from "@/components/StreakBadge";
 import CoverMeter from "@/components/CoverMeter";
 import WinProbChart from "@/components/WinProbChart";
 import ScoreFlash from "@/components/ScoreFlash";
+import { computeStreak } from "@/lib/stats";
 import type {
   ESPNGameDetail,
   SportSlug,
@@ -28,6 +30,7 @@ export default function Dashboard() {
   const wagers = useWagers((s) => s.wagers);
   const settle = useWagers((s) => s.settle);
   const pending = wagers.filter((w) => w.status === "pending");
+  const streak = computeStreak(wagers);
 
   const liveGames = useQueries({
     queries: pending.map((w) => ({
@@ -80,9 +83,12 @@ export default function Dashboard() {
 
       <section>
         <Eyebrow>Live wagers</Eyebrow>
-        <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-          {pending.length === 0 ? "Nothing in play" : `${pending.length} active`}
-        </h2>
+        <div className="mt-2 flex flex-wrap items-baseline gap-3">
+          <h2 className="text-2xl font-semibold tracking-tight">
+            {pending.length === 0 ? "Nothing in play" : `${pending.length} active`}
+          </h2>
+          <StreakBadge streak={streak} />
+        </div>
 
         {pending.length === 0 ? (
           <p className="mt-3 max-w-xl text-ink-muted">
